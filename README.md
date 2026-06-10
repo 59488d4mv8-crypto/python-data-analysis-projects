@@ -1,35 +1,120 @@
-# PyDataEdu · Python 商务数据分析在线教育平台
+# 10个Python商务数据分析实战项目（在线教育平台方向）
 
-纯静态站点,基于原生 HTML / CSS / JS,通过 Pyodide (CDN) 在浏览器内运行 Python,面向商务 / 金融数据分析教学。零构建工具、零框架、零 TypeScript。
+本仓库包含10个针对在线教育平台的Python数据分析实战项目，涵盖用户行为分析、课程完成度预测、用户价值分层、情感分析等多个维度。
 
-## 目录结构
+## 项目列表
 
-```
-.
-├── index.html       # 首页
-├── course.html      # 课程学习
-├── profile.html     # 个人中心
-├── quiz.html        # 测评
-├── assets/
-│   ├── css/style.css
-│   ├── js/app.js
-│   └── data/courses.json
-├── _redirects       # Cloudflare Pages SPA 回退
-├── _headers         # 安全头 / 缓存策略
-├── package.json
-└── README.md
-```
+### 1. 教育平台用户注册与活跃行为分析
+- **内容**：注册渠道、注册时段、日活/周活/月活、留存率
+- **Python技能**：Pandas、Matplotlib、Seaborn、时间序列
+- **业务目标**：判断哪些渠道获客质量最高
+- **文件**：`project_1_user_behavior_analysis.py`
 
-## 开发
+### 2. 课程学习完成度与dropout流失预测
+- **内容**：学习进度、退出节点、完课率、用户流失特征
+- **Python技能**：数据清洗、特征工程、漏斗图、热力图
+- **业务目标**：找出课程最容易流失的章节
+- **文件**：`project_2_course_completion_analysis.py`
+
+### 3. 在线教育用户RFM价值分层分析
+- **内容**：R（最近学习）、F（学习频次）、M（学习时长/付费）用户分层
+- **Python技能**：RFM分箱、用户标签、可视化分组
+- **业务目标**：识别高价值用户、沉睡用户、潜力用户
+- **文件**：`project_3_rfm_analysis.py`
+
+### 4. 课程评价NLP情感分析（好评/差评挖掘）
+- **内容**：课程评论爬取或导入 → 分词 → 情感判断 → 词云
+- **Python技能**：jieba、WordCloud、snownlp情感分析
+- **业务目标**：自动挖掘课程优缺点
+- **文件**：`project_4_sentiment_analysis.py`
+
+### 5. 学生学习时长与成绩相关性分析
+- **内容**：学习时长、暂停次数、快进次数、章节测验分数
+- **Python技能**：相关性分析、散点图、箱线图、回归分析
+- **业务目标**：判断哪些行为影响成绩最大
+- **文件**：`project_5_study_time_analysis.py`
+
+### 6. 在线课程付费转化漏斗分析
+- **内容**：浏览 → 试学 → 加购 → 付费 → 完课
+- **Python技能**：漏斗图、转化率计算、渠道对比
+- **业务目标**：找到转化卡点，提升付费率
+- **文件**：`project_6_payment_funnel_analysis.py`
+
+### 7. 教育平台推荐课程关联规则分析（Apriori）
+- **内容**：用户购买/学习的课程组合 → 挖掘关联规则
+- **Python技能**：mlxtend.Apriori、关联规则可视化
+- **业务目标**：给学生做 "学了这门课还会学什么"
+- **文件**：`project_7_course_recommendation.py`
+
+### 8. 每日访问量与课程销量时间序列预测
+- **内容**：按小时/天/周流量趋势、节假日波动、短期预测
+- **Python技能**：时间序列、滑动窗口、简单预测模型
+- **业务目标**：预测流量高峰，用于服务器/运营排期
+- **文件**：`project_8_time_series_prediction.py`
+
+### 9. 教师授课质量多维度综合评分模型
+- **内容**：评分、完课率、互动率、复购率 → 构建综合评分
+- **Python技能**：权重计算、标准化、综合指标、雷达图
+- **业务目标**：客观评价教师教学效果
+- **文件**：`project_9_teacher_evaluation.py`
+
+### 10. 在线教育平台用户画像与精准运营策略
+- **内容**：年龄、地域、职业、偏好、设备、学习时段
+- **Python技能**：用户画像聚合、饼图、柱状图、分层策略
+- **业务目标**：输出可直接使用的精准运营方案
+- **文件**：`project_10_user_profile.py`
+
+## 环境要求
 
 ```bash
-npm install
-npm run dev      # 启动本地开发服务器 http://localhost:8080
-npm run build    # 输出静态产物,无构建步骤,仅验证可部署
+pip install pandas numpy matplotlib seaborn jieba wordcloud snownlp mlxtend
 ```
 
-## Cloudflare Pages 配置
+## 使用方法
 
-- **构建命令(Build command): `npm run build`
-- **输出目录(Build output directory)**: `./` 或 `dist/`
-- Pyodide 在 `index.html` / `course.html` / `profile.html` / `quiz.html` 的 `<head>` 中以注释形式预留,正式上线时在代码执行模块中懒加载即可。
+1. 进入项目目录：
+   ```bash
+   cd /workspace/python-projects
+   ```
+
+2. 运行具体项目：
+   ```bash
+   python project_1_user_behavior_analysis.py
+   ```
+
+3. 查看生成的图表：
+   - 图表会保存在项目目录中，文件名为相关分析的描述
+
+## 项目特点
+
+1. **数据模拟**：每个项目都包含模拟数据生成功能，无需真实数据即可运行
+2. **完整分析**：从数据生成到可视化，提供端到端的分析流程
+3. **业务洞察**：每个项目都有明确的业务目标和洞察输出
+4. **代码注释**：详细的代码注释，便于理解和学习
+5. **可视化输出**：生成多种类型的图表，直观展示分析结果
+
+## 技术栈
+
+- **数据处理**：Pandas、NumPy
+- **数据可视化**：Matplotlib、Seaborn
+- **自然语言处理**：jieba、SnowNLP
+- **机器学习**：mlxtend（关联规则）
+- **时间序列分析**：Pandas时间序列功能
+
+## 适用人群
+
+- 商务数据分析与应用专业学生
+- 在线教育平台数据分析师
+- Python数据分析学习者
+- 对教育行业数据感兴趣的从业者
+
+## 项目价值
+
+1. **实践技能**：通过实际项目练习Python数据分析技能
+2. **业务理解**：深入了解在线教育平台的核心业务指标
+3. **决策支持**：为教育平台运营提供数据驱动的决策依据
+4. **学习参考**：作为数据分析课程的实战案例
+
+---
+
+通过这些项目，您可以掌握从数据收集、清洗、分析到可视化的完整流程，同时了解在线教育行业的关键业务指标和分析方法。

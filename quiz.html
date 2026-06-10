@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>能力测评 · PyDataEdu</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">Py<span>Data</span>Edu</a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="course.html">课程</a>
+      <a href="quiz.html" class="active">测评</a>
+      <a href="profile.html">个人中心</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="container">
+  <h1>单元测评</h1>
+  <p class="lead">每个课程单元配套一套测评，帮你检验学习效果，即时反馈。</p>
+
+  <div class="course-layout">
+    <aside id="sidebar" class="sidebar">
+      <div id="sidebarContent" class="sidebar-content">加载中...</div>
+    </aside>
+
+    <section id="quizContent" class="quiz-content">
+      <div class="placeholder-card">请从左侧选择一个测评开始。</div>
+    </section>
+  </div>
+</main>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <small>© 2026 PyDataEdu · Deployed on Cloudflare Pages</small>
+  </div>
+</footer>
+
+<script src="assets/js/pyodide-runner.js"></script>
+<script src="assets/js/code-editor.js"></script>
+<script src="assets/js/achievements.js"></script>
+<script src="assets/js/quiz-view.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var toastContainer = document.getElementById("toastContainer");
+
+  function showToast(type, title, message, duration) {
+    if (!toastContainer) return;
+    var toast = document.createElement("div");
+    toast.className = "toast toast-" + (type || "info");
+    var icon = "ℹ️";
+    if (type === "badge") icon = "🏆";
+    else if (type === "level") icon = "⭐";
+    else if (type === "success") icon = "✅";
+    else if (type === "error") icon = "⚠️";
+    toast.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:8px;">' +
+      '<span class="toast-icon">' + icon + "</span>" +
+      '<div style="flex:1;min-width:0;">' +
+      '<div class="toast-title">' + (title || "") + "</div>" +
+      (message ? '<div class="toast-message">' + message + "</div>" : "") +
+      "</div></div>";
+    toastContainer.appendChild(toast);
+    var dur = typeof duration === "number" ? duration : 4000;
+    setTimeout(function () {
+      toast.classList.add("fade-out");
+      setTimeout(function () {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 350);
+    }, dur);
+  }
+
+  if (window.Achievements) {
+    window.Achievements.on("badgeUnlocked", function (payload) {
+      showToast("badge", "获得新徽章：" + payload.title, payload.description, 5000);
+    });
+    window.Achievements.on("levelUp", function (payload) {
+      showToast("level", "升级啦！Lv." + payload.level, "当前积分 " + payload.points, 4500);
+    });
+    window.Achievements.on("pointsChanged", function (payload) {
+      // 可选：积分变化时不提示，避免过于频繁
+    });
+  }
+
+  if (window.Achievements && typeof window.Achievements.startStudyTimer === "function") {
+    window.Achievements.startStudyTimer();
+  }
+
+  if (window.QuizView && typeof window.QuizView.init === "function") {
+    window.QuizView.init();
+  }
+})();
+</script>
+</body>
+</html>

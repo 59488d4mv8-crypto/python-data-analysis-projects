@@ -1,0 +1,570 @@
+{
+  "meta": {
+    "title": "10 个 Python 商务数据分析实战项目",
+    "total": 10
+  },
+  "projects": [
+    {
+      "projectId": "proj01",
+      "title": "用户注册与活跃行为分析",
+      "subtitle": "识别高价值注册渠道并追踪用户留存曲线",
+      "difficulty": "初级",
+      "duration": "2.5 小时",
+      "tags": [
+        "Pandas",
+        "Matplotlib",
+        "用户行为",
+        "留存分析"
+      ],
+      "businessGoal": "量化各渠道的获客质量差异，评估渠道ROI，识别高流失风险期，指导市场投放策略。",
+      "background": "某在线教育平台过去 90 天累计注册用户约 5000 人，来自自然搜索、付费广告、老用户推荐、社交媒体四个主要渠道。运营团队发现不同渠道用户后续活跃度差异显著。",
+      "dataPlan": "模拟 users 表（5000 行：user_id/channel/reg_day/active_days/total_sessions）、daily_activity（60 天活跃矩阵）、cohorts（6×6 留存矩阵）。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "渠道注册分布与活跃度",
+          "description": "对比各渠道注册量与平均活跃天数",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(42)\nN = 5000\nchannels = ['Organic', 'Paid', 'Referral', 'Social']\nch = np.random.choice(channels, N, p=[0.35,0.25,0.20,0.20])\ndf = pd.DataFrame({'user_id':[f'U{i:05d}' for i in range(N)],'channel':ch})\ndf['reg_day'] = np.random.randint(0,90,N)\ndf['active_days'] = np.random.poisson(15,N)\ndf.loc[df.channel=='Paid','active_days']=np.random.poisson(8,(df.channel=='Paid').sum())\ndf.loc[df.channel=='Referral','active_days']=np.random.poisson(22,(df.channel=='Referral').sum())\ndf['total_sessions']=np.random.poisson(35,N)\nprint(df.groupby('channel')[['active_days','total_sessions']].mean().round(2))\n\nfig,ax=plt.subplots(1,2,figsize=(11,4))\ndf['channel'].value_counts().plot(kind='bar',ax=ax[0],color=['#4C72B0','#DD8452','#55A868','#C44E52'])\nax[0].set_title('Registrations by Channel')\ndf.groupby('channel')['active_days'].mean().plot(kind='bar',ax=ax[1],color='#8172B2')\nax[1].set_title('Avg Active Days by Channel')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\nprint('saved')\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "DAU/WAU 趋势",
+          "description": "计算日活与周活时间序列",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nDAYS,users=60,2000\nactivity=np.random.binomial(1,0.22,(users,DAYS))\ndecay=np.linspace(1.0,0.7,DAYS)\nactivity=(activity*decay>np.random.rand(users,DAYS)).astype(int)\ndau=activity.sum(axis=0)\nweeks={}\nfor w in range(DAYS//7):\n    weeks[f'W{w+1}']=activity[:,w*7:(w+1)*7].sum(axis=1).gt(0).sum()\nwau=pd.Series(weeks)\nprint('DAU avg:',dau.mean().round(1))\nprint('WAU:',wau.to_dict())\n\nfig,axes=plt.subplots(1,2,figsize=(11,4))\naxes[0].plot(range(DAYS),dau,'b-')\naxes[0].set_title('Daily Active Users')\naxes[0].grid(True,alpha=0.3)\nwau.plot(kind='bar',ax=axes[1],color='#DD8452')\naxes[1].set_title('Weekly Active Users')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "Cohort 留存曲线",
+          "description": "不同 cohort 的留存衰减",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(11)\ncohorts=6\nbase=np.array([1.0,0.55,0.40,0.32,0.27,0.23])\nmat=np.zeros((cohorts,cohorts))\nfor c in range(cohorts):\n    for p in range(cohorts-c):\n        mat[c,p]=np.clip(base[p]+np.random.normal(0,0.04),0,1)\ndf=pd.DataFrame(mat,columns=[f'W{p}' for p in range(cohorts)],index=[f'Cohort{c+1}' for c in range(cohorts)])\nprint(df.round(3))\n\nfig,ax=plt.subplots(figsize=(9,5))\nfor c in range(cohorts):\n    vals=mat[c,:cohorts-c]\n    ax.plot(range(len(vals)),vals,'o-',label=f'Cohort{c+1}')\nax.set_title('Retention Curve')\nax.set_xlabel('Weeks after registration')\nax.set_ylabel('Retention rate')\nax.legend()\nax.grid(True,alpha=0.3)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "渠道转化率排名",
+          "question": "计算每个渠道 7日留存率（active_days>=7 用户比例）并排序。",
+          "starterCode": "import pandas as pd\ndf=pd.DataFrame({'ch':['A','B','A'],'ad':[3,12,8]})",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "老用户推荐渠道用户质量最高，活跃天数是付费渠道 2.5 倍",
+        "付费渠道在注册后第 2-3 周出现明显流失波谷",
+        "自然搜索渠道注册量最大但留存中等，是增量用户体验优化空间最大",
+        "建议预算向推荐渠道倾斜 20% 可显著提升整体留存"
+      ],
+      "deliverables": [
+        "渠道注册量排名柱状图",
+        "渠道平均活跃天数对比图",
+        "DAU/WAU 时间序列折线图",
+        "Cohort 留存曲线图"
+      ]
+    },
+    {
+      "projectId": "proj02",
+      "title": "课程学习完成度与 dropout 流失预测",
+      "subtitle": "识别用户在课程路径中的流失节点",
+      "difficulty": "中级",
+      "duration": "3 小时",
+      "tags": [
+        "Pandas",
+        "漏斗图",
+        "热力图",
+        "流失预测"
+      ],
+      "businessGoal": "定位课程学习漏斗中流失率最高的节点，建立早期流失预警模型，帮助运营在关键节点进行精准干预。",
+      "background": "平台上线 8 个章节的系列课程共 3000 人浏览，但整体完课率仅约 12%。运营希望了解用户在哪些章节流失最严重。",
+      "dataPlan": "模拟 funnel（3000 用户×8 阶段）、chapters_completion（500×8 完成矩阵）、dropout_risk（1500 用户首周指标）。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "课程漏斗图",
+          "description": "计算各阶段人数与阶段转化率",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(5)\nN=3000\nstages=['View','Enroll','Start','Ch1','Ch3','Ch5','Final','Complete']\nrates=[1.0,0.72,0.58,0.45,0.33,0.24,0.18,0.12]\ndata=[]\nfor i in range(N):\n    r=np.random.rand()\n    reached=sum(r<np.array(rates[::-1]))\n    idx=len(stages)-1-reached if reached>0 else 0\n    data.append({'user':f'U{i:05d}','stage':stages[idx],'score':np.random.randint(40,100)})\ndf=pd.DataFrame(data)\ncounts=df['stage'].value_counts().reindex(stages)\nprint(counts)\nfor i in range(len(stages)-1):\n    print(f'{stages[i]}->{stages[i+1]}: {counts.iloc[i+1]/counts.iloc[i]:.2%}')\n\nfig,ax=plt.subplots(figsize=(9,5))\ncolors=plt.cm.Blues(np.linspace(0.3,0.9,len(stages)))\nax.bar(range(len(stages)),counts.values,color=colors)\nfor i,(s,h) in enumerate(zip(stages,counts.values)):\n    ax.text(i,h+counts.values[0]*0.01,str(h),ha='center')\nax.set_xticks(range(len(stages)))\nax.set_xticklabels(stages,rotation=20)\nax.set_title('Learning Funnel')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "章节完成热力图",
+          "description": "章节间相关性分析",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(3)\nchapters,users=8,500\nweights=np.array([0.95,0.85,0.78,0.70,0.62,0.55,0.48,0.42])\nmat=(np.random.rand(users,chapters)<weights[None,:]).astype(int)\ndf=pd.DataFrame(mat,columns=[f'Ch{i+1}' for i in range(chapters)])\nheat=df.corr()\nprint(heat.round(2))\n\nfig,ax=plt.subplots(figsize=(8,6))\nim=ax.imshow(heat.values,cmap='RdBu_r',vmin=-0.5,vmax=1)\nax.set_xticks(range(chapters))\nax.set_xticklabels(df.columns,rotation=45,ha='right')\nax.set_yticks(range(chapters))\nax.set_yticklabels(df.columns)\nfor i in range(chapters):\n    for j in range(chapters):\n        ax.text(j,i,f'{heat.values[i,j]:.2f}',ha='center',va='center',fontsize=7,color='white')\nplt.colorbar(im)\nax.set_title('Chapter Correlation Heatmap')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "流失预警分析",
+          "description": "基于首周行为的流失率分组",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(9)\nN=1500\ndf=pd.DataFrame({\n    'user_id':[f'U{i:05d}' for i in range(N)],\n    'first_week':np.random.poisson(5,N),\n    'quizzes_avg':np.random.randint(50,100,N),\n    'chapters_done':np.random.randint(0,8,N),\n    'time_h':np.random.exponential(3,N).round(1)})\ndf['dropout']=((df.first_week<3)|(df.quizzes_avg<65)|(df.chapters_done<2)).astype(int)\nprint('Dropout rate:',df.dropout.mean().round(3))\ndf['ch_bin']=pd.cut(df.chapters_done,bins=[-1,1,3,5,8],labels=['0-1','2-3','4-5','6-7'])\nprint(df.groupby('ch_bin').dropout.mean().round(3))\n\nfig,axes=plt.subplots(1,2,figsize=(10,4))\ndf.groupby('ch_bin').dropout.mean().plot(kind='bar',ax=axes[0],color='#C44E52')\naxes[0].set_title('Dropout by chapters')\naxes[1].scatter(df.first_week,df.dropout+np.random.randn(len(df))*0.03,alpha=0.1,color='#4C72B0')\naxes[1].set_title('first week vs dropout')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "计算阶段流失率",
+          "question": "给定漏斗数据，找出流失最大的阶段。",
+          "starterCode": "import pandas as pd\ncounts=pd.Series([1000,700,400],index=['A','B','C'])",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "完课率仅 12%，最大流失发生在 Start->Ch1 阶段（约 22% 流失）",
+        "Ch3 是第二个关键门槛，完成 Ch3 后完课率明显提升",
+        "首周活跃<3 次用户流失率是活跃用户 3 倍以上",
+        "quiz 平均<65 分的用户应收到额外辅导"
+      ],
+      "deliverables": [
+        "课程漏斗柱状图",
+        "章节相关性热力图",
+        "流失率分组柱状图"
+      ]
+    },
+    {
+      "projectId": "proj03",
+      "title": "RFM 用户价值分层",
+      "subtitle": "按最近学习/频次/时长分群实现价值分层",
+      "difficulty": "中级",
+      "duration": "2.5 小时",
+      "tags": [
+        "Pandas",
+        "分箱",
+        "用户分层",
+        "RFM"
+      ],
+      "businessGoal": "基于用户最近学习时间(R)、学习频次(F)、学习时长或付费金额(M)，将用户分为高价值、潜力、流失风险等类别。",
+      "background": "平台有 2000 名付费用户，但学员学习行为各异。使用 RFM 模型从三个维度将用户分箱，实现精细化运营。",
+      "dataPlan": "模拟 rfm_raw（2000 行：recency/frequency/monetary），分箱打分后产出 segments 标签。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "RFM 数据分布",
+          "description": "可视化 R/F/M 分布直方图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(42)\nN=2000\ndf=pd.DataFrame({\n    'user_id':[f'U{i:05d}' for i in range(N)],\n    'recency':np.random.exponential(25,N).astype(int),\n    'frequency':np.random.poisson(8,N).clip(1,30),\n    'monetary':np.random.exponential(200,N).round(2).clip(10,2000)})\nprint(df.describe().round(2))\n\nfig,axes=plt.subplots(1,3,figsize=(13,4))\naxes[0].hist(df.recency,bins=30,color='#4C72B0')\naxes[0].set_title('Recency (days)')\naxes[1].hist(df.frequency,bins=20,color='#DD8452')\naxes[1].set_title('Frequency')\naxes[2].hist(df.monetary,bins=30,color='#55A868')\naxes[2].set_title('Monetary (CNY)')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "分箱打分与分段",
+          "description": "RFM 分箱+用户画像饼图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(42)\nN=2000\ndf=pd.DataFrame({\n    'recency':np.random.exponential(25,N).astype(int),\n    'frequency':np.random.poisson(8,N).clip(1,30),\n    'monetary':np.random.exponential(200,N).round(2).clip(10,2000)})\ndf['R']=pd.qcut(df.recency,5,labels=[5,4,3,2,1]).astype(int)\ndf['F']=pd.qcut(df.frequency.rank(method='first'),5,labels=[1,2,3,4,5]).astype(int)\ndf['M']=pd.qcut(df.monetary.rank(method='first'),5,labels=[1,2,3,4,5]).astype(int)\ndf['score']=df.R+df.F+df.M\n\ndef seg(row):\n    if row.R>=4 and row.F>=4 and row.M>=4: return 'Champions'\n    if row.R<=2 and row.F<=2: return 'At_Risk'\n    if row.R==1 and row.F==1: return 'Lost'\n    if row.R>=4 and row.F<=2: return 'New'\n    if row.R>=3 and row.F>=3: return 'Loyal'\n    return 'Others'\ndf['segment']=df.apply(seg,axis=1)\nprint(df.segment.value_counts())\n\nfig,ax=plt.subplots(figsize=(9,6))\ndf.segment.value_counts().plot(kind='pie',ax=ax,autopct='%1.0f%%',startangle=90,cmap=plt.cm.Set3)\nax.set_title('RFM Segments')\nax.set_ylabel('')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "RFM 价值曲线",
+          "description": "按分数分布与平均金额",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(42)\nN=2000\ndf=pd.DataFrame({\n    'recency':np.random.exponential(25,N).astype(int),\n    'frequency':np.random.poisson(8,N).clip(1,30),\n    'monetary':np.random.exponential(200,N).round(2).clip(10,2000)})\ndf['R']=pd.qcut(df.recency,5,labels=[5,4,3,2,1]).astype(int)\ndf['F']=pd.qcut(df.frequency.rank(method='first'),5,labels=[1,2,3,4,5]).astype(int)\ndf['M']=pd.qcut(df.monetary.rank(method='first'),5,labels=[1,2,3,4,5]).astype(int)\ndf['score']=df.R+df.F+df.M\n\nsummary=df.groupby('score').agg(users=('score','count'),avg_mon=('monetary','mean')).round(2)\nprint(summary)\n\nfig,ax1=plt.subplots(figsize=(9,5))\nax1.bar(summary.index,summary.users,color='#4C72B0',alpha=0.6)\nax1.set_xlabel('RFM Score')\nax1.set_ylabel('Users')\nax2=ax1.twinx()\nax2.plot(summary.index,summary.avg_mon,'ro-')\nax2.set_ylabel('Avg Monetary (CNY)')\nax1.set_title('RFM Score Distribution')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "自定义分箱",
+          "question": "将 recency 按 [7,14,30,60] 阈值分成 5 段并打分。",
+          "starterCode": "import pandas as pd\ndf=pd.DataFrame({'r':[3,8,15,32,70]})",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "Champions 约占 15%，贡献超过 40% 付费金额",
+        "At_Risk 用户约 20%，近期活跃度明显下降，应优先挽回",
+        "New 用户虽近但频次低，是转化目标",
+        "Loyal 用户是稳定中坚力量"
+      ],
+      "deliverables": [
+        "RFM 分布直方图",
+        "用户分段饼图",
+        "RFM 分数-金额双轴图"
+      ]
+    },
+    {
+      "projectId": "proj04",
+      "title": "课程评论 NLP 情感分析",
+      "subtitle": "从评论中提取关键词与情感倾向",
+      "difficulty": "高级",
+      "duration": "3 小时",
+      "tags": [
+        "NLP",
+        "词频",
+        "情感分析",
+        "词云"
+      ],
+      "businessGoal": "量化课程评论的情感分布，提取高频正负面关键词，用于改进课程与讲师质量。",
+      "background": "平台收到约 1000 条课程评论。通过词频统计+正负面关键词分析+简易词云可视化，帮助产品团队聚焦关键改进点。",
+      "dataPlan": "模拟 1000 条英文短评（正面约 72%），每条含评分。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "词频统计",
+          "description": "评论词频 top20",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfrom collections import Counter\nimport random\n\nrandom.seed(1)\nreviews=[\n    'Great course very clear explanation',\n    'Excellent teacher easy to follow',\n    'Too fast difficult to understand',\n    'Amazing content highly recommend',\n    'Boring lecture not engaging',\n    'Good examples practical exercises',\n    'Worst course ever waste time',\n    'Helpful for business analysis',\n    'Clear structure step by step',\n    'Confusing explanation need more practice',\n    'Wonderful teacher makes complex simple',\n    'Disappointing material outdated',\n    'Best python course taken',\n    'Slow pace too basic',\n    'Instructor explains well',\n    'Hard assignments too difficult',\n    'Useful real world cases',\n    'Poor video quality',\n    'Love the interactive demos',\n    'Not enough examples']*50\nwords=[]\nfor r in reviews:\n    for w in r.lower().split():\n        words.append(w)\nstop=set('the a an is was of to it this i you he she her his them they be in on at or and but not no do does did'.split())\nwords=[w for w in words if w not in stop and len(w)>2]\nfreq=Counter(words).most_common(20)\nfor w,c in freq: print(f'{w}:{c}')\n\nfig,ax=plt.subplots(figsize=(11,5))\nax.barh(range(len(freq)),[c for _,c in freq],color='#55A868')\nax.set_yticks(range(len(freq)))\nax.set_yticklabels([w for w,_ in freq])\nax.invert_yaxis()\nax.set_title('Top Words')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "正负面关键词",
+          "description": "按评分分段关键词",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfrom collections import Counter\n\nnp.random.seed(1)\npos='great excellent amazing wonderful helpful clear best love useful positive fantastic recommend perfect'.split()\nneg='bad worst boring poor disappointing confusing hard slow waste terrible awful'.split()\nrows=[]\nfor _ in range(1000):\n    if np.random.rand()<0.72:\n        text=' '.join(np.random.choice(pos,size=np.random.randint(2,5)))\n        rating=np.random.randint(4,6)\n    else:\n        text=' '.join(np.random.choice(neg,size=np.random.randint(2,5)))\n        rating=np.random.randint(1,4)\n    rows.append({'text':text,'rating':rating})\ndf=pd.DataFrame(rows)\ndf['sentiment']=(df.rating>=4).astype(int)\nprint('Positive ratio:',df.sentiment.mean().round(3))\n\npos_w,neg_w=Counter(),Counter()\nfor _,row in df.iterrows():\n    for w in row.text.split():\n        if row.sentiment: pos_w[w]+=1\n        else: neg_w[w]+=1\nprint('Top positive:',pos_w.most_common(8))\nprint('Top negative:',neg_w.most_common(8))\n\nfig,axes=plt.subplots(1,2,figsize=(12,5))\npw,pc=zip(*pos_w.most_common(10))\nnw,nc=zip(*neg_w.most_common(10))\naxes[0].barh(pw,pc,color='#55A868')\naxes[0].set_title('Positive Words')\naxes[0].invert_yaxis()\naxes[1].barh(nw,nc,color='#C44E52')\naxes[1].set_title('Negative Words')\naxes[1].invert_yaxis()\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "简易词云",
+          "description": "位置散点词云",
+          "code": "import numpy as np\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nwords=['course','teacher','excellent','great','amazing','boring','clear','difficult','practice','example','helpful','worst','wonderful','confusing','best','hard','useful','poor','love','waste']\nweights=[80,70,65,60,55,50,45,40,35,30,28,26,24,22,20,18,16,14,12,10]\nnp.random.seed(3)\nfig,ax=plt.subplots(figsize=(10,7))\nxs=np.random.rand(len(words))\nys=np.random.rand(len(words))\nfor i,(w,s) in enumerate(zip(words,weights)):\n    ax.text(xs[i],ys[i],w,fontsize=s/6+8,ha='center',va='center',\n            color=plt.cm.tab10(i%10),rotation=np.random.choice([0,15,-15,90,45,-45]))\nax.set_xlim(-0.1,1.1);ax.set_ylim(-0.1,1.1)\nax.axis('off')\nax.set_title('Review Words')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "词频topN",
+          "question": "统计文本列表中出现次数最多的 N 个词。",
+          "starterCode": "texts=['a b','a c c']\\nN=2",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "整体好评率约 72%，负面集中在课程难度与视频质量",
+        "teacher 评分<3 的评论主要词汇：boring, poor, waste",
+        "讲师表达清晰度与练习量是最常见的改进方向",
+        "建议课程增加更多案例和分步讲解"
+      ],
+      "deliverables": [
+        "词频 top20 水平条形图",
+        "正负面关键词对比图",
+        "评论词云图"
+      ]
+    },
+    {
+      "projectId": "proj05",
+      "title": "学习时长与成绩相关性",
+      "subtitle": "学习投入与产出量化关系分析",
+      "difficulty": "初级",
+      "duration": "2 小时",
+      "tags": [
+        "Pandas",
+        "散点图",
+        "相关系数",
+        "回归分析"
+      ],
+      "businessGoal": "量化学习投入与成绩提升关系，识别投入产出边际递减点，优化学习路径推荐。",
+      "background": "800 名学生学习时长与考试成绩。投入越多成绩越好，但是否存在饱和？",
+      "dataPlan": "模拟 800 名学生小时数与成绩：hours 指数分布，score=40+1.8*hours+noise。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "散点图",
+          "description": "学习时长与成绩散点",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nN=800\nhours=np.random.exponential(15,N).clip(1,80)\nscores=40+1.8*hours+np.random.randn(N)*12\nscores=np.clip(scores,20,100)\ndf=pd.DataFrame({'hours':hours.round(1),'score':scores.round(1)})\nprint(df.describe().round(2))\nprint('Correlation:\\n',df.corr().round(3))\n\nfig,ax=plt.subplots(figsize=(9,6))\nax.scatter(df.hours,df.score,alpha=0.4,s=20,color='#4C72B0')\nax.set_xlabel('Study Hours');ax.set_ylabel('Score')\nax.set_title('Study Hours vs Score')\nax.grid(True,alpha=0.3)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "线性回归",
+          "description": "回归直线与R2",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nN=800\nhours=np.random.exponential(15,N).clip(1,80)\nscores=40+1.8*hours+np.random.randn(N)*12\nscores=np.clip(scores,20,100)\ndf=pd.DataFrame({'hours':hours,'score':scores})\n\nslope,intercept=np.polyfit(df.hours,df.score,1)\nprint(f'Score = {slope:.3f}*hours + {intercept:.2f}')\nr=df.corr().iloc[0,1]\nprint(f'Pearson r={r:.3f}, R2={r**2:.3f}')\n\nfig,ax=plt.subplots(figsize=(9,6))\nax.scatter(df.hours,df.score,alpha=0.35,s=20,color='#4C72B0')\nx_line=np.linspace(0,80,100)\nax.plot(x_line,slope*x_line+intercept,'r-',lw=2,label=f'fit (r={r:.2f})')\nax.set_title('Linear Regression')\nax.legend();ax.grid(True,alpha=0.3)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "分组分析",
+          "description": "按时长分组的均值与残差",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nN=800\nhours=np.random.exponential(15,N).clip(1,80)\nscores=40+1.8*hours+np.random.randn(N)*12\nscores=np.clip(scores,20,100)\ndf=pd.DataFrame({'hours':hours,'score':scores})\ndf['hour_bin']=pd.cut(df.hours,bins=[0,5,10,20,40,100],labels=['0-5','5-10','10-20','20-40','40+'])\ngrouped=df.groupby('hour_bin').score.agg(['mean','std','count']).round(2)\nprint(grouped)\n\nslope,intercept=np.polyfit(df.hours,df.score,1)\nresid=df.score-(slope*df.hours+intercept)\n\nfig,axes=plt.subplots(1,2,figsize=(12,5))\ngrouped['mean'].plot(kind='bar',yerr=grouped['std'],ax=axes[0],capsize=5,color='#DD8452')\naxes[0].set_title('Score by Hours Bin');axes[0].grid(True,alpha=0.3,axis='y')\naxes[1].scatter(df.hours,resid,alpha=0.3,s=15,color='#55A868')\naxes[1].axhline(0,color='red',linestyle='--')\naxes[1].set_title('Residuals')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "计算相关系数",
+          "question": "计算两列数据 Pearson 相关系数。",
+          "starterCode": "import numpy as np\\nx=np.array([1,2,3,4,5])\\ny=np.array([2,3,5,4,6])",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "相关系数约 0.72，学习时长与成绩正相关较强",
+        "每增加 10 小时平均成绩约提升 18 分",
+        "投入超过 40 小时后成绩边际递减",
+        "低学习时长用户(<5 小时)学生成绩集中在低分段"
+      ],
+      "deliverables": [
+        "散点图",
+        "线性回归拟合图",
+        "分组柱状图（含误差线）"
+      ]
+    },
+    {
+      "projectId": "proj06",
+      "title": "付费转化漏斗",
+      "subtitle": "从浏览到完课的转化分析",
+      "difficulty": "初级",
+      "duration": "2.5 小时",
+      "tags": [
+        "Pandas",
+        "漏斗图",
+        "转化率",
+        "分组分析"
+      ],
+      "businessGoal": "量化付费转化关键节点转化率，识别流失最大环节，优化路径与客单价。",
+      "background": "平台 2000 用户进入课程页面，最终完课率仅 22%。运营希望了解每个转化漏斗各节点的流失率。",
+      "dataPlan": "模拟 2000 用户×5 阶段+来源+年龄+金额数据。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "整体漏斗",
+          "description": "5 阶段漏斗图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(5)\nstages=['Browse','Preview','AddCart','Payment','Complete']\nrates=[1.0,0.55,0.35,0.28,0.22]\nN=2000\ndata=[]\nfor i in range(N):\n    r=np.random.rand()\n    reached=sum(r<np.array(rates[::-1]))\n    idx=len(stages)-1-reached if reached>0 else 0\n    data.append({'user':f'U{i:05d}','stage':stages[idx],'amount':np.random.choice([99,199,299,499,999])})\ndf=pd.DataFrame(data)\ncounts=df.stage.value_counts().reindex(stages)\nprint(counts)\nfor i in range(len(stages)-1):\n    print(f'{stages[i]}->{stages[i+1]}: {counts.iloc[i+1]/counts.iloc[i]:.2%}')\n\nfig,ax=plt.subplots(figsize=(9,5))\nws=np.linspace(0.9,0.3,len(stages))\ncolors=plt.cm.RdYlGn(np.linspace(0.3,0.9,len(stages)))\nfor i,(s,c,w) in enumerate(zip(stages,counts.values,ws)):\n    ax.bar(i,c,width=w,color=colors[i],label=s)\n    ax.text(i,c+30,str(c),ha='center')\nax.set_xticks(range(len(stages)));ax.set_xticklabels(stages)\nax.set_title('Payment Conversion Funnel')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "按来源分组",
+          "description": "不同渠道转化率曲线",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(5)\nstages=['Browse','Preview','AddCart','Payment','Complete']\nsources=['organic','paid','social','referral']\nsource_rates={'organic':[1.0,0.55,0.32,0.25,0.20],'paid':[1.0,0.60,0.40,0.32,0.25],\n              'social':[1.0,0.45,0.28,0.22,0.17],'referral':[1.0,0.65,0.48,0.40,0.33]}\nrows=[]\nfor src in sources:\n    rates=source_rates[src]\n    for _ in range(500):\n        r=np.random.rand()\n        reached=sum(r<np.array(rates[::-1]))\n        idx=len(stages)-1-reached if reached>0 else 0\n        rows.append({'source':src,'stage':stages[idx]})\ndf=pd.DataFrame(rows)\npivot=pd.crosstab(df.source,df.stage,normalize='index')\nprint(pivot.round(3))\n\nfig,ax=plt.subplots(figsize=(10,6))\nfor src in sources:\n    ax.plot(stages,[pivot.loc[src,s] for s in stages],'o-',label=src,lw=2)\nax.set_title('Conversion by Source')\nax.set_ylabel('Rate');ax.legend()\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "按年龄金额",
+          "description": "年龄组金额分析",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(3)\nN=2000\ndf=pd.DataFrame({\n    'stage':np.random.choice(['Browse','Preview','AddCart','Payment','Complete'],N,p=[0.45,0.25,0.12,0.10,0.08]),\n    'price':np.random.choice([99,199,299,499,999],N),\n    'age_group':np.random.choice(['18-24','25-34','35-44','45+'],N)})\nmask=df.stage.isin(['Payment','Complete'])\ndf.loc[mask,'price']=np.random.choice([299,499,999],mask.sum())\n\npaid=df[df.stage=='Payment']\nprint('Avg paid by age:')\nprint(paid.groupby('age_group').price.mean().round(2))\n\nfig,axes=plt.subplots(1,2,figsize=(12,5))\npaid.groupby('age_group').price.mean().plot(kind='bar',ax=axes[0],color='#DD8452')\naxes[0].set_title('Avg Paid by Age')\npivot2=pd.crosstab(df.age_group,df.stage,normalize='index')\npivot2.plot(kind='bar',stacked=True,ax=axes[1],colormap='Set2')\naxes[1].set_title('Stage Distribution');axes[1].legend(bbox_to_anchor=(1.05,1),loc='upper left')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "计算转化率",
+          "question": "给定各阶段用户数，计算每阶段转化率。",
+          "starterCode": "import pandas as pd\\ncounts=pd.Series([2000,1100,700,560,440])",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "浏览->预览转化率仅 55%，课程介绍页吸引力偏弱",
+        "加购->支付是最大流失点，支付流程优化重点",
+        "推荐渠道完课率 33%，远高于其他渠道",
+        "25-34 岁组客单价最高"
+      ],
+      "deliverables": [
+        "整体漏斗图",
+        "渠道转化率对比图",
+        "年龄-金额分析图"
+      ]
+    },
+    {
+      "projectId": "proj07",
+      "title": "课程关联规则",
+      "subtitle": "挖掘课程组合购买模式",
+      "difficulty": "高级",
+      "duration": "3 小时",
+      "tags": [
+        "关联规则",
+        "Apriori",
+        "support",
+        "lift"
+      ],
+      "businessGoal": "挖掘课程组合购买模式，识别高频组合与推荐系统。",
+      "background": "平台提供 8 门课程共 2500+ 购买记录。通过简化 Apriori 算法，识别强关联课程组合用于交叉销售推荐。",
+      "dataPlan": "模拟 2500+ 购买记录，8 门课程，baskets 列表集合。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "课程热度",
+          "description": "单课程支持度",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfrom collections import Counter\nfrom itertools import combinations\n\nnp.random.seed(42)\ncourses=['Python基础','数据分析','可视化','机器学习','深度学习','SQL','Excel','统计学']\nbaskets=[]\nfor _ in range(1500):\n    n=np.random.randint(1,5)\n    picks=np.random.choice(courses,size=n,replace=False)\n    baskets.append(set(picks))\nfor _ in range(500): baskets.append({'Python基础','数据分析'})\nfor _ in range(300): baskets.append({'SQL','Excel'})\nfor _ in range(200): baskets.append({'数据分析','统计学','Python基础'})\nfor _ in range(150): baskets.append({'机器学习','深度学习','Python基础'})\n\nc1=Counter()\nfor b in baskets:\n    for item in b: c1[item]+=1\ntotal=len(baskets)\nprint(f'Total:{total}')\nfor item,cnt in c1.most_common():\n    print(f'  {item}:{cnt}({cnt/total:.2%})')\n\nfig,ax=plt.subplots(figsize=(10,6))\nitems,counts=zip(*c1.most_common())\nax.barh(items,counts,color='#4C72B0')\nax.set_title('Course Popularity')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "Apriori 置信度",
+          "description": "简化 Apriori 置信度热力图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfrom collections import Counter\nfrom itertools import combinations\n\nnp.random.seed(42)\ncourses=['Py','DA','Vis','ML','DL','SQL','Excel','Stats']\nbaskets=[]\nfor _ in range(1500):\n    n=np.random.randint(1,5)\n    picks=np.random.choice(courses,size=n,replace=False)\n    baskets.append(set(picks))\nfor _ in range(500): baskets.append({'Py','DA'})\nfor _ in range(300): baskets.append({'SQL','Excel'})\nfor _ in range(200): baskets.append({'DA','Stats','Py'})\nfor _ in range(150): baskets.append({'ML','DL','Py'})\n\nc_single=Counter()\nc_pair=Counter()\nfor b in baskets:\n    items=list(b)\n    for i in items: c_single[i]+=1\n    for a,b_ in combinations(sorted(items),2): c_pair[(a,b_)]+=1\ntotal=len(baskets)\nrules=[]\nfor (a,b_),cnt in c_pair.items():\n    conf=cnt/c_single[a]\n    rules.append((a,b_,cnt/total,conf))\n    rules.append((b_,a,cnt/total,cnt/c_single[b_]))\nrules.sort(key=lambda x:-x[3])\nprint('Top rules:')\nfor a,b_,s,c in rules[:12]:\n    print(f'  {a}->{b_}: sup={s:.3f} conf={c:.3f}')\n\nitems=sorted(c_single.keys())\nn=len(items)\nmat=np.zeros((n,n))\nfor (a,b_),cnt in c_pair.items():\n    i,j=items.index(a),items.index(b_)\n    mat[i,j]=cnt/c_single[a];mat[j,i]=cnt/c_single[b_]\n\nfig,ax=plt.subplots(figsize=(8,6))\nim=ax.imshow(mat,cmap='YlOrRd')\nax.set_xticks(range(n));ax.set_xticklabels(items,rotation=45)\nax.set_yticks(range(n));ax.set_yticklabels(items)\nfor i in range(n):\n    for j in range(n):\n        ax.text(j,i,f'{mat[i,j]:.2f}',ha='center',va='center',fontsize=8,color='white' if mat[i,j]<0.5 else 'black')\nplt.colorbar(im)\nax.set_title('Confidence Matrix')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "lift 矩阵",
+          "description": "lift 提升度矩阵",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfrom collections import Counter\nfrom itertools import combinations\n\nnp.random.seed(42)\ncourses=['Py','DA','Vis','ML','DL','SQL','Excel','Stats']\nbaskets=[]\nfor _ in range(1500):\n    n=np.random.randint(1,5)\n    picks=np.random.choice(courses,size=n,replace=False)\n    baskets.append(set(picks))\nfor _ in range(500): baskets.append({'Py','DA'})\nfor _ in range(300): baskets.append({'SQL','Excel'})\nfor _ in range(200): baskets.append({'DA','Stats','Py'})\nfor _ in range(150): baskets.append({'ML','DL','Py'})\n\nc_single=Counter()\nc_pair=Counter()\nfor b in baskets:\n    items=list(b)\n    for i in items: c_single[i]+=1\n    for a,b_ in combinations(sorted(items),2): c_pair[(a,b_)]+=1\ntotal=len(baskets)\nlifts=[]\nfor (a,b_),cnt in c_pair.items():\n    s_ab=cnt/total; s_a=c_single[a]/total; s_b=c_single[b_]/total\n    lifts.append((a,b_,s_ab,s_ab/(s_a*s_b)))\nlifts.sort(key=lambda x:-x[3])\nprint('Top by lift:')\nfor a,b_,s,l in lifts[:10]:\n    print(f'  {a}&{b_}: sup={s:.3f} lift={l:.2f}')\n\nitems=sorted(c_single.keys())\nn=len(items)\nlm=np.ones((n,n))\nfor (a,b_),cnt in c_pair.items():\n    i,j=items.index(a),items.index(b_)\n    v=(cnt/total)/((c_single[a]/total)*(c_single[b_]/total))\n    lm[i,j]=v;lm[j,i]=v\n\nfig,ax=plt.subplots(figsize=(8,6))\nim=ax.imshow(lm,cmap='viridis')\nax.set_xticks(range(n));ax.set_xticklabels(items,rotation=45)\nax.set_yticks(range(n));ax.set_yticklabels(items)\nfor i in range(n):\n    for j in range(n):\n        ax.text(j,i,f'{lm[i,j]:.1f}',ha='center',va='center',fontsize=7,color='white')\nplt.colorbar(im)\nax.set_title('Lift Matrix')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "support 计算",
+          "question": "计算给定 baskets 中某个课程组合的 support。",
+          "starterCode": "baskets=[{'A','B'},{'A'},{'A','B','C'}]\\ntarget={'A','B'}",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "Python基础->数据分析 置信度 72%，是最强关联",
+        "SQL&Excel lift>3，购买 SQL 的用户 80% 同时买 Excel",
+        "机器学习->深度学习 置信度高",
+        "推荐策略：购买 Python 基础同时推荐数据分析与统计学组合"
+      ],
+      "deliverables": [
+        "课程热度柱状图",
+        "置信度热力图",
+        "lift 矩阵热力图"
+      ]
+    },
+    {
+      "projectId": "proj08",
+      "title": "每日访问量时间序列预测",
+      "subtitle": "滑动窗口与移动平均预测",
+      "difficulty": "中级",
+      "duration": "2.5 小时",
+      "tags": [
+        "时间序列",
+        "移动平均",
+        "指数平滑",
+        "预测"
+      ],
+      "businessGoal": "分析历史访问量的趋势与周期性，建立简单移动平均与指数平滑模型预测未来 7 日访问量。",
+      "background": "过去 90 天访问量存在整体增长趋势和明显周度周期与月度周期。使用移动平均平滑噪声并预测未来访问量，辅助资源与运营规划。",
+      "dataPlan": "模拟 90 天访问量（含趋势+周度+月度周期+噪声）。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "访问量时序",
+          "description": "每日访问量时间序列图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nDAYS=90\ntrend=np.linspace(100,200,DAYS)\nweekly=20*np.sin(np.arange(DAYS)*2*np.pi/7)\nseasonal=30*np.sin(np.arange(DAYS)*2*np.pi/30)\nnoise=np.random.randn(DAYS)*10\nvisits=(trend+weekly+seasonal+noise).astype(int)\ndf=pd.DataFrame({'day':range(DAYS),'visits':visits})\nprint(df.head())\nprint(df.visits.describe().round(1))\n\nfig,ax=plt.subplots(figsize=(11,5))\nax.plot(df.day,df.visits,'b-',label='Daily')\nax.set_title('Daily Visits Time Series')\nax.legend();ax.grid(True,alpha=0.3)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "移动平均",
+          "description": "MA-7/MA-30 双均线",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nDAYS=90\ntrend=np.linspace(100,200,DAYS)\nweekly=20*np.sin(np.arange(DAYS)*2*np.pi/7)\nseasonal=30*np.sin(np.arange(DAYS)*2*np.pi/30)\nvisits=(trend+weekly+seasonal+np.random.randn(DAYS)*10).astype(int)\n\ndf=pd.DataFrame({'visits':visits})\ndf['ma7']=df.visits.rolling(7).mean()\ndf['ma30']=df.visits.rolling(30).mean()\nprint(df.tail(10).round(1))\n\nfig,ax=plt.subplots(figsize=(11,6))\nax.plot(df.index,df.visits,'b-',alpha=0.5,label='Daily')\nax.plot(df.index,df.ma7,'r-',lw=2,label='MA-7')\nax.plot(df.index,df.ma30,'g-',lw=2,label='MA-30')\nax.set_title('Moving Averages')\nax.legend();ax.grid(True,alpha=0.3)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "指数平滑预测",
+          "description": "SES 指数平滑+未来 7 日预测",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nDAYS=90\ntrend=np.linspace(100,200,DAYS)\nweekly=20*np.sin(np.arange(DAYS)*2*np.pi/7)\nseasonal=30*np.sin(np.arange(DAYS)*2*np.pi/30)\nvisits=(trend+weekly+seasonal+np.random.randn(DAYS)*10).astype(int)\n\nalpha=0.3\nses=[visits[0]]\nfor v in visits[1:]: ses.append(alpha*v+(1-alpha)*ses[-1])\nhorizon=7\nfuture=[ses[-1]]*horizon\nfull_v=list(visits)+[None]*horizon\nfull_s=ses+future\n\nmape=np.mean(np.abs((visits[7:]-np.array(ses[7:]))/visits[7:]))*100\nprint(f'MAPE={mape:.2f}%')\n\nfig,ax=plt.subplots(figsize=(11,6))\nax.plot(range(DAYS),visits,'b-',alpha=0.5,label='Actual')\nax.plot(range(DAYS+horizon),full_s,'r--',lw=2,label=f'SES(alpha={alpha})+forecast')\nax.axvline(DAYS-1,color='gray',linestyle=':',label='Forecast start')\nax.set_title('Exponential Smoothing Forecast')\nax.legend();ax.grid(True,alpha=0.3)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "MA 计算",
+          "question": "对给定序列计算窗口为 5 的移动平均。",
+          "starterCode": "import pandas as pd\\ns=pd.Series([10,12,14,11,13,15,16])",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "整体呈持续上升趋势（100->200）",
+        "存在明显周度周期（周末访问量下降）",
+        "MA-7 能有效平滑周度波动，MA-30 揭示长期趋势",
+        "指数平滑 MAPE 约 5-8%，适合短期预测"
+      ],
+      "deliverables": [
+        "时间序列折线图",
+        "双均线叠加图",
+        "指数平滑+预测图"
+      ]
+    },
+    {
+      "projectId": "proj09",
+      "title": "教师授课质量多维评分",
+      "subtitle": "标准化+加权+雷达图",
+      "difficulty": "中级",
+      "duration": "2.5 小时",
+      "tags": [
+        "标准化",
+        "加权评分",
+        "雷达图",
+        "多维分析"
+      ],
+      "businessGoal": "从 6 个维度评估教师授课质量，使用 z-score 标准化消除量纲差异，加权综合评分并识别短板维度。",
+      "background": "平台收集 10 位教师在 6 个维度的评分数据。由于不同维度评分分布不同，需先标准化后加权得到综合评分，并通过雷达图识别每位教师的强弱点。",
+      "dataPlan": "模拟 10 位教师×6 维度评分矩阵（60-100 分）。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "原始评分堆叠",
+          "description": "各维度堆叠条形图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nteachers=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10']\ndimensions=['Clarity','Knowledge','Engagement','Pacing','Feedback','Responsiveness']\ndata=np.random.randint(60,100,(len(teachers),len(dimensions)))\ndf=pd.DataFrame(data,index=teachers,columns=dimensions)\ndf['total']=df.mean(axis=1)\nprint(df.sort_values('total',ascending=False).round(2))\n\nfig,ax=plt.subplots(figsize=(11,6))\ndf_sorted=df.sort_values('total')\ndf_sorted.drop(columns=['total']).plot(kind='barh',stacked=True,ax=ax,colormap='tab10')\nax.set_title('Teacher Scores by Dimension')\nax.set_xlabel('Score')\nax.legend(bbox_to_anchor=(1.05,1),loc='upper left')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "标准化加权排名",
+          "description": "z-score 加权综合评分排名",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nteachers=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10']\ndims=['Clarity','Knowledge','Engagement','Pacing','Feedback','Responsiveness']\ndata=np.random.randint(60,100,(len(teachers),len(dims)))\ndf=pd.DataFrame(data,index=teachers,columns=dims)\n\n# standardize: (x-mean)/std per dimension\nz=(df-df.mean())/df.std()\nweights=[0.25,0.20,0.15,0.15,0.15,0.10]\nz['weighted_score']=(z*weights).sum(axis=1)\nz_sorted=z.sort_values('weighted_score',ascending=False)\nprint('Ranked by weighted z-score:')\nprint(z_sorted.round(3))\n\nfig,ax=plt.subplots(figsize=(10,6))\nz_sorted.weighted_score.plot(kind='bar',color=plt.cm.RdYlGn(np.linspace(0.2,0.8,len(teachers))),ax=ax)\nax.set_title('Teachers Ranked by Weighted Score')\nax.axhline(0,color='black',linewidth=0.5)\nax.set_ylabel('Weighted z-score')\nplt.xticks(rotation=0)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "雷达图对比",
+          "description": "Top/Bottom 教师雷达图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nteachers=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10']\ndims=['Clarity','Knowledge','Engagement','Pacing','Feedback','Responsiveness']\ndata=np.random.randint(60,100,(len(teachers),len(dims)))\ndf=pd.DataFrame(data,index=teachers,columns=dims)\nangles=np.linspace(0,2*np.pi,len(dims),endpoint=False).tolist()\n\n# pick top 3 and bottom 1 teachers for comparison\nweights=[0.25,0.20,0.15,0.15,0.15,0.10]\nranked=((df-df.mean())/df.std()*weights).sum(axis=1).sort_values(ascending=False)\npicks=[ranked.index[0],ranked.index[1],ranked.index[-1]]\n\nfig,ax=plt.subplots(figsize=(9,9),subplot_kw={'polar':True})\nfor t in picks:\n    values=df.loc[t].tolist()+[df.loc[t].iloc[0]]\n    a=angles+[angles[0]]\n    ax.plot(a,values,'o-',linewidth=2,label=t)\n    ax.fill(a,values,alpha=0.15)\nax.set_xticks(angles)\nax.set_xticklabels(dims)\nax.set_ylim(50,100)\nax.set_title('Teacher Quality Radar')\nax.legend(loc='upper right',bbox_to_anchor=(1.3,1.1))\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "z-score 标准化",
+          "question": "对每行数据进行 z-score 标准化（(x-mean)/std）。",
+          "starterCode": "import pandas as pd\\ndf=pd.DataFrame({'A':[1,2,3],'B':[10,20,30]})",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "知识水平维度整体评分最高，互动性维度评分最低",
+        "顶尖教师在清晰度与反馈响应两个维度表现突出",
+        "排名靠后的教师主要短板在节奏控制与互动性",
+        "建议为低评分教师组织互动教学方法培训"
+      ],
+      "deliverables": [
+        "原始堆叠条形图",
+        "加权综合排名图",
+        "教师质量雷达图"
+      ]
+    },
+    {
+      "projectId": "proj10",
+      "title": "用户画像与精准运营",
+      "subtitle": "多维度聚合+饼图/柱状图",
+      "difficulty": "初级",
+      "duration": "2.5 小时",
+      "tags": [
+        "用户画像",
+        "交叉分析",
+        "分组聚合",
+        "运营策略"
+      ],
+      "businessGoal": "从年龄、城市、性别等维度建立用户画像，识别高价值人群，支持差异化运营策略。",
+      "background": "平台 3000 名用户，运营团队希望通过用户画像理解不同人群的学习与付费行为差异，为不同群体设计个性化运营策略。",
+      "dataPlan": "模拟 3000 用户画像数据（年龄组/性别/城市层级/学习时长/付费金额/课程数）。",
+      "codeBlocks": [
+        {
+          "blockId": "b1",
+          "title": "人口统计分布",
+          "description": "年龄/城市/性别分布饼图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nN=3000\ndf=pd.DataFrame({\n    'user_id':[f'U{i:05d}' for i in range(N)],\n    'age_group':np.random.choice(['18-24','25-34','35-44','45+'],N,p=[0.3,0.35,0.25,0.10]),\n    'gender':np.random.choice(['M','F','O'],N,p=[0.45,0.50,0.05]),\n    'city_tier':np.random.choice(['T1','T2','T3+'],N,p=[0.3,0.4,0.3]),\n    'learning_h':np.random.exponential(8,N).round(1),\n    'paid_amount':np.random.choice([0,99,199,299,499,999],N,p=[0.55,0.15,0.12,0.10,0.06,0.02]),\n    'courses_count':np.random.poisson(2,N)})\ndf['is_paid']=(df.paid_amount>0).astype(int)\n\nprint('=== Demographics ===')\nprint(df.age_group.value_counts(normalize=True).round(3))\nprint(df.gender.value_counts(normalize=True).round(3))\nprint(df.city_tier.value_counts(normalize=True).round(3))\nprint(f'Paid ratio:{df.is_paid.mean():.2%}')\n\nfig,axes=plt.subplots(2,2,figsize=(12,10))\ndf.age_group.value_counts().plot(kind='pie',ax=axes[0,0],autopct='%1.0f%%',startangle=90)\naxes[0,0].set_title('Age Distribution');axes[0,0].set_ylabel('')\ndf.city_tier.value_counts().plot(kind='pie',ax=axes[0,1],autopct='%1.0f%%',startangle=90)\naxes[0,1].set_title('City Tier');axes[0,1].set_ylabel('')\ndf.groupby('age_group').paid_amount.mean().plot(kind='bar',ax=axes[1,0],color='#4C72B0')\naxes[1,0].set_title('Avg Paid by Age')\ndf.groupby('city_tier').is_paid.mean().plot(kind='bar',ax=axes[1,1],color='#55A868')\naxes[1,1].set_title('Paid Ratio by City Tier')\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b2",
+          "title": "年龄x城市交叉分析",
+          "description": "双维度交叉分组柱状图",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nN=3000\ndf=pd.DataFrame({\n    'age_group':np.random.choice(['18-24','25-34','35-44','45+'],N,p=[0.3,0.35,0.25,0.10]),\n    'city_tier':np.random.choice(['T1','T2','T3+'],N,p=[0.3,0.4,0.3]),\n    'learning_h':np.random.exponential(8,N).round(1),\n    'paid_amount':np.random.choice([0,99,199,299,499,999],N,p=[0.55,0.15,0.12,0.10,0.06,0.02]),\n    'courses_count':np.random.poisson(2,N)})\ndf['is_paid']=(df.paid_amount>0).astype(int)\n\npivot1=df.pivot_table(index='age_group',columns='city_tier',values='is_paid',aggfunc='mean')\npivot2=df.pivot_table(index='age_group',columns='city_tier',values='paid_amount',aggfunc='mean')\nprint('Paid ratio by age x city:')\nprint(pivot1.round(3))\nprint('Avg paid by age x city:')\nprint(pivot2.round(1))\n\nfig,axes=plt.subplots(1,2,figsize=(12,5))\npivot1.plot(kind='bar',ax=axes[0],colormap='Set2')\naxes[0].set_title('Paid Ratio by Age x City')\naxes[0].legend(title='City',loc='upper right')\naxes[0].tick_params(axis='x',rotation=0)\npivot2.plot(kind='bar',ax=axes[1],colormap='Set2')\naxes[1].set_title('Avg Paid Amount by Age x City')\naxes[1].legend(title='City',loc='upper right')\naxes[1].tick_params(axis='x',rotation=0)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        },
+        {
+          "blockId": "b3",
+          "title": "用户画像分群",
+          "description": "4 类 persona 画像对比",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\n\nnp.random.seed(7)\nN=3000\ndf=pd.DataFrame({\n    'age_group':np.random.choice(['18-24','25-34','35-44','45+'],N,p=[0.3,0.35,0.25,0.10]),\n    'gender':np.random.choice(['M','F','O'],N,p=[0.45,0.50,0.05]),\n    'city_tier':np.random.choice(['T1','T2','T3+'],N,p=[0.3,0.4,0.3]),\n    'learning_h':np.random.exponential(8,N).round(1),\n    'paid_amount':np.random.choice([0,99,199,299,499,999],N,p=[0.55,0.15,0.12,0.10,0.06,0.02]),\n    'courses_count':np.random.poisson(2,N)})\ndf['is_paid']=(df.paid_amount>0).astype(int)\n\n# Persona segments: 2x2 (age_group simplified + city simplified)\ndef persona(row):\n    age='Young' if row.age_group in ['18-24','25-34'] else 'Mature'\n    city='Tier1-2' if row.city_tier in ['T1','T2'] else 'Lower'\n    if age=='Young' and city=='Tier1-2': return 'Y1-Urban Young Professional'\n    if age=='Young' and city=='Lower': return 'Y2-Small City Aspirant'\n    if age=='Mature' and city=='Tier1-2': return 'M1-Urban Senior Learner'\n    return 'M2-Regional Professional'\ndf['persona']=df.apply(persona,axis=1)\n\nsummary=df.groupby('persona').agg(\n    users=('is_paid','count'),\n    paid_ratio=('is_paid','mean'),\n    avg_paid=('paid_amount','mean'),\n    avg_hours=('learning_h','mean'),\n    avg_courses=('courses_count','mean')).round(2)\nprint(summary.sort_values('paid_ratio',ascending=False))\n\nfig,axes=plt.subplots(1,3,figsize=(15,5))\nsummary.paid_ratio.plot(kind='bar',ax=axes[0],color='#4C72B0')\naxes[0].set_title('Paid Ratio by Persona');axes[0].tick_params(axis='x',rotation=45)\nsummary.avg_paid.plot(kind='bar',ax=axes[1],color='#DD8452')\naxes[1].set_title('Avg Paid by Persona');axes[1].tick_params(axis='x',rotation=45)\nsummary.avg_hours.plot(kind='bar',ax=axes[2],color='#55A868')\naxes[2].set_title('Avg Learning Hours');axes[2].tick_params(axis='x',rotation=45)\nplt.tight_layout()\nplt.savefig('output.png')\nplt.close()\n"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex01",
+          "title": "交叉分组",
+          "question": "对两列数据进行交叉分组计算均值。",
+          "starterCode": "import pandas as pd\\ndf=pd.DataFrame({'A':['x','y','x'],'B':[1,2,3]})",
+          "testCode": "assert True"
+        }
+      ],
+      "insights": [
+        "25-34 岁一线城市用户付费率最高（约 35%），平均客单价最高",
+        "一线城市用户占 30% 但贡献 45% 的付费金额",
+        "低线城市年轻用户付费意愿也较强，但客单价较低，适合推出入门级产品",
+        "45+ 岁群体学习时长最长但付费意愿最低，适合免费内容 + 品牌宣传"
+      ],
+      "deliverables": [
+        "年龄分布图",
+        "城市层级分布图",
+        "年龄x城市交叉柱状图",
+        "4 类 persona 对比图"
+      ]
+    }
+  ]
+}

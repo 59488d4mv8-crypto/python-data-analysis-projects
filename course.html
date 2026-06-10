@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>课程学习 · PyDataEdu</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">Py<span>Data</span>Edu</a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="course.html" class="active">课程</a>
+      <a href="quiz.html">测评</a>
+      <a href="profile.html">个人中心</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="container">
+  <div id="courseStatusBar" class="course-status-bar" style="display:none;">
+    <span>当前 <strong id="sbLevel">Lv. 1</strong></span>
+    <span>积分 <strong id="sbPoints">0</strong></span>
+    <span>章节完成 <strong id="sbChapters">0</strong></span>
+    <span>徽章 <strong id="sbBadges">0</strong></span>
+  </div>
+
+  <div class="course-layout">
+    <aside id="sidebar" class="sidebar">
+      <div id="sidebarContent" class="sidebar-content">加载课程目录中...</div>
+    </aside>
+
+    <section id="chapterContent" class="chapter-content">
+      <div class="placeholder-card">加载章节内容中...</div>
+    </section>
+  </div>
+</main>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <small>© 2026 PyDataEdu · Deployed on Cloudflare Pages</small>
+  </div>
+</footer>
+
+<script src="assets/js/achievements.js"></script>
+<script src="assets/js/pyodide-runner.js"></script>
+<script src="assets/js/code-editor.js"></script>
+<script src="assets/js/course-view.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // ====== Toast 通知 ======
+  var toastContainer = document.getElementById("toastContainer");
+
+  function showToast(type, title, message, duration) {
+    if (!toastContainer) return;
+    var toast = document.createElement("div");
+    toast.className = "toast toast-" + (type || "info");
+    var icon = "ℹ️";
+    if (type === "badge") icon = "🏆";
+    else if (type === "level") icon = "⭐";
+    else if (type === "success") icon = "✅";
+    else if (type === "error") icon = "⚠️";
+    toast.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:8px;">' +
+      '<span class="toast-icon">' + icon + "</span>" +
+      '<div style="flex:1;min-width:0;">' +
+      '<div class="toast-title">' + (title || "") + "</div>" +
+      (message ? '<div class="toast-message">' + message + "</div>" : "") +
+      "</div></div>";
+    toastContainer.appendChild(toast);
+    var dur = typeof duration === "number" ? duration : 4000;
+    setTimeout(function () {
+      toast.classList.add("fade-out");
+      setTimeout(function () {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 350);
+    }, dur);
+  }
+
+  // ====== 状态栏更新 ======
+  function renderStatus() {
+    var bar = document.getElementById("courseStatusBar");
+    if (!window.Achievements || !bar) return;
+    var A = window.Achievements;
+    var info = A.getLevelInfo();
+    var stats = A.getStats();
+    bar.style.display = "flex";
+    var lvl = document.getElementById("sbLevel");
+    if (lvl) lvl.textContent = "Lv. " + info.level;
+    var pts = document.getElementById("sbPoints");
+    if (pts) pts.textContent = info.points;
+    var chs = document.getElementById("sbChapters");
+    if (chs) chs.textContent = stats.chaptersCompleted;
+    var bgs = document.getElementById("sbBadges");
+    if (bgs) bgs.textContent = stats.totalBadges;
+  }
+
+  // ====== 事件订阅 ======
+  function subscribe() {
+    if (!window.Achievements) return;
+    var A = window.Achievements;
+    A.on("badgeUnlocked", function (payload) {
+      showToast("badge", "新徽章：" + payload.title, payload.description, 5000);
+      renderStatus();
+    });
+    A.on("levelUp", function (payload) {
+      showToast("level", "升级啦！Lv." + payload.level, "当前积分 " + payload.points, 4500);
+      renderStatus();
+    });
+    A.on("pointsChanged", function () { renderStatus(); });
+  }
+
+  // ====== 启动 ======
+  if (window.Achievements && typeof window.Achievements.startStudyTimer === "function") {
+    window.Achievements.startStudyTimer();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderStatus();
+    subscribe();
+    if (window.CourseView && typeof window.CourseView.init === "function") {
+      window.CourseView.init();
+    }
+  });
+})();
+</script>
+</body>
+</html>

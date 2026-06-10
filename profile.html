@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>学习中心 · PyDataEdu</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">Py<span>Data</span>Edu</a>
+    <nav class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="course.html">课程</a>
+      <a href="quiz.html">测评</a>
+      <a href="profile.html" class="active">学习中心</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="container">
+  <h1 style="margin-bottom: 6px;">学习中心</h1>
+  <p style="color: var(--text-soft); margin-top: 0; margin-bottom: 20px;">
+    追踪你的学习进度，积累积分与徽章。
+  </p>
+
+  <!-- 积分卡片 -->
+  <div class="points-card">
+    <div class="pc-header">
+      <div>
+        <span class="pc-level">当前等级</span>
+        <span class="pc-level-badge" id="levelBadge">Lv. 1</span>
+      </div>
+      <div class="pc-points">
+        <span id="pointsValue">0</span>
+        <small> 积分</small>
+      </div>
+    </div>
+    <div class="pc-progress-label">
+      <span id="progressLabel">距离下一级还需 100 积分</span>
+      <span id="progressPercent">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="levelProgress" style="width: 0%;"></div>
+    </div>
+  </div>
+
+  <!-- 徽章墙 -->
+  <h2 class="section-title">徽章墙</h2>
+  <div class="badge-grid" id="badgeGrid"></div>
+
+  <!-- 学习统计 -->
+  <h2 class="section-title">学习统计</h2>
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <!-- 数据管理 -->
+  <h2 class="section-title">数据管理</h2>
+  <div class="data-manage">
+    <h3>导入 / 导出你的学习数据</h3>
+    <p style="color: var(--text-soft); margin-top: 0; font-size: 0.9rem;">
+      数据保存在你的浏览器本地。你可以导出为 JSON 文件备份，或在另一台设备上导入继续。
+    </p>
+    <div class="action-row">
+      <button id="exportBtn" class="btn btn-primary">📤 导出学习数据 JSON</button>
+      <input type="file" id="importFile" accept=".json,application/json" class="file-input" />
+      <button id="importBtn" class="btn btn-ghost">📥 导入所选文件</button>
+    </div>
+    <div class="action-row">
+      <button id="resetBtn" class="btn btn-danger">🗑 重置所有数据</button>
+    </div>
+  </div>
+</main>
+
+<!-- Toast 容器 -->
+<div class="toast-container" id="toastContainer"></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <small>© 2026 PyDataEdu · Deployed on Cloudflare Pages</small>
+  </div>
+</footer>
+
+<script src="assets/js/achievements.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // ===== Toast 工具 =====
+  var toastContainer = document.getElementById("toastContainer");
+
+  function showToast(type, title, message, duration) {
+    if (!toastContainer) return;
+    var toast = document.createElement("div");
+    toast.className = "toast toast-" + (type || "info");
+    var icon = "ℹ️";
+    if (type === "badge") icon = "🏆";
+    else if (type === "level") icon = "⭐";
+    else if (type === "success") icon = "✅";
+    else if (type === "error") icon = "⚠️";
+    toast.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:8px;">' +
+      '<span class="toast-icon">' + icon + '</span>' +
+      '<div style="flex:1;min-width:0;">' +
+      '<div class="toast-title">' + (title || "") + '</div>' +
+      (message ? '<div class="toast-message">' + message + "</div>" : "") +
+      "</div></div>";
+    toastContainer.appendChild(toast);
+    var dur = typeof duration === "number" ? duration : 4000;
+    setTimeout(function () {
+      toast.classList.add("fade-out");
+      setTimeout(function () {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 350);
+    }, dur);
+  }
+
+  // ===== 渲染函数 =====
+  function fmtDate(iso) {
+    if (!iso) return "";
+    try {
+      var d = new Date(iso);
+      return (
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(d.getDate()).padStart(2, "0")
+      );
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function renderAll() {
+    if (!window.Achievements) return;
+    var A = window.Achievements;
+
+    // 积分卡片
+    var info = A.getLevelInfo();
+    var levelBadge = document.getElementById("levelBadge");
+    var pointsValue = document.getElementById("pointsValue");
+    var progressLabel = document.getElementById("progressLabel");
+    var progressPercent = document.getElementById("progressPercent");
+    var levelProgress = document.getElementById("levelProgress");
+
+    if (levelBadge) levelBadge.textContent = "Lv. " + info.level;
+    if (pointsValue) pointsValue.textContent = info.points;
+    if (info.nextThreshold) {
+      var remaining = info.nextThreshold - info.points;
+      var pct = Math.round(info.progressToNext * 100);
+      progressLabel.textContent =
+        "距离 Lv." + (info.level + 1) + " 还需 " + remaining + " 积分";
+      progressPercent.textContent = pct + "%";
+      levelProgress.style.width = pct + "%";
+    } else {
+      progressLabel.textContent = "已达最高等级 🎉";
+      progressPercent.textContent = "100%";
+      levelProgress.style.width = "100%";
+    }
+
+    // 徽章墙
+    var badgeGrid = document.getElementById("badgeGrid");
+    if (badgeGrid) {
+      var badges = A.getBadges();
+      badgeGrid.innerHTML = "";
+      badges.forEach(function (b) {
+        var el = document.createElement("div");
+        el.className = "badge-item " + (b.unlocked ? "unlocked" : "locked");
+        var dateText = b.unlocked && b.unlockedAt ? '<div class="badge-date">获得于 ' + fmtDate(b.unlockedAt) + "</div>" : '<div class="badge-date">未解锁</div>';
+        el.innerHTML =
+          '<div class="badge-icon">' +
+          b.icon +
+          "</div>" +
+          '<div class="badge-title">' +
+          b.title +
+          "</div>" +
+          dateText;
+        el.addEventListener("click", function () {
+          showToast(
+            b.unlocked ? "badge" : "info",
+            b.title,
+            b.description + (b.unlocked && b.unlockedAt ? "（" + fmtDate(b.unlockedAt) + " 获得）" : "（尚未解锁）")
+          );
+        });
+        badgeGrid.appendChild(el);
+      });
+    }
+
+    // 统计块
+    var statsGrid = document.getElementById("statsGrid");
+    if (statsGrid) {
+      var stats = A.getStats();
+      var totalHours = (stats.totalMinutes / 60).toFixed(1);
+      var items = [
+        { label: "学习天数", value: stats.studyDays, suffix: " 天" },
+        { label: "总学习时长", value: totalHours, suffix: " 小时" },
+        { label: "完成章节", value: stats.chaptersCompleted, suffix: " 章" },
+        {
+          label: "练习完美",
+          value: stats.exercisesPerfect,
+          suffix: " / " + stats.exercisesCompleted + " 题"
+        },
+        { label: "测评均分", value: stats.averageQuizScore, suffix: " 分" },
+        { label: "徽章", value: stats.totalBadges, suffix: " / 6" }
+      ];
+      statsGrid.innerHTML = "";
+      items.forEach(function (it) {
+        var block = document.createElement("div");
+        block.className = "stat-block";
+        block.innerHTML =
+          '<div class="sb-value">' + it.value + "<small>" + it.suffix + "</small></div>" +
+          '<div class="sb-label">' + it.label + "</div>";
+        statsGrid.appendChild(block);
+      });
+    }
+  }
+
+  // ===== 事件订阅 =====
+  function subscribeEvents() {
+    if (!window.Achievements) return;
+    var A = window.Achievements;
+
+    A.on("badgeUnlocked", function (payload) {
+      showToast("badge", "获得新徽章：" + payload.title, payload.description, 5000);
+      renderAll();
+    });
+
+    A.on("levelUp", function (payload) {
+      showToast("level", "升级啦！Lv." + payload.level, "当前积分 " + payload.points, 4500);
+      renderAll();
+    });
+
+    A.on("pointsChanged", function (payload) {
+      renderAll();
+    });
+
+    A.on("imported", function (payload) {
+      showToast(
+        "success",
+        "数据导入成功",
+        "当前积分 " + payload.points + "，等级 Lv." + payload.level + "（模式：" + payload.mode + "）",
+        4500
+      );
+      renderAll();
+    });
+  }
+
+  // ===== 数据管理功能 =====
+  function confirmDialog(message, onConfirm) {
+    if (window.confirm(message)) {
+      onConfirm();
+    }
+  }
+
+  function initDataManage() {
+    if (!window.Achievements) return;
+    var A = window.Achievements;
+
+    var exportBtn = document.getElementById("exportBtn");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", function () {
+        try {
+          var data = A.exportData();
+          var json = JSON.stringify(data, null, 2);
+          var blob = new Blob([json], { type: "application/json;charset=utf-8" });
+          var url = URL.createObjectURL(blob);
+          var d = new Date();
+          var fname =
+            "pydataedu-export-" +
+            d.getFullYear() +
+            String(d.getMonth() + 1).padStart(2, "0") +
+            String(d.getDate()).padStart(2, "0") +
+            ".json";
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = fname;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function () {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 100);
+          showToast("success", "导出成功", "文件名：" + fname, 3500);
+        } catch (e) {
+          showToast("error", "导出失败", String(e && e.message || e), 5000);
+        }
+      });
+    }
+
+    var importBtn = document.getElementById("importBtn");
+    var importFile = document.getElementById("importFile");
+    if (importBtn && importFile) {
+      importBtn.addEventListener("click", function () {
+        var file = importFile.files && importFile.files[0];
+        if (!file) {
+          showToast("error", "请先选择文件", "点击 \"选择文件\" 挑选一个 JSON 备份文件。", 4000);
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          try {
+            var data = JSON.parse(ev.target.result);
+            if (!data || typeof data !== "object") throw new Error("文件内容无效");
+
+            var curPoints = A.getPoints();
+            var curLevel = A.getLevel();
+            var incPoints = typeof data.points === "number" ? data.points : 0;
+            var incLevel = typeof data.level === "number" ? data.level : (incPoints >= 5000 ? 10 : (incPoints >= 3000 ? 9 : 1));
+
+            var preview =
+              "当前：" + curPoints + " 积分 / Lv." + curLevel + "\n" +
+              "导入文件：" + incPoints + " 积分 / Lv." + incLevel + "\n\n" +
+              '选择导入模式：\n- 点击"确定"=合并（取较大值并合并章节/徽章）\n- 点击"取消"后将询问是否覆盖\n\n（先点击确定以"合并"模式导入；若想覆盖，第二次再点覆盖）';
+
+            // 为了简洁：两次确认 —— 先问是否合并，再问是否覆盖
+            var msg =
+              "即将导入学习数据：\n\n" +
+              "当前：" + curPoints + " 积分 / Lv." + curLevel + "\n" +
+              "文件：" + incPoints + " 积分\n\n" +
+              "点击【确定】= 合并模式（保留两者较大值，合并章节与徽章）\n" +
+              "点击【取消】= 放弃本次导入";
+
+            if (window.confirm(msg)) {
+              var ok = A.importData(data, "merge");
+              if (!ok) showToast("error", "导入失败", "数据格式可能不正确。", 4500);
+            } else {
+              // 二次询问：是否覆盖
+              if (window.confirm("是否改用【覆盖模式】？\n\n这将用文件中的数据完全替换当前学习记录，且不可恢复。\n\n文件：" + incPoints + " 积分")) {
+                var ok2 = A.importData(data, "overwrite");
+                if (!ok2) showToast("error", "导入失败", "数据格式可能不正确。", 4500);
+              }
+            }
+          } catch (err) {
+            showToast("error", "解析失败", String(err && err.message || err), 5000);
+          } finally {
+            importFile.value = "";
+          }
+        };
+        reader.onerror = function () {
+          showToast("error", "读取文件失败", "请重试或检查文件是否损坏。", 5000);
+        };
+        reader.readAsText(file);
+      });
+    }
+
+    var resetBtn = document.getElementById("resetBtn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        if (
+          window.confirm(
+            "确定要重置所有学习数据吗？\n\n此操作将清空所有积分、徽章、学习记录，且不可恢复（除非你已导出备份）。"
+          )
+        ) {
+          if (window.confirm("再次确认：真的要清空吗？点击【确定】清空全部数据。")) {
+            A.reset();
+            renderAll();
+            showToast("success", "已重置", "所有学习数据已清空。", 3500);
+          }
+        }
+      });
+    }
+  }
+
+  // 启动学习时长计时器（仅当页面可见时累加分钟）
+  if (window.Achievements && typeof window.Achievements.startStudyTimer === "function") {
+    window.Achievements.startStudyTimer();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderAll();
+    subscribeEvents();
+    initDataManage();
+  });
+
+  // 如果 DOMContentLoaded 已触发，则立即渲染
+  if (document.readyState === "interactive" || document.readyState === "complete") {
+    renderAll();
+    subscribeEvents();
+    initDataManage();
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Python 商务数据分析 · 在线教育平台</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">Py<span>Data</span>Edu</a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">首页</a>
+      <a href="course.html">课程</a>
+      <a href="projects.html">实战项目</a>
+      <a href="quiz.html">测评</a>
+      <a href="profile.html">个人中心</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app" class="container">
+  <section class="hero">
+    <h1>在浏览器里跑 Python，用数据说话</h1>
+    <p class="lead">面向商务与金融场景的 Python 数据分析课程，无需本地环境，打开即可动手练习。</p>
+    <div class="cta">
+      <a href="course.html" class="btn btn-primary">开始学习</a>
+      <a href="quiz.html" class="btn btn-ghost">先测水平</a>
+    </div>
+  </section>
+
+  <!-- 学习进度卡片 -->
+  <section class="hero-progress-card" id="heroProgressCard">
+    <span class="hp-level" id="hpLevel">Lv. 1</span>
+    <div class="hp-meta">
+      <span class="hp-item">积分 <strong id="hpPoints">0</strong></span>
+      <span class="hp-item">完成章节 <strong id="hpChapters">0</strong></span>
+    </div>
+    <div class="hp-progress">
+      <div class="progress-bar-inline">
+        <div class="progress-fill" id="hpProgress" style="width: 0%;"></div>
+      </div>
+    </div>
+    <a href="profile.html" class="btn btn-ghost" style="margin-left:auto;">查看详情 →</a>
+  </section>
+
+  <section class="card-grid">
+    <article class="card">
+      <h3>Pandas 基础</h3>
+      <p>表格数据读入、清洗、聚合，掌握分析工作流。</p>
+    </article>
+    <article class="card">
+      <h3>可视化</h3>
+      <p>matplotlib / seaborn / plotly，把结果讲成故事。</p>
+    </article>
+    <article class="card">
+      <h3>商务案例</h3>
+      <p>销售漏斗、客户分群、营收预测实战。</p>
+    </article>
+  </section>
+
+  <a href="projects.html" class="hero-feature-card">
+    <span class="hfc-label">🔥 特色课程</span>
+    <h2>10 个 Python 商务数据分析实战项目</h2>
+    <p>从销售报表自动化、客户分群、库存周转分析到年度经营看板 —— 每个项目都包含业务目标、背景、数据方案、可运行代码示例与练习题，在浏览器内即可完成完整分析流程。</p>
+    <span class="hfc-cta">进入项目实战 →</span>
+  </a>
+</main>
+
+<!-- Toast 容器 -->
+<div class="toast-container" id="toastContainer"></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <small>© 2026 PyDataEdu · Deployed on Cloudflare Pages</small>
+  </div>
+</footer>
+
+<script src="assets/js/achievements.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var toastContainer = document.getElementById("toastContainer");
+
+  function showToast(type, title, message, duration) {
+    if (!toastContainer) return;
+    var toast = document.createElement("div");
+    toast.className = "toast toast-" + (type || "info");
+    var icon = "ℹ️";
+    if (type === "badge") icon = "🏆";
+    else if (type === "level") icon = "⭐";
+    else if (type === "success") icon = "✅";
+    else if (type === "error") icon = "⚠️";
+    toast.innerHTML =
+      '<div style="display:flex;align-items:flex-start;gap:8px;">' +
+      '<span class="toast-icon">' + icon + "</span>" +
+      '<div style="flex:1;min-width:0;">' +
+      '<div class="toast-title">' + (title || "") + "</div>" +
+      (message ? '<div class="toast-message">' + message + "</div>" : "") +
+      "</div></div>";
+    toastContainer.appendChild(toast);
+    var dur = typeof duration === "number" ? duration : 4000;
+    setTimeout(function () {
+      toast.classList.add("fade-out");
+      setTimeout(function () {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 350);
+    }, dur);
+  }
+
+  function renderHero() {
+    if (!window.Achievements) return;
+    var A = window.Achievements;
+    var card = document.getElementById("heroProgressCard");
+    if (!card) return;
+    var info = A.getLevelInfo();
+    var stats = A.getStats();
+    var hasData = info.points > 0 || stats.chaptersCompleted > 0 || stats.totalBadges > 0;
+    if (!hasData) {
+      card.style.display = "none";
+      return;
+    }
+    card.style.display = "flex";
+    var lvl = document.getElementById("hpLevel");
+    var pts = document.getElementById("hpPoints");
+    var chs = document.getElementById("hpChapters");
+    var pbar = document.getElementById("hpProgress");
+    if (lvl) lvl.textContent = "Lv. " + info.level;
+    if (pts) pts.textContent = info.points;
+    if (chs) chs.textContent = stats.chaptersCompleted;
+    var pct = Math.round(info.progressToNext * 100);
+    if (pbar) pbar.style.width = pct + "%";
+  }
+
+  function subscribeHero() {
+    if (!window.Achievements) return;
+    var A = window.Achievements;
+    A.on("badgeUnlocked", function (payload) {
+      renderHero();
+      showToast("badge", "获得新徽章：" + payload.title, payload.description, 5000);
+    });
+    A.on("levelUp", function (payload) {
+      renderHero();
+      showToast("level", "升级啦！Lv." + payload.level, "当前积分 " + payload.points, 4500);
+    });
+    A.on("pointsChanged", function () {
+      renderHero();
+    });
+    A.on("imported", function () {
+      renderHero();
+    });
+  }
+
+  if (window.Achievements && typeof window.Achievements.startStudyTimer === "function") {
+    window.Achievements.startStudyTimer();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderHero();
+    subscribeHero();
+  });
+
+  if (document.readyState === "interactive" || document.readyState === "complete") {
+    renderHero();
+    subscribeHero();
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "pydataedu-static",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Python 商务数据分析在线教育平台 · 纯静态站点",
+  "scripts": {
+    "dev": "http-server -p 8080 -c-1 -o",
+    "build": "echo 'Build OK: static site ready to deploy from project root or ./dist.'"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

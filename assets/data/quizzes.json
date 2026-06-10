@@ -1,0 +1,613 @@
+{
+  "meta": {
+    "version": "1.0.0"
+  },
+  "quizzes": [
+    {
+      "quizId": "q0101",
+      "unitId": "u01",
+      "title": "Python 基础单元测评",
+      "questions": [
+        {
+          "type": "choice",
+          "qid": "q1",
+          "prompt": "以下哪一项是 Python 合法变量名？",
+          "options": [
+            "user_name",
+            "123abc",
+            "total$",
+            "class-name"
+          ],
+          "correctIndex": 0,
+          "explanation": "变量名只能字母数字下划线，不能以数字开头，不能含特殊符号。"
+        },
+        {
+          "type": "choice",
+          "qid": "q2",
+          "prompt": "执行 x = [1,2,3]，x[-1] 的值是？",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "报错"
+          ],
+          "correctIndex": 2,
+          "explanation": "Python 列表支持负索引，-1 取最后元素。"
+        },
+        {
+          "type": "choice",
+          "qid": "q3",
+          "prompt": "字典 d = {'a':1}，d.get('b', 0) 返回？",
+          "options": [
+            "1",
+            "0",
+            "None",
+            "报错"
+          ],
+          "correctIndex": 1,
+          "explanation": "get() 方法在键不存在时返回默认值 0。"
+        },
+        {
+          "type": "choice",
+          "qid": "q4",
+          "prompt": "for i in range(3) 循环几次？",
+          "options": [
+            "2次",
+            "3次",
+            "4次",
+            "无限次"
+          ],
+          "correctIndex": 1,
+          "explanation": "range(3) 产生 0,1,2 三个值。"
+        },
+        {
+          "type": "choice",
+          "qid": "q5",
+          "prompt": "def f(a, b=10): return a+b，f(5) 返回？",
+          "options": [
+            "5",
+            "10",
+            "15",
+            "报错"
+          ],
+          "correctIndex": 2,
+          "explanation": "b=10 默认值，5+10=15。"
+        },
+        {
+          "type": "coding",
+          "qid": "c1",
+          "prompt": "编写函数 count_even(lst) 返回列表中偶数个数。例如 count_even([1,2,3,4,5,6]) 返回 3。",
+          "starterCode": "def count_even(lst):\n    # 在此编写代码\n    pass\n\nresult = count_even([1,2,3,4,5,6])\nprint(result)",
+          "testCode": "assert count_even([1,2,3,4,5,6])==3\nassert count_even([2,4,6,8,10])==5\nassert count_even([1,3,5])==0\nassert count_even([])==0",
+          "hints": [
+            "for x in lst 遍历",
+            "x % 2 == 0 判断偶数",
+            "初始化计数器 c=0",
+            "c += 1 累加"
+          ]
+        },
+        {
+          "type": "coding",
+          "qid": "c2",
+          "prompt": "编写函数 price_total(items) 接受字典 items 键商品名值单价返回总价。",
+          "starterCode": "def price_total(items):\n    # 在此编写代码\n    pass\n\nresult = price_total({'苹果':3, '香蕉':2})\nprint(result)",
+          "testCode": "assert price_total({'苹果':3,'香蕉':2})==5\nassert price_total({})==0\nassert price_total({'A':10,'B':20,'C':30})==60",
+          "hints": [
+            "items.values() 获取所有值",
+            "sum() 直接求和",
+            "或 for 循环累加"
+          ]
+        }
+      ],
+      "weakTags": [
+        "变量数据类型",
+        "列表与字典",
+        "函数与控制流"
+      ]
+    },
+    {
+      "quizId": "q0201",
+      "unitId": "u02",
+      "title": "NumPy 数值计算单元测评",
+      "questions": [
+        {
+          "type": "choice",
+          "qid": "q1",
+          "prompt": "np.array([1,2,3]) 的 shape 是？",
+          "options": [
+            "(3,)",
+            "(1,3)",
+            "(3,1)",
+            "(1,1,3)"
+          ],
+          "correctIndex": 0,
+          "explanation": "一维数组 shape 为 (n,)。"
+        },
+        {
+          "type": "choice",
+          "qid": "q2",
+          "prompt": "np.zeros((2,3)) 创建？",
+          "options": [
+            "2行3列全0",
+            "3行2列全0",
+            "2个元素一维",
+            "报错"
+          ],
+          "correctIndex": 0,
+          "explanation": "(2,3) 表示 2 行 3 列。"
+        },
+        {
+          "type": "choice",
+          "qid": "q3",
+          "prompt": "arr = np.array([[1,2,3],[4,5,6]])，arr[1,2] 的值？",
+          "options": [
+            "2",
+            "4",
+            "5",
+            "6"
+          ],
+          "correctIndex": 3,
+          "explanation": "arr[行,列]，第二行第三列是 6。"
+        },
+        {
+          "type": "choice",
+          "qid": "q4",
+          "prompt": "a=np.array([1,2]), b=np.array([10,20]), a+b 结果？",
+          "options": [
+            "[11,22]",
+            "[1,2,10,20]",
+            "报错",
+            "[10,40]"
+          ],
+          "correctIndex": 0,
+          "explanation": "NumPy 数组对应元素相加。"
+        },
+        {
+          "type": "choice",
+          "qid": "q5",
+          "prompt": "np.mean([1,2,3,4,5]) 返回？",
+          "options": [
+            "2",
+            "2.5",
+            "3",
+            "3.5"
+          ],
+          "correctIndex": 2,
+          "explanation": "(1+2+3+4+5)/5 = 3.0。"
+        },
+        {
+          "type": "coding",
+          "qid": "c1",
+          "prompt": "创建形状 (3,4) 的全 1 矩阵元素乘以 5，计算元素总和 total。",
+          "starterCode": "import numpy as np\narr = np.zeros((3,4))\n# 在此修改并计算\ntotal = 0\nprint(total)",
+          "testCode": "import numpy as np\nassert isinstance(arr, np.ndarray)\nassert arr.shape == (3,4)\nassert (arr == 5).all()\nassert total == 60",
+          "hints": [
+            "np.ones((3,4)) 创建全1",
+            "arr * 5 得全5矩阵",
+            "arr.sum() 求和",
+            "3*4*5=60"
+          ]
+        },
+        {
+          "type": "coding",
+          "qid": "c2",
+          "prompt": "生成 np.arange(1,13) 重塑为 (3,4)，计算每行均值 row_means。",
+          "starterCode": "import numpy as np\nmat = np.arange(1,13).reshape(3,4)\nrow_means = None\nprint(row_means)",
+          "testCode": "import numpy as np\nassert row_means.shape == (3,)\nassert abs(row_means[0] - 2.5) < 0.001\nassert abs(row_means[1] - 6.5) < 0.001\nassert abs(row_means[2] - 10.5) < 0.001",
+          "hints": [
+            "np.arange(1,13) 产生 1-12",
+            ".reshape(3,4) 重塑",
+            "row_means = mat.mean(axis=1)",
+            "axis=1 对每行计算均值"
+          ]
+        }
+      ],
+      "weakTags": [
+        "ndarray基础",
+        "索引与切片",
+        "数组运算与统计"
+      ]
+    },
+    {
+      "quizId": "q0301",
+      "unitId": "u03",
+      "title": "Pandas 基础单元测评",
+      "questions": [
+        {
+          "type": "choice",
+          "qid": "q1",
+          "prompt": "pd.DataFrame({'A':[1,2]}) 几行几列？",
+          "options": [
+            "1行1列",
+            "2行1列",
+            "1行2列",
+            "2行2列"
+          ],
+          "correctIndex": 1,
+          "explanation": "一个键对应一列，值列表长度决定行数。"
+        },
+        {
+          "type": "choice",
+          "qid": "q2",
+          "prompt": "df['销售额'].mean() 作用？",
+          "options": [
+            "所有列均值",
+            "销售额列均值",
+            "筛选销售额",
+            "排序销售额"
+          ],
+          "correctIndex": 1,
+          "explanation": "df['列名'] 选择该列后计算均值。"
+        },
+        {
+          "type": "choice",
+          "qid": "q3",
+          "prompt": "df[df['年龄']>30] 返回？",
+          "options": [
+            "年龄列>30的值",
+            "年龄>30的行",
+            "所有行",
+            "报错"
+          ],
+          "correctIndex": 1,
+          "explanation": "布尔索引筛选条件为真的行。"
+        },
+        {
+          "type": "choice",
+          "qid": "q4",
+          "prompt": "df.groupby('区域')['销售额'].sum() 作用？",
+          "options": [
+            "排序区域",
+            "按区域分组销售额总和",
+            "按销售额分组区域",
+            "报错"
+          ],
+          "correctIndex": 1,
+          "explanation": "按区域分组后对销售额求和。"
+        },
+        {
+          "type": "choice",
+          "qid": "q5",
+          "prompt": "df.describe() 作用？",
+          "options": [
+            "显示前5行",
+            "描述性统计摘要",
+            "列名",
+            "数据类型"
+          ],
+          "correctIndex": 1,
+          "explanation": "describe() 生成数值列的统计摘要。"
+        },
+        {
+          "type": "coding",
+          "qid": "c1",
+          "prompt": "创建 DataFrame：月份 ['1月','2月','3月'], 销售额 [100,150,200]。计算 total_sales 总和，avg_sales 均值。",
+          "starterCode": "import pandas as pd\ndf = pd.DataFrame({'月份': [], '销售额': []})\ntotal_sales = 0\navg_sales = 0\nprint(total_sales, avg_sales)",
+          "testCode": "import pandas as pd\nassert isinstance(df, pd.DataFrame)\nassert df.shape == (3, 2)\nassert total_sales == 450\nassert abs(avg_sales - 150) < 0.001",
+          "hints": [
+            "pd.DataFrame({'月份':['1月','2月','3月'],'销售额':[100,150,200]})",
+            "df['销售额'].sum()",
+            "df['销售额'].mean()"
+          ]
+        },
+        {
+          "type": "coding",
+          "qid": "c2",
+          "prompt": "基于上面的 df，筛选销售额 > 120 的行赋给 df_high，high_count 为数量，high_avg 均值。",
+          "starterCode": "import pandas as pd\ndf = pd.DataFrame({'月份':['1月','2月','3月'],'销售额':[100,150,200]})\ndf_high = None\nhigh_count = 0\nhigh_avg = 0\nprint(high_count, high_avg)",
+          "testCode": "import pandas as pd\nassert isinstance(df_high, pd.DataFrame)\nassert df_high.shape[0] == 2\nassert high_count == 2\nassert abs(high_avg - 175) < 0.001",
+          "hints": [
+            "df_high = df[df['销售额'] > 120]",
+            "len(df_high) 得数量",
+            "df_high['销售额'].mean() 得均值"
+          ]
+        }
+      ],
+      "weakTags": [
+        "DataFrame基础",
+        "读取CSV",
+        "选择与筛选",
+        "分组与聚合"
+      ]
+    },
+    {
+      "quizId": "q0401",
+      "unitId": "u04",
+      "title": "Matplotlib 可视化单元测评",
+      "questions": [
+        {
+          "type": "choice",
+          "qid": "q1",
+          "prompt": "plt.plot([1,2,3],[10,20,30]) 绘制？",
+          "options": [
+            "散点图",
+            "折线图",
+            "柱状图",
+            "饼图"
+          ],
+          "correctIndex": 1,
+          "explanation": "plot() 默认绘制折线图。"
+        },
+        {
+          "type": "choice",
+          "qid": "q2",
+          "prompt": "plt.subplots(2,2) 创建？",
+          "options": [
+            "2张图",
+            "2x2子图网格",
+            "2列2行",
+            "2个饼图"
+          ],
+          "correctIndex": 1,
+          "explanation": "plt.subplots(2,2) 创建 2 行 2 列子图。"
+        },
+        {
+          "type": "choice",
+          "qid": "q3",
+          "prompt": "设置图标题用？",
+          "options": [
+            "plt.title()",
+            "plt.xlabel()",
+            "plt.legend()",
+            "plt.grid()"
+          ],
+          "correctIndex": 0,
+          "explanation": "title() 设置图标题。"
+        },
+        {
+          "type": "choice",
+          "qid": "q4",
+          "prompt": "color='red' 作用？",
+          "options": [
+            "红色线条",
+            "设置线条红色",
+            "背景红色",
+            "字体红色"
+          ],
+          "correctIndex": 1,
+          "explanation": "color 参数设置图形颜色。"
+        },
+        {
+          "type": "choice",
+          "qid": "q5",
+          "prompt": "plt.tight_layout() 作用？",
+          "options": [
+            "关闭图",
+            "调整子图间距",
+            "保存图",
+            "显示网格"
+          ],
+          "correctIndex": 1,
+          "explanation": "tight_layout() 自动调整间距防重叠。"
+        },
+        {
+          "type": "coding",
+          "qid": "c1",
+          "prompt": "绘制月份销售折线图：x=[1,2,3,4], y=[100,150,130,200]。红色线条宽 2，标记 'o'，title='月度销售'。",
+          "starterCode": "import matplotlib.pyplot as plt\nx=[1,2,3,4]\ny=[100,150,130,200]\n# 在此绘制\nprint('图表生成完成')",
+          "testCode": "import matplotlib\nfig = plt.gcf()\naxes = fig.axes\nassert len(axes) > 0\nax = axes[0]\nlines = ax.get_lines()\nassert len(lines) > 0\nassert ax.get_title() == '月度销售'",
+          "hints": [
+            "plt.plot(x, y, color='red', marker='o', linewidth=2)",
+            "plt.title('月度销售')"
+          ]
+        },
+        {
+          "type": "coding",
+          "qid": "c2",
+          "prompt": "绘制柱状图：regions=['华东','华北','华南'], values=[300,250,400])。颜色 '#2563eb'，title='区域销售'，ylabel='销售额'。",
+          "starterCode": "import matplotlib.pyplot as plt\nregions=['华东','华北','华南']\nvalues=[300,250,400]\n# 在此绘制\nprint('图表生成完成')",
+          "testCode": "import matplotlib\nfig = plt.gcf()\naxes = fig.axes\nassert len(axes) > 0\nax = axes[0]\nassert ax.get_title() == '区域销售'\nassert ax.get_ylabel() == '销售额'",
+          "hints": [
+            "plt.bar(regions, values, color='#2563eb')",
+            "plt.title('区域销售')",
+            "plt.ylabel('销售额')"
+          ]
+        }
+      ],
+      "weakTags": [
+        "基础绘图",
+        "自定义样式",
+        "多图布局与常见图"
+      ]
+    },
+    {
+      "quizId": "q0501",
+      "unitId": "u05",
+      "title": "商务统计分析单元测评",
+      "questions": [
+        {
+          "type": "choice",
+          "qid": "q1",
+          "prompt": "中位数的意义？",
+          "options": [
+            "数据平均值",
+            "排序后中间值",
+            "最常见值",
+            "最大值减最小值"
+          ],
+          "correctIndex": 1,
+          "explanation": "中位数是排序后中间的数值。"
+        },
+        {
+          "type": "choice",
+          "qid": "q2",
+          "prompt": "np.median([3,1,2,4,5]) 返回？",
+          "options": [
+            "2",
+            "3.0",
+            "4",
+            "3"
+          ],
+          "correctIndex": 1,
+          "explanation": "排序后 [1,2,3,4,5]，中间值 3。"
+        },
+        {
+          "type": "choice",
+          "qid": "q3",
+          "prompt": "p值 < 0.05 表示？",
+          "options": [
+            "无显著差异",
+            "统计显著",
+            "数据错误",
+            "相关系数"
+          ],
+          "correctIndex": 1,
+          "explanation": "p<0.05 认为差异统计显著。"
+        },
+        {
+          "type": "choice",
+          "qid": "q4",
+          "prompt": "相关系数 r 的范围？",
+          "options": [
+            "[0,1]",
+            "[-1,1]",
+            "[0,100]",
+            "任意实数"
+          ],
+          "correctIndex": 1,
+          "explanation": "相关系数范围 [-1,1]。"
+        },
+        {
+          "type": "choice",
+          "qid": "q5",
+          "prompt": "np.corrcoef(x,y) 返回？",
+          "options": [
+            "均值",
+            "方差",
+            "相关系数矩阵",
+            "均值矩阵"
+          ],
+          "correctIndex": 2,
+          "explanation": "corrcoef 返回相关系数矩阵。"
+        },
+        {
+          "type": "coding",
+          "qid": "c1",
+          "prompt": "sales=[120,150,180,210,240,270,300]。计算 mean_val 均值，median_val 中位数，std_val 标准差。",
+          "starterCode": "import numpy as np\nsales=[120,150,180,210,240,270,300]\nmean_val = 0\nmedian_val = 0\nstd_val = 0\nprint(mean_val, median_val, std_val)",
+          "testCode": "import numpy as np\nassert abs(mean_val - 210) < 0.01\nassert abs(median_val - 210) < 0.01\nassert std_val > 60",
+          "hints": [
+            "np.mean(sales)",
+            "np.median(sales)",
+            "np.std(sales)"
+          ]
+        },
+        {
+          "type": "coding",
+          "qid": "c2",
+          "prompt": "x=np.array([1,2,3,4,5]), y=np.array([2,4,5,4,5])。计算 corr_val 相关系数。",
+          "starterCode": "import numpy as np\nx=np.array([1,2,3,4,5])\ny=np.array([2,4,5,4,5])\ncorr_val = 0\nprint(corr_val)",
+          "testCode": "import numpy as np\nassert -1 <= corr_val <= 1\nassert corr_val > 0.5",
+          "hints": [
+            "np.corrcoef(x, y)[0,1] 得相关系数",
+            "正相关时 r > 0"
+          ]
+        }
+      ],
+      "weakTags": [
+        "描述统计",
+        "假设检验",
+        "相关性与回归"
+      ]
+    },
+    {
+      "quizId": "q0601",
+      "unitId": "u06",
+      "title": "商业案例实战单元测评",
+      "questions": [
+        {
+          "type": "choice",
+          "qid": "q1",
+          "prompt": "RFM 模型中 R 代表？",
+          "options": [
+            "购买频次",
+            "最近购买",
+            "购买金额",
+            "客户编号"
+          ],
+          "correctIndex": 1,
+          "explanation": "R=Recency 最近购买时间。"
+        },
+        {
+          "type": "choice",
+          "qid": "q2",
+          "prompt": "ABC 分析中 A 类 SKU 贡献？",
+          "options": [
+            "数量最多",
+            "销售额约70%",
+            "利润最低",
+            "库存最少"
+          ],
+          "correctIndex": 1,
+          "explanation": "A 类贡献约 70% 销售额。"
+        },
+        {
+          "type": "choice",
+          "qid": "q3",
+          "prompt": "库存周转天数越低说明？",
+          "options": [
+            "库存积压严重",
+            "库存管理良好",
+            "缺货风险高",
+            "销售额低"
+          ],
+          "correctIndex": 1,
+          "explanation": "周转天数越低卖出越快管理良好。"
+        },
+        {
+          "type": "choice",
+          "qid": "q4",
+          "prompt": "df.sort_values('销售额', ascending=False) 作用？",
+          "options": [
+            "升序排序",
+            "降序排序",
+            "随机排序",
+            "不排序"
+          ],
+          "correctIndex": 1,
+          "explanation": "ascending=False 降序。"
+        },
+        {
+          "type": "choice",
+          "qid": "q5",
+          "prompt": "高价值客户通常？",
+          "options": [
+            "RFM总分高",
+            "RFM总分低",
+            "只看R",
+            "只看M"
+          ],
+          "correctIndex": 0,
+          "explanation": "RFM总分越高客户价值越高。"
+        },
+        {
+          "type": "coding",
+          "qid": "c1",
+          "prompt": "销售数据 DataFrame，区域 ['华东','华北','华南'], 销售额 [5000,4000,6000]。找出 top_region 最高销售额区域，total_sales 总和。",
+          "starterCode": "import pandas as pd\ndf = pd.DataFrame({'区域':['华东','华北','华南'],'销售额':[5000,4000,6000]})\ntop_region = ''\ntotal_sales = 0\nprint(top_region, total_sales)",
+          "testCode": "import pandas as pd\nassert top_region == '华南'\nassert total_sales == 15000",
+          "hints": [
+            "df.sort_values('销售额', ascending=False).iloc[0]['区域']",
+            "df['销售额'].sum()"
+          ]
+        },
+        {
+          "type": "coding",
+          "qid": "c2",
+          "prompt": "基于上面的 df，筛选销售额 >= 5000 的行存入 df_filtered，filtered_count 为数量。",
+          "starterCode": "import pandas as pd\ndf = pd.DataFrame({'区域':['华东','华北','华南'],'销售额':[5000,4000,6000]})\ndf_filtered = None\nfiltered_count = 0\nprint(filtered_count)",
+          "testCode": "import pandas as pd\nassert isinstance(df_filtered, pd.DataFrame)\nassert filtered_count == 2",
+          "hints": [
+            "df_filtered = df[df['销售额'] >= 5000]",
+            "filtered_count = len(df_filtered)"
+          ]
+        }
+      ],
+      "weakTags": [
+        "销售分析",
+        "客户分群",
+        "库存优化"
+      ]
+    }
+  ]
+}

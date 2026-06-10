@@ -1,0 +1,1197 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "course_title": "Python 商业数据分析入门课程",
+    "total_units": 6,
+    "description": "面向商务从业者的 Python 数据分析课程体系"
+  },
+  "courses": [
+    {
+      "courseId": "c01",
+      "title": "Python 商务数据分析入门",
+      "units": [
+        {
+          "unitId": "u01",
+          "title": "Python 基础",
+          "chapters": [
+            {
+              "chapter_id": "ch0101",
+              "title": "变量与数据类型",
+              "objectives": [
+                "掌握 print 与变量赋值",
+                "理解 int/float/str/bool 四种类型",
+                "学会类型转换"
+              ],
+              "content": "Python 是商务数据分析的主流语言。变量用于存储销售金额、产品名称等数据。本章从 print 函数开始介绍整数、浮点数、字符串、布尔值四种核心类型。",
+              "code_samples": [
+                {
+                  "id": "cs010101",
+                  "title": "print 与变量",
+                  "code": "print('Hello')\nprice=2999.99\nprint('单价:'+str(price))",
+                  "explanation": "print 输出内容。字符串拼接需要 str() 转换数字。"
+                },
+                {
+                  "id": "cs010102",
+                  "title": "类型转换",
+                  "code": "s='58000'\nnum=float(s)\nprint(num*1.1)",
+                  "explanation": "CSV 数据常为字符串，float/int/str 用于类型转换。"
+                },
+                {
+                  "id": "cs010103",
+                  "title": "算术运算",
+                  "code": "p,d,q=1599,0.2,230\nprint(p*(1-d)*q)",
+                  "explanation": "+-*/ 用于计算折扣与总销售额。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex010101",
+                  "prompt": "定义 name='张三' company='ABC科技' years=3 三个变量并打印拼接介绍。",
+                  "starterCode": "name=''\ncompany=''\nyears=0",
+                  "testCode": "assert isinstance(name,str) and len(name)>0\nassert isinstance(company,str) and len(company)>0\nassert isinstance(years,int) and years>=0",
+                  "hints": [
+                    "字符串用双引号",
+                    "拼接用 +，数字需 str() 转换"
+                  ],
+                  "referenceAnswer": "name='张三'\ncompany='ABC'\nyears=3\nprint(name+company+str(years))"
+                },
+                {
+                  "exerciseId": "ex010102",
+                  "prompt": "price=1599 discount=0.2 sales=230。计算折后价 final_price、总销售额 total_revenue、再卖50件 extra_revenue。",
+                  "starterCode": "price=1599\ndiscount=0.2\nsales=230\nfinal_price=0\ntotal_revenue=0\nextra_revenue=0",
+                  "testCode": "assert abs(final_price-1279.2)<0.01\nassert abs(total_revenue-294216.0)<0.01\nassert abs(extra_revenue-358176.0)<0.01",
+                  "hints": [
+                    "折后价=原价*(1-折扣)",
+                    "总销售=单价*数量"
+                  ],
+                  "referenceAnswer": "final_price=price*(1-discount)\ntotal_revenue=final_price*sales\nextra_revenue=final_price*(sales+50)"
+                }
+              ],
+              "summary": "本章介绍了 print、变量与四种数据类型。正确识别和转换数据类型是数据分析的基础。"
+            },
+            {
+              "chapter_id": "ch0102",
+              "title": "列表与字典",
+              "objectives": [
+                "掌握 list 的索引、切片、append",
+                "掌握 dict 的键值对操作",
+                "能选择合适的数据结构"
+              ],
+              "content": "列表用于存储有序同类数据（如月销售额序列），字典用于存储带属性的业务对象（如产品的名称、价格、销量）。",
+              "code_samples": [
+                {
+                  "id": "cs010201",
+                  "title": "列表基础",
+                  "code": "p=['笔记本','平板']\ns=[125,280]\nprint(p[0],s[-1])",
+                  "explanation": "列表用 [] 创建。索引从 0 开始，-1 指最后一个元素。"
+                },
+                {
+                  "id": "cs010202",
+                  "title": "切片与 append",
+                  "code": "q=[32000,28500,41200,35800]\nprint(q[:2])\nq.append(49100)\nprint(len(q))",
+                  "explanation": "list[start:end] 切片。append 添加元素。len 获取长度。"
+                },
+                {
+                  "id": "cs010203",
+                  "title": "字典操作",
+                  "code": "p={'name':'手机','price':2999}\np['stock']=350\np['price']=2799\nprint(p)",
+                  "explanation": "字典用 {} 创建。dict[key]=value 可新增或修改键值对。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex010201",
+                  "prompt": "创建 regions=['华东','华北','华南','西南'] 和 sales_data=[48500,39200,42800,31500]，再 append '西北' 和 26800。",
+                  "starterCode": "regions=[]\nsales_data=[]",
+                  "testCode": "assert regions==['华东','华北','华南','西南','西北']\nassert sales_data==[48500,39200,42800,31500,26800]",
+                  "hints": [
+                    "元素用逗号分隔",
+                    "append 在末尾添加"
+                  ],
+                  "referenceAnswer": "regions=['华东','华北','华南','西南']\nsales_data=[48500,39200,42800,31500]\nregions.append('西北')\nsales_data.append(26800)"
+                },
+                {
+                  "exerciseId": "ex010202",
+                  "prompt": "创建 customer 字典：name='李晓明',age=35,city='上海',is_vip=True,total_purchase=28600。修改 total_purchase 为 35000，新增 last_order='2025-05-20'。",
+                  "starterCode": "customer={}",
+                  "testCode": "assert customer['name']=='李晓明' and customer['age']==35\nassert customer['city']=='上海' and customer['is_vip'] is True\nassert customer['total_purchase']==35000 and customer['last_order']=='2025-05-20'",
+                  "hints": [
+                    "key:value 格式",
+                    "布尔值首字母大写",
+                    "赋值语句修改/新增"
+                  ],
+                  "referenceAnswer": "customer={'name':'李晓明','age':35,'city':'上海','is_vip':True,'total_purchase':28600}\ncustomer['total_purchase']=35000\ncustomer['last_order']='2025-05-20'"
+                }
+              ],
+              "summary": "列表适合有序同类数据，字典适合带属性的业务对象。"
+            },
+            {
+              "chapter_id": "ch0103",
+              "title": "函数与控制流",
+              "objectives": [
+                "掌握 def 函数与 return",
+                "掌握 if-elif-else",
+                "掌握 for 循环"
+              ],
+              "content": "函数封装可复用逻辑，条件判断处理业务规则，for 循环批量处理数据。",
+              "code_samples": [
+                {
+                  "id": "cs010301",
+                  "title": "函数定义",
+                  "code": "def profit(r,c):\n    return r-c,(r-c)/r*100\np,rt=profit(58000,36200)\nprint(p,round(rt,1))",
+                  "explanation": "def 定义函数，可 return 多个值。round(x,n) 保留 n 位小数。"
+                },
+                {
+                  "id": "cs010302",
+                  "title": "条件判断",
+                  "code": "s=18500\nif s>=30000:l='钻石'\nelif s>=15000:l='金卡'\nelif s>=5000:l='银卡'\nelse:l='普通'\nprint(l)",
+                  "explanation": "条件从高到低排列。每块冒号结尾后缩进 4 空格。"
+                },
+                {
+                  "id": "cs010303",
+                  "title": "for 循环",
+                  "code": "t=0\nfor x in [12500,8900,15600]:\n    t=t+x\nprint(t)",
+                  "explanation": "for 遍历列表每项，循环内可累加汇总。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex010301",
+                  "prompt": "写函数 calculate_commission(s)：>=50000 返回 10%，>=20000 返回 7%，>=10000 返回 5%，其他 3%。返回整数。",
+                  "starterCode": "def calculate_commission(s):\n    return 0",
+                  "testCode": "assert calculate_commission(65000)==6500\nassert calculate_commission(28000)==1960\nassert calculate_commission(10000)==500\nassert calculate_commission(8500)==255",
+                  "hints": [
+                    "if-elif-else 从高到低",
+                    "int() 取整"
+                  ],
+                  "referenceAnswer": "def calculate_commission(s):\n    if s>=50000:return int(s*0.10)\n    elif s>=20000:return int(s*0.07)\n    elif s>=10000:return int(s*0.05)\n    else:return int(s*0.03)"
+                },
+                {
+                  "exerciseId": "ex010302",
+                  "prompt": "q=[120,85,156,78,203,145]，up=[299,1599,899,499,2599,1299]。用 for+索引 计算每产品销售额存入 product_revenues，总销售额 total_revenue。",
+                  "starterCode": "q=[120,85,156,78,203,145]\nup=[299,1599,899,499,2599,1299]\nproduct_revenues=[]\ntotal_revenue=0",
+                  "testCode": "assert product_revenues==[35880,135915,140244,38922,527597,188355]\nassert total_revenue==1066913",
+                  "hints": [
+                    "range(len(q)) 获取索引 i",
+                    "q[i]*up[i] append 到 product_revenues",
+                    "total_revenue 累加"
+                  ],
+                  "referenceAnswer": "for i in range(len(q)):\n    r=q[i]*up[i]\n    product_revenues.append(r)\n    total_revenue=total_revenue+r"
+                }
+              ],
+              "summary": "函数、条件、循环是编程三要素。"
+            }
+          ]
+        },
+        {
+          "unitId": "u02",
+          "title": "NumPy 数值计算",
+          "chapters": [
+            {
+              "chapter_id": "ch0201",
+              "title": "ndarray 基础",
+              "objectives": [
+                "了解 NumPy 在数据分析中的定位",
+                "掌握从列表创建 ndarray",
+                "掌握 shape/dtype/size 属性",
+                "学会 zeros/ones/arange/linspace"
+              ],
+              "content": "NumPy 是 Python 数值计算的基础库，提供高性能多维数组 ndarray。Pandas 等库都建立在 NumPy 之上。ndarray 的内存占用小、运算速度快，非常适合处理销售数据矩阵、用户特征向量等大规模数值数据。",
+              "code_samples": [
+                {
+                  "id": "cs020101",
+                  "title": "从列表创建数组",
+                  "code": "import numpy as np\nmonthly=[32000,28500,41200,35800,49100]\narr=np.array(monthly)\nprint(arr, arr.shape, arr.dtype)",
+                  "explanation": "np.array() 将 Python 列表转为 ndarray。shape 返回形状，dtype 返回元素类型。"
+                },
+                {
+                  "id": "cs020102",
+                  "title": "zeros/ones 与二维数组",
+                  "code": "import numpy as np\nz=np.zeros((3,4),dtype=int)\nprint(z)\nprint('形状:',z.shape)\nprint('元素数:',z.size)",
+                  "explanation": "np.zeros((行,列)) 创建全零数组，np.ones 创建全1数组。传入元组指定形状。"
+                },
+                {
+                  "id": "cs020103",
+                  "title": "向量化运算",
+                  "code": "import numpy as np\nsales=np.array([120,85,156,78,203,145])\nprices=np.array([299,1599,899,499,2599,1299])\nrev=sales*prices\nprint('各产品销售:',rev)\nprint('总销售:',rev.sum())\nprint('平均:',int(rev.mean()))",
+                  "explanation": "NumPy 的核心优势是向量化运算。* 直接对两数组按元素相乘，不需要手写 for 循环。sum()、mean() 等方法快速聚合。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex020101",
+                  "prompt": "创建 NumPy 二维数组 sales_data：3行产品 x 4列季度。数据：[32000,28500,41200,35800]、[18000,22300,19500,25600]、[45000,48200,52300,55800]。打印数组；打印 shape；计算所有数据总和 total_sum；计算每行（每产品年度）总和存入 product_yearly。",
+                  "starterCode": "import numpy as np\nsales_data=None\ntotal_sum=0\nproduct_yearly=None",
+                  "testCode": "import numpy as np\nassert isinstance(sales_data,np.ndarray)\nassert sales_data.shape==(3,4)\nassert sales_data.tolist()==[[32000,28500,41200,35800],[18000,22300,19500,25600],[45000,48200,52300,55800]]\nassert total_sum==398700\nassert product_yearly.tolist()==[137500,85400,201800]",
+                  "hints": [
+                    "np.array(嵌套列表) 创建二维数组",
+                    "shape 属性获取维度",
+                    "sum() 不指定轴返回总总和",
+                    "sum(axis=1) 按行求和"
+                  ],
+                  "referenceAnswer": "sales_data=np.array([[32000,28500,41200,35800],[18000,22300,19500,25600],[45000,48200,52300,55800]])\ntotal_sum=sales_data.sum()\nproduct_yearly=sales_data.sum(axis=1)"
+                },
+                {
+                  "exerciseId": "ex020102",
+                  "prompt": "prices=np.array([299,599,899,1299,1599,2599])，quantities=np.array([380,245,189,156,98,67])。计算每个商品销售额存入 revenues；计算总销售额 total_rev；计算平均销售额 avg_rev（整数）；创建折后价数组 discounted_prices = 价格 * 0.8。",
+                  "starterCode": "import numpy as np\nprices=np.array([299,599,899,1299,1599,2599])\nquantities=np.array([380,245,189,156,98,67])\nrevenues=None\ntotal_rev=0\navg_rev=0\ndiscounted_prices=None",
+                  "testCode": "assert revenues.tolist()==[113620,146755,170911,202644,156702,174133]\nassert total_rev==964765\nassert abs(avg_rev-160794)<1\nassert np.allclose(discounted_prices,prices*0.8)",
+                  "hints": [
+                    "两数组直接 * 相乘即按元素相乘",
+                    "sum() 求和，mean() 求平均",
+                    "数组与标量运算自动广播到每个元素"
+                  ],
+                  "referenceAnswer": "revenues=prices*quantities\ntotal_rev=revenues.sum()\navg_rev=int(revenues.mean())\ndiscounted_prices=prices*0.8"
+                }
+              ],
+              "summary": "ndarray 是 NumPy 核心。向量化运算比 Python 原生循环快得多，为 Pandas 打下基础。"
+            },
+            {
+              "chapter_id": "ch0202",
+              "title": "索引与切片",
+              "objectives": [
+                "掌握一维数组的索引与切片",
+                "掌握二维数组的行列索引",
+                "学会布尔索引进行条件筛选",
+                "能够花式索引选取特定位置"
+              ],
+              "content": "数据分析中经常需要从数组中提取特定部分。NumPy 提供丰富的索引方式：一维数组的索引与列表类似；二维数组可用 arr[row,col] 同时指定行列；布尔索引通过条件表达式筛选；花式索引通过索引数组批量选取。",
+              "code_samples": [
+                {
+                  "id": "cs020201",
+                  "title": "一维索引与切片",
+                  "code": "import numpy as np\ns=np.array([32000,28500,41200,35800,49100,52000,48700])\nprint('首元素:',s[0])\nprint('末元素:',s[-1])\nprint('前3个:',s[:3])\nprint('位置2到4:',s[2:5])\nprint('每隔1个:',s[::2])",
+                  "explanation": "索引从 0 开始。切片 [start:end:step] 与 Python 列表一致。负数索引从末尾数。"
+                },
+                {
+                  "id": "cs020202",
+                  "title": "二维数组的行列索引",
+                  "code": "import numpy as np\nregion=np.array([[12500,13800,15200],[9800,10500,11200],[11200,12800,13500],[6800,7200,8100]])\nprint('华北Q1:',region[1,0])\nprint('华东所有:',region[0,:])\nprint('Q2所有区域:',region[:,1])\nprint('前2行后2列:')\nprint(region[:2,1:])",
+                  "explanation": "二维数组使用 arr[row, col] 格式。冒号 : 选取所有行或列。灵活组合即可提取任意子矩阵。"
+                },
+                {
+                  "id": "cs020203",
+                  "title": "布尔索引与花式索引",
+                  "code": "import numpy as np\ns=np.array([12500,8900,15600,4200,18200,11000,22500,7800])\nprint('大于10000:',s[s>10000])\nprint('5000-15000:',s[(s>=5000)&(s<=15000)])\nidx=np.array([0,2,4,6])\nprint('奇数月:',s[idx])\nprint('TOP3:',s[np.argsort(-s)[:3]])",
+                  "explanation": "布尔索引通过条件生成布尔数组。多条件组合用 & 连接，每个条件用圆括号包裹。argsort(-s) 得到降序索引。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex020201",
+                  "prompt": "5行(产品)x6列(月份) 矩阵 sales_matrix：[[32000,28500,41200,35800,49100,52000],[18000,22300,19500,25600,31200,34800],[45000,48200,52300,55800,58200,61500],[15000,16500,17800,19200,21500,23800],[28000,31500,34200,38500,42000,46500]]。提取：产品C(第3行)存入 product_c；所有产品的3月份(第3列)存入 march_sales；前3个产品、后3个月的子矩阵存入 sub_matrix（应为 3x3，且 sub_matrix[0,0]=35800, sub_matrix[2,2]=61500）；产品A和E的2月和5月数据（2x2）存入 ae_matrix（值应为 [[28500,49100],[31500,42000]]）。",
+                  "starterCode": "import numpy as np\nsales_matrix=np.array([[32000,28500,41200,35800,49100,52000],[18000,22300,19500,25600,31200,34800],[45000,48200,52300,55800,58200,61500],[15000,16500,17800,19200,21500,23800],[28000,31500,34200,38500,42000,46500]])\nproduct_c=None\nmarch_sales=None\nsub_matrix=None\nae_matrix=None",
+                  "testCode": "assert product_c.tolist()==[45000,48200,52300,55800,58200,61500]\nassert march_sales.tolist()==[41200,19500,52300,17800,34200]\nassert sub_matrix.shape==(3,3) and sub_matrix[0,0]==35800 and sub_matrix[2,2]==61500\nassert ae_matrix.tolist()==[[28500,49100],[31500,42000]]",
+                  "hints": [
+                    "整行: arr[行号,:]",
+                    "整列: arr[:,列号]",
+                    "子矩阵: arr[行切片,列切片]",
+                    "花式: arr[np.ix_([行], [列])] 或 arr[[行号]][:,[列号]]"
+                  ],
+                  "referenceAnswer": "product_c=sales_matrix[2,:]\nmarch_sales=sales_matrix[:,2]\nsub_matrix=sales_matrix[:3,3:]\nae_matrix=sales_matrix[np.ix_([0,4],[1,4])]"
+                },
+                {
+                  "exerciseId": "ex020202",
+                  "prompt": "customer_spending = np.array([8500,32000,15600,48000,22000,58000,9500,42000,28000,55000])。筛选 >=30000 存入 big_spenders；筛选 10000-40000 存入 mid_spenders；big_count 为 big_spenders 的数量；TOP3 消费额存入 top3。",
+                  "starterCode": "import numpy as np\ncustomer_spending=np.array([8500,32000,15600,48000,22000,58000,9500,42000,28000,55000])\nbig_spenders=None\nmid_spenders=None\nbig_count=0\ntop3=None",
+                  "testCode": "assert big_spenders.tolist()==[32000,48000,58000,42000,55000]\nassert mid_spenders.tolist()==[32000,15600,22000,28000]\nassert big_count==5\nassert top3.tolist()==[58000,55000,48000]",
+                  "hints": [
+                    "arr[条件] 筛选",
+                    "(条件1)&(条件2) 多条件组合，注意括号",
+                    "len(arr) 或 arr.size 获取数量",
+                    "np.argsort(-arr)[:3] 得到 TOP3 索引"
+                  ],
+                  "referenceAnswer": "big_spenders=customer_spending[customer_spending>=30000]\nmid_spenders=customer_spending[(customer_spending>=10000)&(customer_spending<=40000)]\nbig_count=len(big_spenders)\ntop3=customer_spending[np.argsort(-customer_spending)[:3]]"
+                }
+              ],
+              "summary": "NumPy 提供灵活的索引方式：基础索引、布尔索引、花式索引，能精准提取数据子集。"
+            },
+            {
+              "chapter_id": "ch0203",
+              "title": "数组运算与统计",
+              "objectives": [
+                "掌握数组算术运算与广播机制",
+                "掌握 sum/mean/max/min/std/median 等聚合函数",
+                "掌握按轴 (axis) 计算",
+                "能够进行简单的矩阵运算"
+              ],
+              "content": "NumPy 支持直接对整个数组进行算术运算（加减乘除），这称为向量化。当运算的两个数组形状不同时，NumPy 通过广播机制自动扩展维度，使得小数组可以与大数组高效运算，在处理跨区域跨月份销售数据加权时非常实用。",
+              "code_samples": [
+                {
+                  "id": "cs020301",
+                  "title": "广播机制",
+                  "code": "import numpy as np\nregion_month=np.array([[12500,13800,15200],[9800,10500,11200],[11200,12800,13500]])\ngrowth=np.array([1.05,1.08,1.10])\nprint('月度增长:')\nprint(region_month*growth)\nbonus=np.array([1.2,1.0,1.1]).reshape(3,1)\nprint('区域奖励:')\nprint(np.round(region_month*bonus,0))",
+                  "explanation": "数组与形状匹配的一维数组相乘时自动广播。reshape(3,1) 变为列向量可按列广播。"
+                },
+                {
+                  "id": "cs020302",
+                  "title": "聚合统计",
+                  "code": "import numpy as np\ns=np.array([32000,28500,41200,35800,49100,52000,48700,55200])\nprint('总和:',s.sum())\nprint('均值:',int(s.mean()))\nprint('最大:',s.max(),'位置:',s.argmax())\nprint('最小:',s.min(),'位置:',s.argmin())\nprint('标准差:',int(s.std()))\nprint('中位数:',np.median(s))\nprint('75分位:',np.percentile(s,75))\nprint('累计和:',s.cumsum())",
+                  "explanation": "ndarray 内置 sum/mean/max/min/std/argmax/argmin/cumsum 等方法。np.median/np.percentile 提供分位数计算。"
+                },
+                {
+                  "id": "cs020303",
+                  "title": "按轴计算与矩阵点积",
+                  "code": "import numpy as np\nsales=np.array([[12500,13800,15200,16800],[9800,10500,11200,12100],[11200,12800,13500,14500],[6800,7200,8100,9200],[15600,16200,17800,19500]])\nprint('各季度总和:',sales.sum(axis=0))\nprint('各区域年度:',sales.sum(axis=1))\nw=np.array([0.20,0.25,0.25,0.30])\nprint('加权得分:',np.round(sales@w,0))",
+                  "explanation": "axis=0 沿行方向聚合（保留列维度），axis=1 沿列方向聚合（保留行维度）。@ 运算符做矩阵乘法，适合加权求和。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex020301",
+                  "prompt": "5产品x4季度 矩阵 product_sales：[[32000,28500,41200,35800],[18000,22300,19500,25600],[45000,48200,52300,55800],[15000,16500,17800,19200],[28000,31500,34200,38500]]。计算：每个产品全年 yearly(长度5)；每季度全产品总和 quarterly(长度4)；每个产品的季度平均 avg_q(长度5)；每个产品的季度最高 max_q(长度5)。",
+                  "starterCode": "import numpy as np\nproduct_sales=np.array([[32000,28500,41200,35800],[18000,22300,19500,25600],[45000,48200,52300,55800],[15000,16500,17800,19200],[28000,31500,34200,38500]])\nyearly=None\nquarterly=None\navg_q=None\nmax_q=None",
+                  "testCode": "assert yearly.tolist()==[137500,85400,201800,68500,132200]\nassert quarterly.tolist()==[138000,147000,165000,174900]\nassert np.allclose(avg_q,[34375,21350,50450,17125,33050])\nassert max_q.tolist()==[41200,25600,55800,19200,38500]",
+                  "hints": [
+                    "每行求和: sum(axis=1)",
+                    "每列求和: sum(axis=0)",
+                    "mean(axis=1) 按行求平均",
+                    "max(axis=1) 按行求最大值"
+                  ],
+                  "referenceAnswer": "yearly=product_sales.sum(axis=1)\nquarterly=product_sales.sum(axis=0)\navg_q=product_sales.mean(axis=1)\nmax_q=product_sales.max(axis=1)"
+                },
+                {
+                  "exerciseId": "ex020302",
+                  "prompt": "categories=[125,89,156,203]（千件），avg_prices=[299,599,899,1299]（元）。计算：每个品类销售额 cat_revenues；总销售额 total_rev；品类销售占比百分比 cat_share；整体平均单价 overall_avg_price = 总销售额/总销量（元，保留2位小数）。",
+                  "starterCode": "import numpy as np\ncategories=np.array([125,89,156,203])\navg_prices=np.array([299,599,899,1299])\ncat_revenues=None\ntotal_rev=0\ncat_share=None\noverall_avg_price=0",
+                  "testCode": "assert cat_revenues.tolist()==[37375,53311,140244,264297]\nassert abs(cat_share.sum()-100)<0.1\nassert abs(cat_share[0]-7.46)<0.1\nassert abs(overall_avg_price-934.7)<1.0",
+                  "hints": [
+                    "cat_revenues = categories * avg_prices",
+                    "total_rev = cat_revenues.sum()",
+                    "cat_share = cat_revenues / total_rev * 100",
+                    "overall_avg_price = total_rev / categories.sum()"
+                  ],
+                  "referenceAnswer": "cat_revenues=categories*avg_prices\ntotal_rev=cat_revenues.sum()\ncat_share=cat_revenues/total_rev*100\noverall_avg_price=round(total_rev/categories.sum(),2)"
+                }
+              ],
+              "summary": "NumPy 的广播机制让数组间运算非常高效。按轴聚合与矩阵点积是商务数据统计分析的核心能力。"
+            }
+          ]
+        },
+        {
+          "unitId": "u03",
+          "title": "Pandas 基础",
+          "chapters": [
+            {
+              "chapter_id": "ch0301",
+              "title": "Series 与 DataFrame",
+              "objectives": [
+                "了解 Pandas 的核心数据结构",
+                "掌握从字典/列表创建 DataFrame",
+                "掌握从 Series 创建与索引",
+                "学会 head/shape/columns/index 浏览方法"
+              ],
+              "content": "Pandas 是基于 NumPy 构建的数据分析库，提供 Series（一维带标签数组）和 DataFrame（二维带标签表格）两种核心结构。DataFrame 可以想象成 Excel 表格，每列是一个 Series，每行有行索引，每列有列名。与 NumPy 数组不同，DataFrame 的每列可以存储不同类型的数据（文本、数字、日期等），非常适合真实世界的销售报表、客户信息等混合类型数据。",
+              "code_samples": [
+                {
+                  "id": "cs030101",
+                  "title": "从字典创建 DataFrame",
+                  "code": "import pandas as pd\nsales={'月份':['1月','2月','3月','4月'],'产品A':[32000,28500,41200,35800],'产品B':[18000,22300,19500,25600]}\ndf=pd.DataFrame(sales)\nprint(df)\nprint('形状:',df.shape)\nprint('列名:',df.columns.tolist())",
+                  "explanation": "pd.DataFrame(字典) 将 Python 字典转为 DataFrame。字典的每个键成为一列，列表值按顺序成为各行数据。shape 返回(行数, 列数)。"
+                },
+                {
+                  "id": "cs030102",
+                  "title": "Series 的创建与方法",
+                  "code": "import pandas as pd\ns=pd.Series([32000,28500,41200,35800,49100],index=['1月','2月','3月','4月','5月'],name='产品A销售额')\nprint(s)\nprint('前2行:')\nprint(s.head(2))\nprint('总和:',s.sum(),'均值:',int(s.mean()))\nprint('最大月份:',s.idxmax(),'值:',s.max())",
+                  "explanation": "pd.Series(数据, index=索引, name=名称) 创建一维 Series。head(n) 浏览前 n 行。sum/mean/max/idxmax 提供聚合统计。"
+                },
+                {
+                  "id": "cs030103",
+                  "title": "列访问与新增列",
+                  "code": "import pandas as pd\ndata={'产品':['A','B','C','D'],'单价':[299,1599,899,499],'销量':[120,85,156,78]}\ndf=pd.DataFrame(data)\ndf['销售额']=df['单价']*df['销量']\ndf['利润率估算']=df['销售额']*0.25\nprint(df)\nprint('\\n仅产品和销售额:')\nprint(df[['产品','销售额']])",
+                  "explanation": "df['列名'] 访问单列。df[['列1','列2']] 访问多列。df['新列']=... 基于已有列计算新增列。向量化运算比 for 循环快得多。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex030101",
+                  "prompt": "创建产品销售 DataFrame：列名为 ['产品名称','单价','销量']，5行产品数据为：产品A/299/88，产品B/1599/145，产品C/3999/210，产品D/899/380，产品E/2599/120。然后新增一列 销售额 = 单价 * 销量，存储在变量 df 中。",
+                  "starterCode": "import pandas as pd\ndf=None",
+                  "testCode": "import pandas as pd\nassert isinstance(df,pd.DataFrame)\nassert list(df.columns)==['产品名称','单价','销量','销售额']\nassert df.shape==(5,4)\nassert df['销售额'].tolist()==[26312,231855,839790,341620,311880]\nassert df['单价'].tolist()==[299,1599,3999,899,2599]",
+                  "hints": [
+                    "先构造字典：键是列名，值是数据列表",
+                    "pd.DataFrame(字典) 创建 DataFrame",
+                    "df['销售额']=df['单价']*df['销量'] 新增列"
+                  ],
+                  "referenceAnswer": "data={'产品名称':['产品A','产品B','产品C','产品D','产品E'],'单价':[299,1599,3999,899,2599],'销量':[88,145,210,380,120]}\ndf=pd.DataFrame(data)\ndf['销售额']=df['单价']*df['销量']"
+                },
+                {
+                  "exerciseId": "ex030102",
+                  "prompt": "创建 Series sales_series：数据 [48500,39200,42800,31500,52800,61200]，索引 ['1月','2月','3月','4月','5月','6月']，名称 '华东月销售额'。然后计算：total=总和，avg=平均值，top_month=最大值对应的索引月份。",
+                  "starterCode": "import pandas as pd\nsales_series=None\ntotal=0\navg=0\ntop_month=''",
+                  "testCode": "import pandas as pd\nassert isinstance(sales_series,pd.Series)\nassert sales_series.tolist()==[48500,39200,42800,31500,52800,61200]\nassert list(sales_series.index)==['1月','2月','3月','4月','5月','6月']\nassert total==276000\nassert abs(avg-46000.0)<0.01\nassert top_month=='6月'",
+                  "hints": [
+                    "pd.Series(数据列表, index=索引列表, name=名称)",
+                    "sum() 返回总和",
+                    "mean() 返回均值",
+                    "idxmax() 返回最大值对应的索引标签"
+                  ],
+                  "referenceAnswer": "sales_series=pd.Series([48500,39200,42800,31500,52800,61200],index=['1月','2月','3月','4月','5月','6月'],name='华东月销售额')\ntotal=sales_series.sum()\navg=sales_series.mean()\ntop_month=sales_series.idxmax()"
+                }
+              ],
+              "summary": "Series 和 DataFrame 是 Pandas 两大核心结构。从字典构造 DataFrame、新增计算列、浏览数据是数据分析的起点。"
+            },
+            {
+              "chapter_id": "ch0302",
+              "title": "读取 CSV 与数据浏览",
+              "objectives": [
+                "掌握从 CSV/文本创建 DataFrame",
+                "学会使用 head()/tail()/sample() 浏览数据",
+                "掌握 info()/describe()/dtypes 检查数据结构",
+                "了解数据类型检查在清洗中的重要性"
+              ],
+              "content": "在真实的商务数据分析项目中，原始数据往往存储在 CSV、Excel 或数据库中。CSV 是最常见的数据交换格式。Pandas 提供 pd.read_csv() 函数可以一键加载 CSV 文件。数据加载后，第一步不是立即开始分析，而是对数据进行快速浏览检查以确认数据质量。养成先查看数据再做分析的习惯，可以避免很多由于数据类型问题、缺失值问题等导致的错误分析结论。",
+              "code_samples": [
+                {
+                  "id": "cs030201",
+                  "title": "从文本构造 CSV 并读取",
+                  "code": "import pandas as pd\nimport io\ntext='''产品,单价,销量,上架日期\nA,299,120,2025-01-15\nB,1599,145,2025-02-10\nC,3999,210,2025-01-28\nD,899,380,2025-03-05\nE,2599,256,2025-02-22\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('形状:',df.shape)\nprint('前3行:')\nprint(df.head(3))\nprint('后2行:')\nprint(df.tail(2))",
+                  "explanation": "pd.read_csv() 从文件读取 CSV。通过 io.StringIO 可以把字符串当作文件对象使用，便于演示和测试。head(n)/tail(n) 查看前 n 行或后 n 行。"
+                },
+                {
+                  "id": "cs030202",
+                  "title": "info() 检查数据结构",
+                  "code": "import pandas as pd\nimport io\ntext='''订单号,客户,产品,数量,单价,金额\nORD001,张小明,笔记本,1,4999,4999\nORD002,王丽,平板,2,2599,5198\nORD003,李华,手机,1,3999,3999\nORD004,赵敏,耳机,3,899,2697\nORD005,刘强,手表,2,1599,3198\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint(df.info())\nprint('\\n列名:',df.columns.tolist())\nprint('\\n数据类型:')\nprint(df.dtypes)",
+                  "explanation": "info() 打印每列的名称、非空值数量和数据类型。object 通常代表字符串，int64 是整数，float64 是浮点数，datetime64 是日期时间。检查数据类型是清洗的第一步。"
+                },
+                {
+                  "id": "cs030203",
+                  "title": "describe() 生成统计摘要",
+                  "code": "import pandas as pd\nimport io\ntext='''区域,订单数,总销售额,客户数,平均客单价\n华东,1250,589200,856,688.54\n华北,980,412300,645,576.34\n华南,1520,726800,1023,711.80\n西南,680,285400,412,478.65\n西北,320,138600,198,520.75\n东北,540,218900,367,607.63\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('数值列摘要:')\nprint(df.describe())\nprint('\\n订单数中位数:',df['订单数'].median())\nprint('销售额总和:',df['总销售额'].sum())\nprint('平均客单价标准差:',round(df['平均客单价'].std(),2))",
+                  "explanation": "describe() 默认对所有数值列生成统计摘要，包括 count、mean、std、min、25%/50%/75% 分位数、max。可以对单列单独调用 median()/sum()/std() 等方法。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex030201",
+                  "prompt": "构造包含 6 行数据的 DataFrame df：列名为 日期、访客数、下单数、支付金额。数据：2025-06-01 访客1520 下单185 支付28500；6月2日 1780/210/32800；6月3日 1340/156/21200；6月4日 2100/298/45600；6月5日 1950/265/39400；6月6日 2300/340/52100。然后提取前 3 行存入 df_head3。",
+                  "starterCode": "import pandas as pd\nimport io\ntext='''日期,访客数,下单数,支付金额\n'''\ndf=pd.read_csv(io.StringIO(text))\ndf_head3=None",
+                  "testCode": "import pandas as pd\nassert isinstance(df,pd.DataFrame)\nassert df.shape==(6,4)\nassert list(df.columns)==['日期','访客数','下单数','支付金额']\nassert df['访客数'].tolist()==[1520,1780,1340,2100,1950,2300]\nassert df['支付金额'].tolist()==[28500,32800,21200,45600,39400,52100]\nassert isinstance(df_head3,pd.DataFrame) and df_head3.shape==(3,4)",
+                  "hints": [
+                    "CSV 文本首行是列名，用逗号分隔",
+                    "每行数据对应一条记录，逗号分隔",
+                    "pd.read_csv(io.StringIO(text)) 读取",
+                    "df.head(3) 获取前 3 行"
+                  ],
+                  "referenceAnswer": "text='''日期,访客数,下单数,支付金额\n2025-06-01,1520,185,28500\n2025-06-02,1780,210,32800\n2025-06-03,1340,156,21200\n2025-06-04,2100,298,45600\n2025-06-05,1950,265,39400\n2025-06-06,2300,340,52100\n'''\ndf=pd.read_csv(io.StringIO(text))\ndf_head3=df.head(3)"
+                },
+                {
+                  "exerciseId": "ex030202",
+                  "prompt": "基于上一题的 df（6行4列），请计算：shape_result = df.shape 元组；total_pay = 支付金额列总和；avg_orders = 下单数平均值；max_visitors = 访客数最大值。",
+                  "starterCode": "import pandas as pd\nimport io\ntext='''日期,访客数,下单数,支付金额\n2025-06-01,1520,185,28500\n2025-06-02,1780,210,32800\n2025-06-03,1340,156,21200\n2025-06-04,2100,298,45600\n2025-06-05,1950,265,39400\n2025-06-06,2300,340,52100\n'''\ndf=pd.read_csv(io.StringIO(text))\nshape_result=None\ntotal_pay=0\navg_orders=0\nmax_visitors=0",
+                  "testCode": "assert shape_result==(6,4)\nassert total_pay==219600\nassert abs(avg_orders-242.333)<0.01\nassert max_visitors==2300",
+                  "hints": [
+                    "df.shape 返回 (行数,列数) 元组",
+                    "df['支付金额'].sum() 求和",
+                    "df['下单数'].mean() 求平均",
+                    "df['访客数'].max() 求最大值"
+                  ],
+                  "referenceAnswer": "shape_result=df.shape\ntotal_pay=df['支付金额'].sum()\navg_orders=df['下单数'].mean()\nmax_visitors=df['访客数'].max()"
+                }
+              ],
+              "summary": "读取 CSV 是实际分析的第一步。养成先用 head/info/describe 浏览和检查数据的习惯，可以避免大量数据质量问题导致的错误分析。"
+            },
+            {
+              "chapter_id": "ch0303",
+              "title": "选择列与筛选行",
+              "objectives": [
+                "掌握使用方括号选择单列和多列",
+                "掌握 df.loc[] 按标签选择",
+                "掌握 df.iloc[] 按位置索引选择",
+                "掌握布尔索引按条件筛选行",
+                "能够组合多条件完成复杂筛选"
+              ],
+              "content": "在实际分析工作中，我们很少对整张表做操作，更多时候需要从数据中提取感兴趣的子集。例如：只看华东区域的销售数据，只分析销售额超过 10000 的订单，只关注 VIP 客户。Pandas 提供多种灵活的数据选择方法：df['列名'] 选择单列；df[['列1','列2']] 选择多列；布尔索引通过条件表达式筛选满足条件的行；df.loc[行,列] 按标签选择；df.iloc[行,列] 按位置索引选择。将这些方法组合使用，可以从数万行数据中精准提取需要的子集。",
+              "code_samples": [
+                {
+                  "id": "cs030301",
+                  "title": "选择列与基础布尔筛选",
+                  "code": "import pandas as pd\nimport io\ntext='''产品,区域,单价,销量,销售额\n笔记本,华东,4999,88,439912\n平板,华北,2599,145,376855\n手机,华南,3999,210,839790\n耳机,华东,899,380,341620\n手表,华北,1599,256,409344\n相机,华南,5999,65,389935\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('产品和销售额两列:')\nprint(df[['产品','销售额']])\nprint('\\n销售额>400000 的行:')\nprint(df[df['销售额']>400000])\nprint('\\n华东区域的订单:')\nprint(df[df['区域']=='华东'])",
+                  "explanation": "df[['列1','列2']]（两层方括号）选择多列。布尔索引 df[条件] 筛选满足条件的行。条件表达式生成布尔 Series。"
+                },
+                {
+                  "id": "cs030302",
+                  "title": "df.loc 按标签选择行列",
+                  "code": "import pandas as pd\nimport io\ntext='''月份,华东,华北,华南,西南\n1月,125,98,112,68\n2月,118,105,128,72\n3月,142,112,135,81\n4月,156,128,142,89\n5月,168,135,156,95\n6月,185,148,172,108\n'''\ndf=pd.read_csv(io.StringIO(text),index_col='月份')\nprint('3月这一行:')\nprint(df.loc['3月'])\nprint('\\n2月到4月、华东和华南两列:')\nprint(df.loc['2月':'4月',['华东','华南']])\nprint('\\n华东>150 的月份:')\nprint(df.loc[df['华东']>150,:])",
+                  "explanation": "df.loc[行标签, 列标签] 是 Pandas 推荐的选择方式。行标签可以是单个值、切片（包含两端，与 Python 原生不同）、列表或布尔条件。set_index 或 read_csv 的 index_col 参数可以设置索引列。"
+                },
+                {
+                  "id": "cs030303",
+                  "title": "df.iloc 按位置与多条件筛选",
+                  "code": "import pandas as pd\nimport io\ntext='''客户名,城市,会员等级,年消费,订单数\n张小明,上海,钻石,58200,42\n王丽,北京,金卡,28500,25\n李华,深圳,钻石,72800,58\n赵敏,杭州,银卡,12600,15\n刘强,上海,金卡,35200,32\n陈静,北京,钻石,65400,48\n周涛,深圳,普通,5800,8\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('前3行前2列(位置索引):')\nprint(df.iloc[:3,:2])\nprint('\\n上海且年消费>30000:')\nprint(df[(df['城市']=='上海')&(df['年消费']>30000)])\nprint('\\n钻石或订单数>40:')\nprint(df[(df['会员等级']=='钻石')|(df['订单数']>40)])",
+                  "explanation": "df.iloc[行位置, 列位置] 使用从 0 开始的整数索引，行为与 Python 列表切片一致（左闭右开）。多条件组合：& 同时满足，| 满足其一。每个独立条件必须用圆括号包裹。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex030301",
+                  "prompt": "读取产品销售数据到 DataFrame df（6行：产品/区域/单价/销量/销售额，数据：笔记本/华东/4999/88/439912，平板/华北/2599/145/376855，手机/华南/3999/210/839790，耳机/华东/899/380/341620，手表/华北/1599/256/409344，相机/华南/5999/65/389935）。然后：选择产品和销售额两列存入 df_cols；筛选销售额大于 380000 的行存入 df_high；筛选区域为华东的行存入 df_east。",
+                  "starterCode": "import pandas as pd\nimport io\ntext='''产品,区域,单价,销量,销售额\n笔记本,华东,4999,88,439912\n平板,华北,2599,145,376855\n手机,华南,3999,210,839790\n耳机,华东,899,380,341620\n手表,华北,1599,256,409344\n相机,华南,5999,65,389935\n'''\ndf=pd.read_csv(io.StringIO(text))\ndf_cols=None\ndf_high=None\ndf_east=None",
+                  "testCode": "assert isinstance(df_cols,pd.DataFrame)\nassert list(df_cols.columns)==['产品','销售额']\nassert df_cols.shape==(6,2)\nassert isinstance(df_high,pd.DataFrame) and df_high.shape[0]==3\nassert '手机' in df_high['产品'].tolist()\nassert isinstance(df_east,pd.DataFrame)\nassert df_east.shape[0]==2\nassert df_east['产品'].tolist()==['笔记本','耳机']",
+                  "hints": [
+                    "选择多列使用 df[['产品','销售额']] 注意两层方括号",
+                    "筛选：df[df['销售额']>380000]",
+                    "文本匹配：df[df['区域']=='华东']"
+                  ],
+                  "referenceAnswer": "df_cols=df[['产品','销售额']]\ndf_high=df[df['销售额']>380000]\ndf_east=df[df['区域']=='华东']"
+                },
+                {
+                  "exerciseId": "ex030302",
+                  "prompt": "DataFrame df 客户数据：客户名/城市/会员等级/年消费/订单数，数据：张小明/上海/钻石/58200/42，王丽/北京/金卡/28500/25，李华/深圳/钻石/72800/58，赵敏/杭州/银卡/12600/15，刘强/上海/金卡/35200/32，陈静/北京/钻石/65400/48，周涛/深圳/普通/5800/8。请：筛选上海客户且年消费>30000 存入 shanghai_high；筛选钻石会员或订单数>40 存入 vip_many；仅从 vip_many 选择客户名、会员等级、订单数三列。",
+                  "starterCode": "import pandas as pd\nimport io\ntext='''客户名,城市,会员等级,年消费,订单数\n张小明,上海,钻石,58200,42\n王丽,北京,金卡,28500,25\n李华,深圳,钻石,72800,58\n赵敏,杭州,银卡,12600,15\n刘强,上海,金卡,35200,32\n陈静,北京,钻石,65400,48\n周涛,深圳,普通,5800,8\n'''\ndf=pd.read_csv(io.StringIO(text))\nshanghai_high=None\nvip_many=None",
+                  "testCode": "assert shanghai_high.shape[0]==2 and '张小明' in shanghai_high['客户名'].tolist()\nassert vip_many.shape[0]==4\nassert sorted(vip_many['客户名'].tolist())==sorted(['张小明','李华','陈静','刘强'])",
+                  "hints": [
+                    "两个条件用 & 连接，每个条件必须用 () 包裹：(df['城市']=='上海')&(df['年消费']>30000)",
+                    "或条件用 |：(df['会员等级']=='钻石')|(df['订单数']>40)",
+                    "可以先筛选再选列，也可以在 loc 中同时指定"
+                  ],
+                  "referenceAnswer": "shanghai_high=df[(df['城市']=='上海')&(df['年消费']>30000)]\nvip_many=df[(df['会员等级']=='钻石')|(df['订单数']>40)]\nvip_many=vip_many[['客户名','会员等级','订单数']]"
+                }
+              ],
+              "summary": "灵活使用列选择、布尔索引、loc/iloc 可以精准地从大量数据中提取所需子集，这是销售分析、客户细分、市场筛选等场景的基础操作。"
+            },
+            {
+              "chapter_id": "ch0304",
+              "title": "排序、分组聚合与数据合并",
+              "objectives": [
+                "掌握 sort_values 排序数据",
+                "掌握 groupby + agg 进行分组统计",
+                "学会 value_counts / unique 探索分类列",
+                "能够使用 merge/concat 合并数据"
+              ],
+              "content": "销售分析中最常见的需求之一是：按区域分组计算总销售额、按产品类别排序找出 TOP 产品、按月份汇总对比。Pandas 的 groupby 功能强大，它会先按某列或多列的值将数据分成多个组，然后对每组分别执行聚合函数（sum/mean/count/min/max 等），最后合并结果。sort_values 可以按一列或多列排序。value_counts() 可以快速统计某个分类列的各个值出现多少次，非常适合探索客户等级分布、区域分布等。merge/concat 可以将多张表合并，相当于 SQL 的 JOIN 或 UNION。",
+              "code_samples": [
+                {
+                  "id": "cs030401",
+                  "title": "排序 sort_values",
+                  "code": "import pandas as pd\nimport io\ntext='''产品,区域,单价,销量,销售额\n笔记本,华东,4999,88,439912\n平板,华北,2599,145,376855\n手机,华南,3999,210,839790\n耳机,华东,899,380,341620\n手表,华北,1599,256,409344\n相机,华南,5999,65,389935\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('按销售额降序:')\nprint(df.sort_values('销售额',ascending=False))\nprint('\\n按区域升序再按销量降序:')\nprint(df.sort_values(['区域','销量'],ascending=[True,False]))",
+                  "explanation": "df.sort_values('列名', ascending=False) 按某列降序排序。传入列表可按多列排序，同时给出对应 ascending 列表决定每列升序(True)或降序(False)。"
+                },
+                {
+                  "id": "cs030402",
+                  "title": "groupby 分组聚合",
+                  "code": "import pandas as pd\nimport io\ntext='''产品,区域,单价,销量,销售额\n笔记本,华东,4999,88,439912\n平板,华北,2599,145,376855\n手机,华南,3999,210,839790\n耳机,华东,899,380,341620\n手表,华北,1599,256,409344\n相机,华南,5999,65,389935\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('按区域汇总:')\nprint(df.groupby('区域')[['销售额','销量']].sum())\nprint('\\n每个区域的平均客单价和订单数:')\nprint(df.groupby('区域').agg(总销售额=('销售额','sum'),平均单价=('单价','mean'),产品数=('产品','count')))\nprint('\\n各会员等级分布:')\nprint(pd.Series(['钻石','金卡','银卡','钻石','金卡','普通','钻石']).value_counts())",
+                  "explanation": "df.groupby('分组列')[['列1','列2']].sum() 按分组列分组后对数值列求和。agg() 可以同时对不同列应用不同聚合函数，使用 named aggregation 语法 新列名=('原列名','函数名') 更清晰。value_counts() 统计分类列的频次。"
+                },
+                {
+                  "id": "cs030403",
+                  "title": "合并 merge/concat",
+                  "code": "import pandas as pd\ndf1=pd.DataFrame({'月份':['1月','2月','3月'],'华东':[125,118,142],'华北':[98,105,112]})\ndf2=pd.DataFrame({'月份':['4月','5月','6月'],'华东':[156,168,185],'华北':[128,135,148]})\nprint('纵向拼接(行拼接):')\nprint(pd.concat([df1,df2],ignore_index=True))\ndf_a=pd.DataFrame({'产品':['A','B','C'],'单价':[299,599,899]})\ndf_b=pd.DataFrame({'产品':['A','B','C'],'销量':[120,85,156]})\nprint('\\n横向合并(按产品名匹配):')\nprint(pd.merge(df_a,df_b,on='产品'))",
+                  "explanation": "pd.concat([df1,df2],ignore_index=True) 纵向拼接多行（列名相同）。pd.merge(left,right,on='键') 按键列横向合并两表（类似 SQL JOIN）。ignore_index=True 让拼接后索引重置。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex030401",
+                  "prompt": "DataFrame df 的产品销售数据与前面练习相同（6行5列）。请：按销售额降序排序后存入 df_sorted；按区域对销售额和销量求和存入 region_summary（要求索引为区域，包含销售额和销量两列）；筛选 TOP3 销售额产品存入 df_top3（只保留产品和销售额两列）。",
+                  "starterCode": "import pandas as pd\nimport io\ntext='''产品,区域,单价,销量,销售额\n笔记本,华东,4999,88,439912\n平板,华北,2599,145,376855\n手机,华南,3999,210,839790\n耳机,华东,899,380,341620\n手表,华北,1599,256,409344\n相机,华南,5999,65,389935\n'''\ndf=pd.read_csv(io.StringIO(text))\ndf_sorted=None\nregion_summary=None\ndf_top3=None",
+                  "testCode": "assert df_sorted.iloc[0]['销售额']==839790\nassert df_sorted.iloc[-1]['销售额']==341620\nassert region_summary.loc['华东','销售额']==781532\nassert region_summary.loc['华北','销量']==401\nassert df_top3.shape==(3,2)\nassert df_top3['销售额'].tolist()==sorted(df_top3['销售额'].tolist(),reverse=True)",
+                  "hints": [
+                    "df.sort_values('销售额', ascending=False)",
+                    "df.groupby('区域')[['销售额','销量']].sum()",
+                    "先按销售额降序，再取前 3 行和两列"
+                  ],
+                  "referenceAnswer": "df_sorted=df.sort_values('销售额',ascending=False)\nregion_summary=df.groupby('区域')[['销售额','销量']].sum()\ndf_top3=df_sorted[['产品','销售额']].head(3)"
+                },
+                {
+                  "exerciseId": "ex030402",
+                  "prompt": "有两张表：df_a 为产品信息（产品/单价：A/299，B/599，C/899，D/1299）；df_b 为销售信息（产品/销量/区域：A/120/华东，B/85/华北，C/156/华南，D/78/华东）。请：使用 pd.concat 纵向演示（不必存）；以产品为键合并 df_a 与 df_b 存入 merged；然后计算 merged 中每个产品的销售额存入 merged['销售额']；最后按区域分组计算总销售额存入 region_total。",
+                  "starterCode": "import pandas as pd\ndf_a=pd.DataFrame({'产品':['A','B','C','D'],'单价':[299,599,899,1299]})\ndf_b=pd.DataFrame({'产品':['A','B','C','D'],'销量':[120,85,156,78],'区域':['华东','华北','华南','华东']})\nmerged=None\nregion_total=None",
+                  "testCode": "assert list(merged.columns)==['产品','单价','销量','区域','销售额']\nassert merged['销售额'].tolist()==[35880,50915,140244,101322]\nassert region_total.loc['华东']==137202\nassert region_total.loc['华南']==140244\nassert region_total.loc['华北']==50915",
+                  "hints": [
+                    "pd.merge(df_a, df_b, on='产品') 合并",
+                    "merged['销售额']=merged['单价']*merged['销量']",
+                    "按区域分组，对销售额求和"
+                  ],
+                  "referenceAnswer": "merged=pd.merge(df_a,df_b,on='产品')\nmerged['销售额']=merged['单价']*merged['销量']\nregion_total=merged.groupby('区域')['销售额'].sum()"
+                }
+              ],
+              "summary": "排序、分组聚合、数据合并是 Pandas 进行商务数据分析的核心操作。掌握 groupby/agg/sort_values/merge 后，你就能完成绝大多数销售报表汇总、区域对比、TOP 产品分析等实际业务需求。"
+            }
+          ]
+        },
+        {
+          "unitId": "u04",
+          "title": "Matplotlib 数据可视化",
+          "chapters": [
+            {
+              "chapter_id": "ch0401",
+              "title": "基础绘图：折线图、柱状图、饼图",
+              "objectives": [
+                "掌握 plt.figure/plot/bar/pie 等基础绘图函数",
+                "掌握 plt.title/xlabel/ylabel/legend 添加标题与标签",
+                "学会 savefig 保存图表",
+                "理解中文显示与风格设置"
+              ],
+              "content": "数据可视化是商务数据分析的重要一环，它将枯燥的数字转化为直观的图形，帮助管理者快速洞察数据背后的规律。Matplotlib 是 Python 生态中最经典的绘图库，提供类似 MATLAB 的命令式绘图接口。你可以通过 plt.plot() 绘制折线图展示时间趋势，plt.bar() 绘制柱状图对比分类数值，plt.pie() 绘制饼图展示占比。加上标题、坐标轴标签、图例等辅助元素，就可以生成一份专业的分析图表。在浏览器环境下执行的代码通常把生成的图像编码为 PNG base64 再嵌入 HTML 显示。",
+              "code_samples": [
+                {
+                  "id": "cs040101",
+                  "title": "绘制月度销售折线图",
+                  "code": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\nfig=plt.figure(figsize=(8,4))\nplt.plot(months,sales,marker='o',color='#2563eb',linewidth=2)\nplt.title('2025年上半年月度销售额趋势',fontproperties='SimHei',fontsize=14)\nplt.xlabel('月份',fontproperties='SimHei')\nplt.ylabel('销售额(元)',fontproperties='SimHei')\nplt.grid(True,alpha=0.3)\nplt.tight_layout()\nprint('绘图完成')",
+                  "explanation": "plt.figure(figsize=(宽,高)) 创建画布。plt.plot(x,y) 绘制折线图，marker='o' 在数据点加圆圈。title/xlabel/ylabel 添加标题与轴标签，中文需要指定 fontproperties。grid(True) 加网格线。tight_layout() 自动调整布局。"
+                },
+                {
+                  "id": "cs040102",
+                  "title": "绘制区域销售对比柱状图",
+                  "code": "import matplotlib.pyplot as plt\nregions=['华东','华北','华南','西南','西北']\namounts=[589200,412300,726800,285400,138600]\nfig=plt.figure(figsize=(8,4))\ncolors=['#2563eb','#16a34a','#f59e0b','#db2777','#7c3aed']\nplt.bar(regions,amounts,color=colors,edgecolor='white')\nplt.title('各区域年销售额对比',fontproperties='SimHei',fontsize=14)\nplt.xlabel('区域',fontproperties='SimHei')\nplt.ylabel('销售额(元)',fontproperties='SimHei')\nfor i,v in enumerate(amounts):\n    plt.text(i,v+15000,str(v),ha='center',fontsize=9)\nplt.tight_layout()\nprint('柱状图完成')",
+                  "explanation": "plt.bar(x, heights) 绘制柱状图。可以传入 color 列表为每个柱子指定不同颜色。plt.text(x, y, text) 在指定位置添加文本，可以用来在柱子顶部标注具体数值。"
+                },
+                {
+                  "id": "cs040103",
+                  "title": "绘制品类销售占比饼图",
+                  "code": "import matplotlib.pyplot as plt\nlabels=['电子产品','服装鞋帽','食品饮料','家居用品','图书文具']\nsizes=[0.42,0.25,0.18,0.10,0.05]\ncolors=['#2563eb','#16a34a','#f59e0b','#db2777','#7c3aed']\nfig=plt.figure(figsize=(6,6))\nplt.pie(sizes,labels=labels,colors=colors,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei','fontsize':10})\nplt.title('各品类销售额占比',fontproperties='SimHei',fontsize=14)\nplt.axis('equal')\nprint('饼图完成')",
+                  "explanation": "plt.pie(数值列表) 绘制饼图。labels 参数指定每个扇区的名称，colors 指定每个扇区颜色，autopct='%.1f%%' 自动标注百分比。startangle=90 使第一个扇区从 12 点方向开始。plt.axis('equal') 保证饼图为圆形。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex040101",
+                  "prompt": "请使用 Matplotlib 绘制季度销售折线图：季度=['Q1','Q2','Q3','Q4']，销售额=[128500,165200,189300,215800]。要求：创建 figure(figsize=(8,4))；使用 plt.plot 绘制折线，marker='s'；设置标题 '2025年季度销售额'；xlabel='季度'，ylabel='销售额(元)'；开启 grid。将代码写完整。",
+                  "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写绘图代码\n",
+                  "testCode": "",
+                  "hints": [
+                    "quarters = ['Q1','Q2','Q3','Q4']；sales = [128500,165200,189300,215800]",
+                    "plt.figure(figsize=(8,4)) 创建画布",
+                    "plt.plot(quarters, sales, marker='s') 绘制折线",
+                    "plt.title/xlabel/ylabel 添加中文标题需要 fontproperties='SimHei'",
+                    "plt.grid(True) 开启网格"
+                  ],
+                  "referenceAnswer": "import matplotlib.pyplot as plt\nquarters=['Q1','Q2','Q3','Q4']\nsales=[128500,165200,189300,215800]\nfig=plt.figure(figsize=(8,4))\nplt.plot(quarters,sales,marker='s',color='#2563eb',linewidth=2)\nplt.title('2025年季度销售额',fontproperties='SimHei',fontsize=14)\nplt.xlabel('季度',fontproperties='SimHei')\nplt.ylabel('销售额(元)',fontproperties='SimHei')\nplt.grid(True,alpha=0.3)\nplt.tight_layout()\nprint('绘图完成')"
+                },
+                {
+                  "exerciseId": "ex040102",
+                  "prompt": "绘制 TOP5 产品销售对比柱状图：产品=['产品A','产品B','产品C','产品D','产品E']，销量=[48500,72800,35600,95200,62400]。要求：figure(figsize=(8,4))；bar 绘制，任意颜色；标题 'TOP5 产品销量对比'；xlabel 产品，ylabel 销量；在每个柱子顶部标注数值。",
+                  "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写绘图代码\n",
+                  "testCode": "",
+                  "hints": [
+                    "products=['产品A','产品B','产品C','产品D','产品E']；sales=[48500,72800,35600,95200,62400]",
+                    "plt.bar(products, sales) 绘制柱状图",
+                    "标题、轴标签需要 fontproperties='SimHei'",
+                    "用 for i,v in enumerate(sales): plt.text(i, v+偏移, str(v), ha='center') 标注数值"
+                  ],
+                  "referenceAnswer": "import matplotlib.pyplot as plt\nproducts=['产品A','产品B','产品C','产品D','产品E']\nsales=[48500,72800,35600,95200,62400]\nfig=plt.figure(figsize=(8,4))\nplt.bar(products,sales,color='#2563eb',edgecolor='white')\nplt.title('TOP5产品销量对比',fontproperties='SimHei',fontsize=14)\nplt.xlabel('产品',fontproperties='SimHei')\nplt.ylabel('销量',fontproperties='SimHei')\nfor i,v in enumerate(sales):\n    plt.text(i,v+1500,str(v),ha='center',fontsize=9)\nplt.tight_layout()\nprint('柱状图完成')"
+                }
+              ],
+              "summary": "折线图展示趋势，柱状图对比数值，饼图显示占比。配合标题、标签、图例和标注，可以生成清晰专业的商务图表。"
+            },
+            {
+              "chapter_id": "ch0402",
+              "title": "自定义样式、子图布局与常见图表",
+              "objectives": [
+                "掌握 fig, axes = plt.subplots 创建子图网格",
+                "学会设置颜色、线宽、标记、字体等样式",
+                "掌握 scatter 散点图和 hist 直方图",
+                "能够调整坐标轴范围与刻度"
+              ],
+              "content": "Matplotlib 提供面向对象的绘图接口，通过 fig, axes = plt.subplots(m, n) 可以创建 m 行 n 列的子图网格，在同一画布中并列展示多张图表，非常适合在销售报表中同时展示趋势图、结构图和分布图。子图的 axes 对象可以调用 .plot()/.bar()/.scatter()/.hist() 等方法绘图，并通过 .set_title()/.set_xlabel()/.set_ylabel() 设置标题和轴标签。散点图用于展示两个数值变量之间的相关性（如广告投入与销售额关系），直方图用于展示单个数值变量的分布（如客户的年消费额分布）。灵活运用子图布局与样式调整，能让你的分析报告更具可读性。",
+              "code_samples": [
+                {
+                  "id": "cs040201",
+                  "title": "子图网格：并排展示多种图表",
+                  "code": "import matplotlib.pyplot as plt\nimport numpy as np\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=np.array([32000,28500,41200,35800,49100,52000])\nregions=['华东','华北','华南','西南']\nregion_sales=[589200,412300,726800,285400]\nfig,axes=plt.subplots(1,2,figsize=(12,4))\naxes[0].plot(months,sales,marker='o',color='#2563eb',linewidth=2)\naxes[0].set_title('月度销售趋势',fontproperties='SimHei')\naxes[0].set_xlabel('月份',fontproperties='SimHei')\naxes[0].grid(True,alpha=0.3)\naxes[1].bar(regions,region_sales,color='#16a34a')\naxes[1].set_title('区域销售对比',fontproperties='SimHei')\naxes[1].set_ylabel('销售额',fontproperties='SimHei')\nplt.tight_layout()\nprint('子图完成')",
+                  "explanation": "plt.subplots(1, 2) 创建 1 行 2 列的子图网格。返回 fig（整个画布）和 axes（子图数组）。通过索引 axes[0]、axes[1] 指定绘图子图。每个子图独立设置标题和样式。"
+                },
+                {
+                  "id": "cs040202",
+                  "title": "散点图与相关性可视化",
+                  "code": "import matplotlib.pyplot as plt\nimport numpy as np\nad_spend=np.array([5000,8000,12000,15000,18000,22000,25000,30000])\nsales_rev=np.array([45000,62000,85000,98000,125000,150000,175000,210000])\nfig,ax=plt.subplots(figsize=(7,5))\nax.scatter(ad_spend,sales_rev,s=80,c='#f59e0b',alpha=0.8,edgecolors='white',linewidth=1.5)\nz=np.polyfit(ad_spend,sales_rev,1)\np=np.poly1d(z)\nax.plot(ad_spend,p(ad_spend),'--',color='#2563eb',linewidth=2)\nax.set_title('广告投入 vs 销售额',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('广告投入(元)',fontproperties='SimHei')\nax.set_ylabel('销售额(元)',fontproperties='SimHei')\nax.grid(True,alpha=0.3)\nprint('散点图完成, 斜率=',z[0].round(2))",
+                  "explanation": "ax.scatter(x, y, s=大小, c=颜色, alpha=透明度) 绘制散点图。np.polyfit(x, y, 1) 拟合一次线性回归，np.poly1d(z) 生成预测函数。在散点图上叠加拟合线可以直观展示线性关系。"
+                },
+                {
+                  "id": "cs040203",
+                  "title": "直方图展示数据分布",
+                  "code": "import matplotlib.pyplot as plt\nimport numpy as np\nnp.random.seed(42)\n# 模拟 500 位客户的年消费额（均值 8000，标准差 2000）\nconsumer_spending=np.random.normal(8000,2000,500)\nfig,ax=plt.subplots(figsize=(8,4))\nax.hist(consumer_spending,bins=20,color='#2563eb',alpha=0.7,edgecolor='white')\nax.set_title('客户年消费额分布',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('年消费额(元)',fontproperties='SimHei')\nax.set_ylabel('客户数量',fontproperties='SimHei')\nax.axvline(consumer_spending.mean(),color='#dc2626',linestyle='--',linewidth=2,label='均值:'+str(int(consumer_spending.mean())))\nax.legend(prop={'family':'SimHei'})\nax.grid(axis='y',alpha=0.3)\nprint('直方图完成')",
+                  "explanation": "ax.hist(数据, bins=分箱数) 绘制直方图。bins 参数控制柱子数量，越多越精细但越不平滑。axvline 绘制垂直参考线，常用于标注均值或分位数。legend() 显示图例。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex040201",
+                  "prompt": "请创建一个 2 行 1 列的子图布局（2 rows, 1 col），总 figsize=(8,7)。上子图绘制折线图：月份=['1月','2月','3月','4月','5月','6月']，销售额=[32000,28500,41200,35800,49100,52000]，marker='o'，蓝色。下子图绘制柱状图：产品=['产品A','产品B','产品C','产品D']，销量=[1520,2180,1890,2650]，绿色。为每个子图添加标题（'月度销售'和 '产品销量'）。使用 tight_layout()。",
+                  "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写\n",
+                  "testCode": "",
+                  "hints": [
+                    "fig,axes=plt.subplots(2,1,figsize=(8,7)) 创建 2行1列",
+                    "axes[0].plot(months, sales, marker='o')",
+                    "axes[1].bar(products, volumes, color='green')",
+                    "ax.set_title() 每个子图独立标题",
+                    "plt.tight_layout() 自动调整间距"
+                  ],
+                  "referenceAnswer": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\nproducts=['产品A','产品B','产品C','产品D']\nvolumes=[1520,2180,1890,2650]\nfig,axes=plt.subplots(2,1,figsize=(8,7))\naxes[0].plot(months,sales,marker='o',color='#2563eb',linewidth=2)\naxes[0].set_title('月度销售',fontproperties='SimHei')\naxes[0].grid(True,alpha=0.3)\naxes[1].bar(products,volumes,color='#16a34a')\naxes[1].set_title('产品销量',fontproperties='SimHei')\nplt.tight_layout()\nprint('子图完成')"
+                },
+                {
+                  "exerciseId": "ex040202",
+                  "prompt": "绘制散点图展示 广告投入(x) 与 销售额(y) 的关系：广告=[5000,8000,12000,15000,18000,22000,25000,30000]，销售额=[45000,62000,85000,98000,125000,150000,175000,210000]。要求：scatter 绘制（marker='o'，颜色橙色，size=80，alpha=0.8）；添加标题 '广告vs销售额'；xlabel '广告投入'；ylabel '销售额'；显示网格。",
+                  "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写\n",
+                  "testCode": "",
+                  "hints": [
+                    "plt.scatter(ad, sales, s=80, c='orange', alpha=0.8)",
+                    "plt.title/xlabel/ylabel 需要 fontproperties='SimHei'",
+                    "plt.grid(True, alpha=0.3)"
+                  ],
+                  "referenceAnswer": "import matplotlib.pyplot as plt\nad=[5000,8000,12000,15000,18000,22000,25000,30000]\nsales=[45000,62000,85000,98000,125000,150000,175000,210000]\nfig,ax=plt.subplots(figsize=(7,5))\nax.scatter(ad,sales,s=80,c='#f59e0b',alpha=0.8,edgecolors='white',linewidth=1.5)\nax.set_title('广告vs销售额',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('广告投入',fontproperties='SimHei')\nax.set_ylabel('销售额',fontproperties='SimHei')\nax.grid(True,alpha=0.3)\nprint('散点图完成')"
+                }
+              ],
+              "summary": "子图网格让我们在一张画布中同时展示多个视角。散点图揭示变量间关系，直方图展示分布。面向对象的绘图接口让图表组织更加清晰。"
+            },
+            {
+              "chapter_id": "ch0403",
+              "title": "商务案例：综合图表与销售仪表板",
+              "objectives": [
+                "能够结合真实销售场景设计综合图表",
+                "掌握双 y 轴绘图 (twinx)",
+                "学会 annotate 文本标注",
+                "能够组合多种图表形成仪表板风格的输出"
+              ],
+              "content": "在实际商务分析中，一张图表往往只能展示一个视角。管理者通常希望在一张页面中看到销售额趋势、各区域占比、TOP 产品、增长率等多个关键指标，形成销售仪表板。Matplotlib 的子图网格配合不同图表类型，可以组合出仪表板风格的综合输出。有时候同一张图中需要同时展示数值大小和增长率（量级不同），这时可以使用 ax.twinx() 创建双 y 轴，共享 x 轴但拥有两个独立 y 轴，左侧显示绝对值，右侧显示百分比。还可以使用 annotate() 在特定数据点添加箭头和文本，突出异常值或关键节点。掌握这些高级技巧，你就能制作真正可用于汇报的商务图表。",
+              "code_samples": [
+                {
+                  "id": "cs040301",
+                  "title": "双 y 轴：销售额 + 增长率",
+                  "code": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\ngrowth=[None, -10.9, 44.6, -13.1, 37.1, 5.9]\nfig,ax1=plt.subplots(figsize=(10,5))\nax1.bar(months,sales,color='#2563eb',alpha=0.7,label='销售额')\nax1.set_xlabel('月份',fontproperties='SimHei')\nax1.set_ylabel('销售额(元)',fontproperties='SimHei',color='#2563eb')\nax1.tick_params(axis='y',labelcolor='#2563eb')\nax2=ax1.twinx()\nax2.plot(months[1:],growth[1:],color='#dc2626',marker='o',linewidth=2,label='环比增长率')\nax2.set_ylabel('环比增长率(%)',fontproperties='SimHei',color='#dc2626')\nax2.tick_params(axis='y',labelcolor='#dc2626')\nax2.axhline(0,color='gray',linestyle='--',linewidth=0.8)\nax1.set_title('月度销售额及环比增长率',fontproperties='SimHei',fontsize=14)\nfig.tight_layout()\nprint('双轴图完成')",
+                  "explanation": "ax1 是左侧 y 轴（柱状图，销售额）。ax2 = ax1.twinx() 创建共享 x 轴的右侧 y 轴，在上面绘制折线图（增长率）。两个 y 轴分别使用不同颜色的标签和刻度线。axhline 画水平参考线。"
+                },
+                {
+                  "id": "cs040302",
+                  "title": "综合仪表板：四图组合",
+                  "code": "import matplotlib.pyplot as plt\nimport numpy as np\nmonths=['1月','2月','3月','4月','5月','6月']\nsales_a=[32000,28500,41200,35800,49100,52000]\nsales_b=[18000,22300,19500,25600,31200,34800]\ncats=['电子','服装','食品','家居','图书']\ncat_share=[0.42,0.25,0.18,0.10,0.05]\ntop_products=['产品D','产品B','产品E','产品C','产品A']\ntop_sales=[95200,72800,62400,48500,35600]\nnp.random.seed(0)\nprices=np.random.randn(200)*50+200\nfig,axes=plt.subplots(2,2,figsize=(13,8))\n# 左上：月度折线（两产品对比）\naxes[0,0].plot(months,sales_a,marker='o',label='产品A')\naxes[0,0].plot(months,sales_b,marker='s',label='产品B')\naxes[0,0].set_title('月度销售趋势',fontproperties='SimHei')\naxes[0,0].legend(prop={'family':'SimHei'})\naxes[0,0].grid(True,alpha=0.3)\n# 右上：品类占比饼图\naxes[0,1].pie(cat_share,labels=cats,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei'})\naxes[0,1].set_title('品类销售占比',fontproperties='SimHei')\n# 左下：TOP5 产品柱状图\naxes[1,0].barh(top_products,top_sales,color='#2563eb')\naxes[1,0].set_title('TOP5产品销售额',fontproperties='SimHei')\naxes[1,0].invert_yaxis()\n# 右下：价格分布直方图\naxes[1,1].hist(prices,bins=15,color='#16a34a',alpha=0.7)\naxes[1,1].set_title('单价分布',fontproperties='SimHei')\nplt.tight_layout()\nprint('仪表板完成')",
+                  "explanation": "plt.subplots(2, 2) 创建 2x2 网格，通过 axes[row, col] 定位每个子图。左上折线图对比多产品线，右上饼图展示品类结构，左下 barh 绘制水平柱状图方便阅读 TOP 排名，右下直方图展示价格分布。invert_yaxis() 让 TOP1 显示在顶部。"
+                },
+                {
+                  "id": "cs040303",
+                  "title": "关键数据点标注",
+                  "code": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\nfig,ax=plt.subplots(figsize=(9,5))\nax.plot(months,sales,marker='o',color='#2563eb',linewidth=2)\n# 标注最高点\nmax_idx=sales.index(max(sales))\nax.annotate('最高点 '+str(sales[max_idx]),xy=(months[max_idx],sales[max_idx]),xytext=(months[max_idx],sales[max_idx]+2500),fontproperties='SimHei',ha='center',arrowprops=dict(arrowstyle='->',color='red'))\n# 标注最低点\nmin_idx=sales.index(min(sales))\nax.annotate('最低点 '+str(sales[min_idx]),xy=(months[min_idx],sales[min_idx]),xytext=(months[min_idx],sales[min_idx]-4500),fontproperties='SimHei',ha='center',arrowprops=dict(arrowstyle='->',color='green'))\nax.set_title('月度销售（关键节点标注）',fontproperties='SimHei',fontsize=14)\nax.set_ylabel('销售额',fontproperties='SimHei')\nax.grid(True,alpha=0.3)\nprint('标注完成')",
+                  "explanation": "ax.annotate(文本, xy=目标点坐标, xytext=文本位置, arrowprops=箭头样式) 在指定数据点添加带箭头的文本标注。常用于突出最大值、最小值、异常值或里程碑事件，使图表更有故事性。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex040301",
+                  "prompt": "创建 2x2 子图仪表板（figsize=(13,8)）。左上：bar 绘制 4区域销售（区域=['华东','华北','华南','西南']，金额=[589200,412300,726800,285400]），标题 '区域销售'。右上：pie 绘制品类占比（[0.42,0.25,0.18,0.10,0.05]，标签=['电子','服装','食品','家居','图书']）。左下：plot 绘制 6个月折线（[32000,28500,41200,35800,49100,52000]），marker='o'，标题 '月度销售'。右下：scatter 绘制（x=[5000,8000,12000,15000,18000,22000,25000,30000], y=[45000,62000,85000,98000,125000,150000,175000,210000]），标题 '广告vs销售'。最后 tight_layout()。",
+                  "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写\n",
+                  "testCode": "",
+                  "hints": [
+                    "fig,axes=plt.subplots(2,2,figsize=(13,8))",
+                    "axes[0,0].bar(区域, 金额)",
+                    "axes[0,1].pie(占比, labels=标签, autopct='%.1f%%')",
+                    "axes[1,0].plot(months, sales, marker='o')",
+                    "axes[1,1].scatter(ad, sales)",
+                    "中文标题需要 fontproperties='SimHei'",
+                    "plt.tight_layout() 收尾"
+                  ],
+                  "referenceAnswer": "import matplotlib.pyplot as plt\nregions=['华东','华北','华南','西南']\nregion_sales=[589200,412300,726800,285400]\ncats=['电子','服装','食品','家居','图书']\ncat_share=[0.42,0.25,0.18,0.10,0.05]\nmonths=['1月','2月','3月','4月','5月','6月']\nmonthly_sales=[32000,28500,41200,35800,49100,52000]\nad=[5000,8000,12000,15000,18000,22000,25000,30000]\nsales=[45000,62000,85000,98000,125000,150000,175000,210000]\nfig,axes=plt.subplots(2,2,figsize=(13,8))\naxes[0,0].bar(regions,region_sales,color='#2563eb')\naxes[0,0].set_title('区域销售',fontproperties='SimHei')\naxes[0,1].pie(cat_share,labels=cats,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei'})\naxes[0,1].set_title('品类占比',fontproperties='SimHei')\naxes[1,0].plot(months,monthly_sales,marker='o',color='#2563eb',linewidth=2)\naxes[1,0].set_title('月度销售',fontproperties='SimHei')\naxes[1,0].grid(True,alpha=0.3)\naxes[1,1].scatter(ad,sales,s=60,c='#f59e0b',alpha=0.8)\naxes[1,1].set_title('广告vs销售',fontproperties='SimHei')\nplt.tight_layout()\nprint('仪表板完成')"
+                }
+              ],
+              "summary": "子图网格结合多种图表类型 + 双 y 轴 + 关键标注，是制作商务销售仪表板的标准流程。掌握这些技巧后，你就能生成可直接用于汇报的专业分析图表。"
+            }
+          ]
+        },
+        {
+          "unitId": "u05",
+          "title": "商务统计分析",
+          "chapters": [
+            {
+              "chapter_id": "ch0501",
+              "title": "描述统计：集中趋势与离散程度",
+              "objectives": [
+                "掌握 mean/median/mode 三种集中趋势度量",
+                "掌握 std/var/quantile/min/max 离散程度度量",
+                "学会使用 describe() 生成完整统计摘要",
+                "能够在商务场景中正确解读统计量"
+              ],
+              "content": "在商务数据分析中，我们常常需要回答这些问题：平均每个客户的年消费是多少？销售额的波动大不大？最常见的订单金额是多少？描述统计学正是用来回答这些问题的。集中趋势度量（均值、中位数、众数）告诉我们数据的中心位置；离散程度度量（标准差、方差、分位数、极差）告诉我们数据的分散程度。均值对极端值敏感，中位数更稳健；在存在大额 VIP 客户的消费数据分析中，中位数往往比均值更能代表典型客户水平。标准差越大说明销售波动越大，经营风险越高。分位数可以揭示 TOP 客户贡献了多少销售额。掌握这些基本统计量是所有高级分析的基础。",
+              "code_samples": [
+                {
+                  "id": "cs050101",
+                  "title": "基本描述统计",
+                  "code": "import pandas as pd\nimport numpy as np\ndata={'客户':['A','B','C','D','E','F','G','H','I','J'],'年消费':[5800,28500,12600,58200,15600,35200,72800,5800,85200,65400]}\ndf=pd.DataFrame(data)\nprint('均值:',int(df['年消费'].mean()))\nprint('中位数:',int(df['年消费'].median()))\nprint('众数:',df['年消费'].mode().tolist())\nprint('标准差:',int(df['年消费'].std()))\nprint('最小值:',df['年消费'].min())\nprint('最大值:',df['年消费'].max())\nprint('极差:',df['年消费'].max()-df['年消费'].min())\nprint('\\n完整描述:')\nprint(df['年消费'].describe())",
+                  "explanation": "mean() 计算均值，median() 计算中位数，mode() 返回众数。std() 计算标准差。describe() 一次性生成 count/mean/std/min/25%/50%/75%/max 等常见统计量。注意众数可能有多个，mode() 返回 Series。"
+                },
+                {
+                  "id": "cs050102",
+                  "title": "分位数与 Pareto 分析",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(0)\n# 模拟 100 位客户的年消费\nconsumption=np.random.exponential(15000,100).astype(int)\ndf=pd.DataFrame({'年消费':consumption})\nprint('25%分位数:',df['年消费'].quantile(0.25))\nprint('50%分位数(中位数):',df['年消费'].quantile(0.50))\nprint('75%分位数:',df['年消费'].quantile(0.75))\nprint('90%分位数:',df['年消费'].quantile(0.90))\nprint('95%分位数:',df['年消费'].quantile(0.95))\n# Pareto 分析：TOP 20% 客户贡献多少销售额\nsorted_df=df.sort_values('年消费',ascending=False)\ntop20=int(len(df)*0.20)\ntop20_sum=sorted_df.head(top20)['年消费'].sum()\ntotal_sum=df['年消费'].sum()\nprint(f'TOP 20%客户贡献占比:{top20_sum/total_sum*100:.1f}%')",
+                  "explanation": "quantile(q) 计算 q 分位数。将数据按消费额降序排列，取前 20% 的客户计算其消费总额占比，就是经典的帕累托分析（80/20法则：大约 20% 的客户贡献 80% 的销售额）。分位数分析对于识别高端客户、制定差异化策略非常重要。"
+                },
+                {
+                  "id": "cs050103",
+                  "title": "按分组计算描述统计",
+                  "code": "import pandas as pd\nimport io\ntext='''区域,月份,销售额,订单数,客户数\n华东,1月,125000,420,358\n华北,1月,98000,310,265\n华南,1月,112000,380,322\n华东,2月,118000,395,340\n华北,2月,105000,340,278\n华南,2月,128000,420,352\n华东,3月,142000,480,395\n华北,3月,112000,365,290\n华南,3月,135000,450,368\n'''\ndf=pd.read_csv(io.StringIO(text))\nprint('按区域统计销售额:')\nprint(df.groupby('区域')['销售额'].agg(['mean','median','std','min','max','sum']))\nprint('\\n各区域客单价=销售额/订单数:')\nagg=df.groupby('区域').apply(lambda x:pd.Series({'总销售额':x['销售额'].sum(),'总订单':x['订单数'].sum(),'平均客单价':x['销售额'].sum()/x['订单数'].sum()}),include_groups=False)\nprint(agg.round(2))",
+                  "explanation": "groupby + agg 可以按区域等维度分组计算多列多个统计量。agg(['mean','median','std','min','max','sum']) 一次计算多个汇总。对更复杂的派生指标（如客单价 = 销售额 / 订单数），可以先分组聚合再相除，得到更准确的结果。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex050101",
+                  "prompt": "DataFrame df 包含 10 位客户年消费数据：客户 ['A','B','C','D','E','F','G','H','I','J']，年消费 [5800,28500,12600,58200,15600,35200,72800,5800,85200,65400]。请计算：mean_val 均值；median_val 中位数；std_val 标准差；min_val 最小值；max_val 最大值；range_val 极差（最大值-最小值）。所有数值保留整数。",
+                  "starterCode": "import pandas as pd\ndf=pd.DataFrame({'客户':['A','B','C','D','E','F','G','H','I','J'],'年消费':[5800,28500,12600,58200,15600,35200,72800,5800,85200,65400]})\nmean_val=0\nmedian_val=0\nstd_val=0\nmin_val=0\nmax_val=0\nrange_val=0",
+                  "testCode": "import numpy as np\nassert abs(mean_val-38510)<1\nassert abs(median_val-31850)<1\nassert abs(std_val-29356)<5\nassert min_val==5800\nassert max_val==85200\nassert range_val==79400",
+                  "hints": [
+                    "df['年消费'].mean() 计算均值",
+                    "df['年消费'].median() 中位数",
+                    "df['年消费'].std() 标准差",
+                    "min()/max() 最值，极差=最大值-最小值",
+                    "可以用 int() 或 round() 取整"
+                  ],
+                  "referenceAnswer": "mean_val=int(df['年消费'].mean())\nmedian_val=int(df['年消费'].median())\nstd_val=int(df['年消费'].std())\nmin_val=df['年消费'].min()\nmax_val=df['年消费'].max()\nrange_val=max_val-min_val"
+                },
+                {
+                  "exerciseId": "ex050102",
+                  "prompt": "df 包含 3 区域 3 个月销售数据（区域、销售额、订单数列）。数据：华东/125000/420，华北/98000/310，华南/112000/380，华东/118000/395，华北/105000/340，华南/128000/420，华东/142000/480，华北/112000/365，华南/135000/450。请计算：按区域汇总销售额总和存入 region_sum（Series，索引为区域名）；各区域总销售额除以总订单数得到客单价 avg_price（Series）；最高销售额区域 top_region（字符串）。",
+                  "starterCode": "import pandas as pd\ndata={'区域':['华东','华北','华南','华东','华北','华南','华东','华北','华南'],'销售额':[125000,98000,112000,118000,105000,128000,142000,112000,135000],'订单数':[420,310,380,395,340,420,480,365,450]}\ndf=pd.DataFrame(data)\nregion_sum=None\navg_price=None\ntop_region=''",
+                  "testCode": "import numpy as np\nassert region_sum['华东']==385000 and region_sum['华北']==315000 and region_sum['华南']==375000\nassert abs(avg_price['华东']-297)<1\nassert abs(avg_price['华南']-295)<1\nassert top_region=='华东'",
+                  "hints": [
+                    "region_sum = df.groupby('区域')['销售额'].sum()",
+                    "订单汇总 = df.groupby('区域')['订单数'].sum()，然后 avg_price = region_sum / 订单汇总",
+                    "top_region = region_sum.idxmax()"
+                  ],
+                  "referenceAnswer": "region_sum=df.groupby('区域')['销售额'].sum()\norder_sum=df.groupby('区域')['订单数'].sum()\navg_price=(region_sum/order_sum).round(0)\ntop_region=region_sum.idxmax()"
+                }
+              ],
+              "summary": "描述统计是所有数据分析的起点。均值/中位数/众数揭示集中趋势，标准差/分位数/极差揭示离散程度。按分组计算这些统计量可以快速发现不同区域、不同客户群的差异。"
+            },
+            {
+              "chapter_id": "ch0502",
+              "title": "假设检验：独立样本 t 检验与 z 检验",
+              "objectives": [
+                "理解假设检验的基本思想（p 值、显著性水平）",
+                "掌握两独立样本 t 检验的适用场景",
+                "能够解读检验结果并判断差异显著性",
+                "能够在 Python 中使用 scipy.stats 进行检验"
+              ],
+              "content": "在商务决策中，我们经常需要判断某个变化是否真的产生了影响。例如：新的营销策略实施后，销售额的提升是真的有效还是只是随机波动？两个区域的平均客单价是否真的存在显著差异？假设检验是回答这些问题的科学方法。基本思路是：设立一个原假设（例如 '两组的平均值相等'）和一个备择假设，然后计算在原假设成立的情况下观察到当前数据的概率（即 p 值）。如果 p 值很小（通常 < 0.05），我们就拒绝原假设，认为差异是统计显著的。scipy.stats.ttest_ind() 可以执行两独立样本 t 检验。scipy.stats.ttest_1samp() 可以进行单样本 t 检验。掌握假设检验，可以让你避免将随机波动误判为真正的业务改进，也能帮助真正有效的改进措施获得数据支持。",
+              "code_samples": [
+                {
+                  "id": "cs050201",
+                  "title": "独立样本 t 检验：两区域销售差异",
+                  "code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nnp.random.seed(42)\nregion_a=np.random.normal(520,80,30).round(0)\nregion_b=np.random.normal(480,70,30).round(0)\nprint('区域A平均客单价:',round(region_a.mean(),1))\nprint('区域B平均客单价:',round(region_b.mean(),1))\nt_stat,p_value=stats.ttest_ind(region_a,region_b)\nprint('t统计量:',round(t_stat,4))\nprint('p值:',round(p_value,4))\nif p_value<0.05:\n    print('结论:p<0.05,两区域客单价存在显著差异')\nelse:\n    print('结论:p>=0.05,两区域客单价无显著差异')",
+                  "explanation": "np.random.normal(均值, 标准差, 数量) 生成模拟数据。stats.ttest_ind(a, b) 执行两独立样本 t 检验，返回 t 统计量和 p 值。p<0.05 拒绝'两组均值相等'的原假设，认为存在显著差异。"
+                },
+                {
+                  "id": "cs050202",
+                  "title": "单样本 t 检验：改进后是否显著提升",
+                  "code": "import numpy as np\nfrom scipy import stats\nnp.random.seed(0)\n# 改进前平均客单价 = 300\noriginal_mean=300\n# 改进后 20 天的客单价数据\nnew_data=np.array([325,318,342,308,335,350,312,298,345,320,338,328,315,348,322,305,340,318,332,327])\nprint('改进后平均:',round(new_data.mean(),1))\nprint('改进后标准差:',round(new_data.std(ddof=1),1))\nt_stat,p_value=stats.ttest_1samp(new_data,original_mean)\nprint('t统计量:',round(t_stat,4))\nprint('p值:',round(p_value,6))\nprint('单边检验p值(改进后是否高于原水平):',round(p_value/2,6))\nif p_value<0.05:\n    print('显著差异:改进有效')\nelse:\n    print('无显著差异')",
+                  "explanation": "ttest_1samp(样本, 假设均值) 检验样本均值是否显著不同于假设均值。当只关心是否'高于'（而非'不同'）时，可以用单边检验，此时 p 值需除以 2。如果样本均值高于原假设且双边 p<0.10，单边检验就可以显著。"
+                },
+                {
+                  "id": "cs050203",
+                  "title": "配对 t 检验：前后对比设计",
+                  "code": "import numpy as np\nfrom scipy import stats\nnp.random.seed(123)\n# 10个门店培训前后的日销售额\nbefore=np.array([8500,9200,7800,10500,8800,9500,7500,8200,9800,8100])\nafter=np.array([9200,10100,8500,11200,9500,10200,8200,8800,10500,8700])\ndiff=after-before\nprint('每店销售额提升:',diff.tolist())\nprint('平均提升:',int(diff.mean()))\nt_stat,p_value=stats.ttest_rel(after,before)\nprint('配对t检验 p值:',round(p_value,6))\nif p_value<0.05:\n    print('培训显著提升了销售额')\nelse:\n    print('培训效果不显著')",
+                  "explanation": "ttest_rel(a, b) 用于配对样本（同一组对象在前后两种条件下的测量）。配对检验比独立样本检验更敏感，因为它消除了个体差异的影响，只关注每个对象自身的变化。在 A/B 测试、培训效果评估等场景中非常适用。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex050201",
+                  "prompt": "检验两个区域的客单价是否存在显著差异。区域A数据：np.random.seed(42)后 np.random.normal(520,80,30)；区域B数据：np.random.normal(480,70,30)。请计算并存储：mean_a 区域A平均，mean_b 区域B平均，t_stat 和 p_value（ttest_ind 的结果）。所有数值保留 4 位小数。",
+                  "starterCode": "import numpy as np\nfrom scipy import stats\nnp.random.seed(42)\nregion_a=np.random.normal(520,80,30)\nregion_b=np.random.normal(480,70,30)\nmean_a=0\nmean_b=0\nt_stat=0\np_value=0",
+                  "testCode": "assert abs(mean_a-497.2627)<1\nassert abs(mean_b-471.2056)<1\nassert abs(t_stat-1.3206)<0.01\nassert abs(p_value-0.1910)<0.01",
+                  "hints": [
+                    "np.random.seed(42) 设置随机种子使结果可复现",
+                    "region_a.mean() 计算A组均值",
+                    "stats.ttest_ind(region_a, region_b) 返回(t, p)",
+                    "round(x, 4) 保留 4 位小数"
+                  ],
+                  "referenceAnswer": "mean_a=round(region_a.mean(),4)\nmean_b=round(region_b.mean(),4)\nt_stat,p_value=stats.ttest_ind(region_a,region_b)\nt_stat=round(t_stat,4)\np_value=round(p_value,4)"
+                },
+                {
+                  "exerciseId": "ex050202",
+                  "prompt": "改进前平均客单价 300 元。改进后 20 天数据：[325,318,342,308,335,350,312,298,345,320,338,328,315,348,322,305,340,318,332,327]。使用 ttest_1samp 检验是否显著不同。存储：new_mean 新均值，t_stat t统计量，p_value p 值。保留 4 位小数。",
+                  "starterCode": "import numpy as np\nfrom scipy import stats\nnew=np.array([325,318,342,308,335,350,312,298,345,320,338,328,315,348,322,305,340,318,332,327])\nnew_mean=0\nt_stat=0\np_value=0",
+                  "testCode": "assert abs(new_mean-325.55)<0.1\nassert abs(t_stat-9.2143)<0.05\nassert p_value<0.0001",
+                  "hints": [
+                    "new.mean() 计算新样本均值",
+                    "stats.ttest_1samp(new, 300) 单样本 t 检验",
+                    "round(x, 4) 保留小数"
+                  ],
+                  "referenceAnswer": "new_mean=round(new.mean(),4)\nt_stat,p_value=stats.ttest_1samp(new,300)\nt_stat=round(t_stat,4)\np_value=round(p_value,4)"
+                }
+              ],
+              "summary": "假设检验是统计推断的核心工具。t 检验比较两组均值是否存在显著差异，p 值帮助判断差异的统计显著性。掌握 ttest_ind / ttest_1samp / ttest_rel 三种检验方法，可以应对大部分商务对比分析场景。"
+            },
+            {
+              "chapter_id": "ch0503",
+              "title": "相关性分析：皮尔逊相关系数",
+              "objectives": [
+                "理解相关系数 r 的含义与取值范围 [-1, 1]",
+                "掌握使用 pandas/numpy 计算相关矩阵",
+                "能够正确解读相关关系并警惕因果谬误",
+                "学会使用散点图可视化相关关系"
+              ],
+              "content": "在商务分析中，我们经常关心两个变量是否一起变化。例如：广告投入增加时销售额是否也增加？客户的年消费额与订单数正相关吗？产品价格与销量是否负相关？皮尔逊相关系数 r 是衡量两个连续变量线性相关程度的标准指标，取值范围 [-1, 1]。r > 0 表示正相关，r < 0 表示负相关，r 的绝对值越接近 1 相关越强。在 Python 中，可以用 df.corr() 一键计算所有变量两两之间的相关系数矩阵。但需要特别注意：相关并不等于因果。两个变量可能因为第三个变量（如季节因素）而呈现虚假相关。在解读相关系数时，一定要结合业务常识进行判断，必要时通过受控实验（如 A/B 测试）来验证因果关系。",
+              "code_samples": [
+                {
+                  "id": "cs050301",
+                  "title": "计算相关系数与相关矩阵",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(42)\ndata={'广告投入':[5000,8000,12000,15000,18000,22000,25000,30000],'销售额':[45000,62000,85000,98000,125000,150000,175000,210000],'客流量':[1200,1600,2100,2400,2800,3200,3500,4000],'客单价':[37.5,38.8,40.5,40.8,44.6,46.9,50.0,52.5]}\ndf=pd.DataFrame(data)\nprint('广告与销售的相关系数:',round(df['广告投入'].corr(df['销售额']),4))\nprint('广告与客流量的相关系数:',round(df['广告投入'].corr(df['客流量']),4))\nprint('客流量与客单价的相关系数:',round(df['客流量'].corr(df['客单价']),4))\nprint('\\n完整相关矩阵:')\nprint(df.corr().round(3))",
+                  "explanation": "df['列A'].corr(df['列B']) 计算两列之间的皮尔逊相关系数 r。df.corr() 一次性返回所有数值列之间的相关矩阵，对角线恒为 1。r 接近 1 表示强正相关，接近 -1 表示强负相关，接近 0 表示无线性相关。"
+                },
+                {
+                  "id": "cs050302",
+                  "title": "散点图 + 拟合线可视化相关",
+                  "code": "import matplotlib.pyplot as plt\nimport numpy as np\nnp.random.seed(42)\nad=np.array([5000,8000,12000,15000,18000,22000,25000,30000])\nsales=np.array([45000,62000,85000,98000,125000,150000,175000,210000])\nr=np.corrcoef(ad,sales)[0,1]\nfig,ax=plt.subplots(figsize=(7,5))\nax.scatter(ad,sales,s=80,c='#2563eb',alpha=0.8,edgecolors='white',linewidth=1.5)\nz=np.polyfit(ad,sales,1)\np=np.poly1d(z)\nax.plot(ad,p(ad),'--',color='#dc2626',linewidth=2,label=f'拟合线(r={r:.3f})')\nax.set_title('广告投入 vs 销售额',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('广告投入(元)',fontproperties='SimHei')\nax.set_ylabel('销售额(元)',fontproperties='SimHei')\nax.legend(prop={'family':'SimHei'})\nax.grid(True,alpha=0.3)\nprint('相关系数 r=',round(r,4))\nprint('拟合方程:销售额 =',round(z[0],3),'*广告投入 +',round(z[1],0))",
+                  "explanation": "np.corrcoef(x, y)[0,1] 也可以计算相关系数。np.polyfit(x, y, 1) 做一次多项式拟合（线性回归），返回斜率和截距。在散点图上叠加回归线，并将相关系数 r 显示在图例中，图表信息更完整。"
+                },
+                {
+                  "id": "cs050303",
+                  "title": "相关 vs 因果：识别虚假相关",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(0)\nmonths=list(range(1,25))\n# 模拟：冰淇淋销量随季节波动\nicecream=np.array([120,150,200,280,350,420,450,430,380,300,220,160]*2+[0]*1)[:24]\n# 模拟：溺水事故数量同样在夏季增多\ndrowning=np.array([10,15,25,40,55,70,78,75,60,42,28,18]*2+[0]*1)[:24]\ndf=pd.DataFrame({'月份':months,'冰淇淋':icecream,'溺水':drowning})\nr=df['冰淇淋'].corr(df['溺水'])\nprint('冰淇淋销量与溺水事故的相关系数:',round(r,4))\nprint('\\n看起来高度正相关，但二者并无因果关系！')\nprint('共同的原因是:夏季(气温升高)')\nprint('这就是虚假相关/第三变量问题。')\nprint('实际业务中:促销期间广告投入增加 + 销售额增加，但二者可能都由促销驱动。')",
+                  "explanation": "相关系数高并不意味着因果关系。两个变量可能都受第三个隐藏变量影响（如季节、天气、经济周期）。在解读相关系数时，始终要结合业务逻辑问：这种关系合理吗？有什么共同因素在起作用？是否需要做控制变量分析或 A/B 测试来验证因果？这是数据分析中最重要的思维习惯之一。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex050301",
+                  "prompt": "给定数据：广告投入 [5000,8000,12000,15000,18000,22000,25000,30000]，销售额 [45000,62000,85000,98000,125000,150000,175000,210000]，客流量 [1200,1600,2100,2400,2800,3200,3500,4000]，客单价 [37.5,38.8,40.5,40.8,44.6,46.9,50.0,52.5]。请计算：广告投入与销售额的相关系数 r1；广告投入与客流量的相关系数 r2；客流量与客单价的相关系数 r3；销售额与客单价的相关系数 r4。全部保留 4 位小数。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\ndata={'广告投入':[5000,8000,12000,15000,18000,22000,25000,30000],'销售额':[45000,62000,85000,98000,125000,150000,175000,210000],'客流量':[1200,1600,2100,2400,2800,3200,3500,4000],'客单价':[37.5,38.8,40.5,40.8,44.6,46.9,50.0,52.5]}\ndf=pd.DataFrame(data)\nr1=0\nr2=0\nr3=0\nr4=0",
+                  "testCode": "assert abs(r1-0.9978)<0.001\nassert abs(r2-0.9989)<0.001\nassert abs(r3-0.9860)<0.005\nassert abs(r4-0.9908)<0.005",
+                  "hints": [
+                    "df['列A'].corr(df['列B']) 计算两列相关系数",
+                    "结果可能为正/负，取值 [-1,1]",
+                    "round(r, 4) 保留 4 位小数"
+                  ],
+                  "referenceAnswer": "r1=round(df['广告投入'].corr(df['销售额']),4)\nr2=round(df['广告投入'].corr(df['客流量']),4)\nr3=round(df['客流量'].corr(df['客单价']),4)\nr4=round(df['销售额'].corr(df['客单价']),4)"
+                }
+              ],
+              "summary": "皮尔逊相关系数 r 衡量两个连续变量的线性相关强度。df.corr() 可快速计算所有变量间的相关矩阵。但必须牢记：相关 ≠ 因果，虚假相关在商务数据中非常常见，需要结合业务常识和实验设计进行验证。"
+            },
+            {
+              "chapter_id": "ch0504",
+              "title": "简单线性回归与预测",
+              "objectives": [
+                "理解简单线性回归 y = a + bx 的含义",
+                "掌握使用 numpy.polyfit 进行线性拟合",
+                "能够解读回归系数 R² 的含义",
+                "学会基于回归模型进行业务预测"
+              ],
+              "content": "相关系数告诉我们两个变量是否相关，但不能告诉我们一个变量变化时另一个变量会变化多少。线性回归则可以建立这种数量关系。简单线性回归假设 y = a + b * x，其中 b 是斜率（x 每变化 1 单位，y 平均变化 b 单位），a 是截距。在 NumPy 中可以用 np.polyfit(x, y, 1) 快速拟合。拟合后需要评估模型质量，R²（决定系数）是衡量回归效果的标准指标，取值范围 [0, 1]，越接近 1 说明模型解释的变异越多，预测效果越好。线性回归在商务预测中非常实用：你可以建立'广告投入 → 销售额'的回归方程，用于预测不同预算水平下的预期销售额，帮助管理层制定营销预算。但使用回归模型时需要注意：预测不要超出训练数据范围太多（外推风险），并且始终要结合业务常识解读结果。",
+              "code_samples": [
+                {
+                  "id": "cs050401",
+                  "title": "广告投入对销售额的回归预测",
+                  "code": "import numpy as np\nad=np.array([5000,8000,12000,15000,18000,22000,25000,30000])\nsales=np.array([45000,62000,85000,98000,125000,150000,175000,210000])\ncoef=np.polyfit(ad,sales,1)\nslope=coef[0]\nintercept=coef[1]\nprint('回归方程: 销售额 =',round(slope,3),'* 广告投入 +',round(intercept,0))\nprint('含义:每多投入 1 元广告，销售额平均增加',round(slope,2),'元')\n# 预测: 投入 20000 元广告\npred_20k=slope*20000+intercept\nprint('\\n广告投入 20000 元的预测销售额:',int(pred_20k))\npred_35k=slope*35000+intercept\nprint('广告投入 35000 元的预测销售额:',int(pred_35k))\n# 计算 R²\ny_pred=slope*ad+intercept\nss_res=((sales-y_pred)**2).sum()\nss_tot=((sales-sales.mean())**2).sum()\nr_squared=1-ss_res/ss_tot\nprint('\\nR² =',round(r_squared,4))",
+                  "explanation": "np.polyfit(x, y, 1) 返回 [斜率, 截距]。y = slope*x + intercept 即回归方程。slope=7 意味着每增加 1 元广告投入，销售额平均增加 7 元。R² 计算公式为 1 - (残差平方和/总平方和)，衡量 y 的变异中能被 x 解释的比例。"
+                },
+                {
+                  "id": "cs050402",
+                  "title": "可视化回归线与残差",
+                  "code": "import matplotlib.pyplot as plt\nimport numpy as np\nad=np.array([5000,8000,12000,15000,18000,22000,25000,30000])\nsales=np.array([45000,62000,85000,98000,125000,150000,175000,210000])\nz=np.polyfit(ad,sales,1)\np=np.poly1d(z)\ny_pred=p(ad)\nfig,(ax1,ax2)=plt.subplots(1,2,figsize=(12,4))\nax1.scatter(ad,sales,s=80,c='#2563eb',alpha=0.8)\nax1.plot(ad,y_pred,'--r',linewidth=2)\nax1.set_title('广告投入 vs 销售额 + 回归线',fontproperties='SimHei')\nax1.set_xlabel('广告投入(元)',fontproperties='SimHei')\nax1.set_ylabel('销售额(元)',fontproperties='SimHei')\nax1.grid(True,alpha=0.3)\nresiduals=sales-y_pred\nax2.scatter(ad,residuals,s=60,c='#f59e0b',alpha=0.8)\nax2.axhline(0,color='gray',linestyle='--')\nax2.set_title('残差图',fontproperties='SimHei')\nax2.set_xlabel('广告投入',fontproperties='SimHei')\nax2.grid(True,alpha=0.3)\nprint('残差:',np.round(residuals,0).tolist())\nprint('平均残差绝对值:',int(abs(residuals).mean()))",
+                  "explanation": "残差 = 实际值 - 预测值。残差图是检验回归假设的重要工具：如果残差随机分布在 0 线两侧，没有明显模式，说明线性假设是合理的。如果残差有某种模式（如弯曲、漏斗形），说明模型需要改进。这是专业分析的重要环节。"
+                },
+                {
+                  "id": "cs050403",
+                  "title": "月度趋势预测：季节性线性回归",
+                  "code": "import numpy as np\nmonths=np.arange(1,13)\nsales_by_month=np.array([125,118,142,156,168,185,195,188,172,165,178,200])\n# 拟合线性趋势\nz=np.polyfit(months,sales_by_month,1)\np=np.poly1d(z)\nprint('趋势线: y =',round(z[0],2),'*月份 +',round(z[1],2))\nprint('\\n各月预测值:',p(months).round(0).tolist())\nprint('各月实际值:',sales_by_month.tolist())\nprint('\\n下一年1月预测 (month=13):',int(p(13)))\nprint('下一年6月预测 (month=18):',int(p(18)))\n# 识别高于/低于趋势的月份\ndiff=sales_by_month-p(months)\nprint('\\n高于趋势(>0)或低于趋势(<0):')\nfor m,d in enumerate(diff,1):\n    direction='高于' if d>0 else '低于'\n    print(f'{m}月: {direction} 平均 {int(abs(d))} 单位')",
+                  "explanation": "对于有时间序列特征的数据，可以将时间作为 x 变量（如月份编号），将销售额作为 y 变量进行回归。斜率 z[0] > 0 表示销售在增长。通过将未来月份代入（如 month=13 代表下一年1月），可以做短期预测。残差符号可以判断哪些月份销售表现超出/低于趋势平均线，这对于识别旺季淡季和异常月份非常有用。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "ex050401",
+                  "prompt": "广告投入 ad=[5000,8000,12000,15000,18000,22000,25000,30000]（元），对应销售额 sales=[45000,62000,85000,98000,125000,150000,175000,210000]（元）。请用 np.polyfit(ad, sales, 1) 进行线性回归，得到：slope 斜率（保留 3 位小数），intercept 截距（整数），R²（保留 4 位小数）。并预测：pred_20k = 投入 20000 元时的预测销售额（整数），pred_40k = 投入 40000 元时的预测销售额（整数）。",
+                  "starterCode": "import numpy as np\nad=np.array([5000,8000,12000,15000,18000,22000,25000,30000])\nsales=np.array([45000,62000,85000,98000,125000,150000,175000,210000])\nslope=0\nintercept=0\nr_squared=0\npred_20k=0\npred_40k=0",
+                  "testCode": "assert abs(slope-6.971)<0.01\nassert abs(intercept-7711)<50\nassert abs(r_squared-0.9956)<0.001\nassert abs(pred_20k-147133)<500\nassert abs(pred_40k-286553)<500",
+                  "hints": [
+                    "z=np.polyfit(ad,sales,1)；slope=z[0]，intercept=z[1]",
+                    "y_pred = slope*ad + intercept 计算预测值",
+                    "R² = 1 - ((sales-y_pred)**2).sum() / ((sales-sales.mean())**2).sum()",
+                    "pred_20k = slope*20000 + intercept，int() 取整"
+                  ],
+                  "referenceAnswer": "z=np.polyfit(ad,sales,1)\nslope=round(z[0],3)\nintercept=int(z[1])\ny_pred=z[0]*ad+z[1]\nss_res=((sales-y_pred)**2).sum()\nss_tot=((sales-sales.mean())**2).sum()\nr_squared=round(1-ss_res/ss_tot,4)\npred_20k=int(z[0]*20000+z[1])\npred_40k=int(z[0]*40000+z[1])"
+                }
+              ],
+              "summary": "简单线性回归 y = a + b*x 是最基础的预测工具。斜率 b 是边际效应（每单位 x 变化带来的 y 变化），截距 a 是 x=0 时的基线值。R² 衡量模型拟合程度。回归模型在广告预测、销售预测、定价分析等场景中极为实用，但要注意外推风险和相关≠因果的限制。"
+            }
+          ]
+        },
+        {
+          "unitId": "u06",
+          "title": "商业案例实战",
+          "chapters": [
+            {
+              "chapter_id": "ch0601",
+              "title": "案例一：年度销售分析与报告",
+              "objectives": [
+                "能够对销售数据集进行探索性分析(EDA)",
+                "掌握按区域/月份/产品多维度汇总",
+                "学会识别 TOP 产品与增长最快区域",
+                "能够制作综合分析图表与结论"
+              ],
+              "content": "本案例模拟某零售企业 2024 年度销售数据。数据包含 6 个区域、4 类产品线、12 个月的销售额、订单数与客户数。分析目标：回答管理层关心的三个问题——(1) 全年总销售额及各区域贡献如何？(2) 哪几条产品线表现最佳？(3) 各区域客单价是否存在显著差异？通过 Pandas 对数据进行分组、排序、聚合，再配合 Matplotlib 生成图表，形成结构化的年度销售分析报告。",
+              "code_samples": [
+                {
+                  "id": "cs060101",
+                  "title": "加载并探索销售数据",
+                  "code": "import pandas as pd\nimport numpy as np\nregions=['华东','华北','华南','西南','西北','东北']\nproducts=['A系列','B系列','C系列','D系列']\nnp.random.seed(123)\nrows=[]\nfor r in regions:\n    for p in products:\n        for m in range(1,13):\n            base={'华东':35000,'华北':28000,'华南':40000,'西南':22000,'西北':15000,'东北':18000}[r]\n            prod_factor={'A系列':1.0,'B系列':0.85,'C系列':1.25,'D系列':0.70}[p]\n            seasonal=1+0.35*np.sin((m-1)/12*2*np.pi)\n            sales=int(base*prod_factor*seasonal*np.random.uniform(0.9,1.15))\n            orders=int(sales/np.random.uniform(420,520))\n            customers=int(orders*np.random.uniform(0.7,0.9))\n            rows.append({'区域':r,'产品线':p,'月份':m,'销售额':sales,'订单数':orders,'客户数':customers})\ndf=pd.DataFrame(rows)\nprint('数据形状:',df.shape)\nprint('前5行:')\nprint(df.head())\nprint('字段类型:')\nprint(df.dtypes)",
+                  "explanation": "使用嵌套 for 循环生成多维度销售数据。对每个区域、产品线、月份的组合，基于基础销售 × 产品系数 × 季节系数 × 随机扰动生成模拟数据。查看 shape、head、dtypes 是分析开始时的标准操作。"
+                },
+                {
+                  "id": "cs060102",
+                  "title": "关键指标聚合分析",
+                  "code": "total_sales=df['销售额'].sum()\nprint('全年总销售额:',total_sales)\nregion_sales=df.groupby('区域')['销售额'].sum().sort_values(ascending=False)\nprint('各区域销售额:')\nprint(region_sales)\nproduct_sales=df.groupby('产品线')['销售额'].sum().sort_values(ascending=False)\nprint('各产品线销售额:')\nprint(product_sales)\nmonthly=df.groupby('月份')['销售额'].sum()\nprint('月度销售额:')\nprint(monthly)\nprint('TOP3销售区域:')\nprint(region_sales.head(3))",
+                  "explanation": "df.groupby() + sum()/sort_values() 是核心聚合工具。可按区域、产品线、月份等多个维度反复聚合，揭示数据的不同侧面。找出 TOP 区域 / TOP 产品有助于资源分配决策。"
+                },
+                {
+                  "id": "cs060103",
+                  "title": "综合图表输出",
+                  "code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport numpy as np\nregions=['华东','华北','华南','西南','西北','东北']\nproducts=['A系列','B系列','C系列','D系列']\nnp.random.seed(123)\nrows=[]\nfor r in regions:\n    for p in products:\n        for m in range(1,13):\n            base={'华东':35000,'华北':28000,'华南':40000,'西南':22000,'西北':15000,'东北':18000}[r]\n            pf={'A系列':1.0,'B系列':0.85,'C系列':1.25,'D系列':0.70}[p]\n            sales=int(base*pf*(1+0.35*np.sin((m-1)/12*2*np.pi))*np.random.uniform(0.9,1.15))\n            rows.append({'区域':r,'产品线':p,'月份':m,'销售额':sales})\ndf=pd.DataFrame(rows)\nfig,axes=plt.subplots(2,2,figsize=(14,9))\nmonthly=df.groupby('月份')['销售额'].sum()\naxes[0,0].plot(monthly.index,monthly.values,marker='o',color='#2563eb',linewidth=2)\naxes[0,0].set_title('月度销售趋势',fontproperties='SimHei',fontsize=12)\naxes[0,0].grid(True,alpha=0.3)\nregion_sales=df.groupby('区域')['销售额'].sum().sort_values(ascending=False)\naxes[0,1].bar(region_sales.index,region_sales.values,color='#2563eb',alpha=0.7)\naxes[0,1].set_title('各区域年度销售对比',fontproperties='SimHei',fontsize=12)\nproduct_sales=df.groupby('产品线')['销售额'].sum()\naxes[1,0].pie(product_sales.values,labels=product_sales.index,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei'})\naxes[1,0].set_title('产品线销售占比',fontproperties='SimHei',fontsize=12)\npivot=df.pivot_table(values='销售额',index='区域',columns='产品线',aggfunc='sum',observed=True)\npivot.plot(kind='bar',stacked=True,ax=axes[1,1])\naxes[1,1].set_title('各区域产品线销售构成',fontproperties='SimHei',fontsize=12)\naxes[1,1].legend(prop={'family':'SimHei'},fontsize=8)\nplt.tight_layout()\nprint('综合图表生成完成')",
+                  "explanation": "2x2 子图网格中分别放置折线图(时间趋势)、柱状图(区域对比)、饼图(产品结构)、堆叠柱状图(区域×产品交叉分析)。多视角组合可快速构建销售仪表板。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "cs0601_ex1",
+                  "prompt": "加载年度销售数据：6 区域、4 产品线、12 个月。生成规则 seed=123。计算 total_sales 全年总销售额(整数)，top_region 销售额最高的区域，top_product 最高的产品线，monthly_sum 按月份聚合的销售额 Series(整数)。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\nregions=['华东','华北','华南','西南','西北','东北']\nproducts=['A系列','B系列','C系列','D系列']\nnp.random.seed(123)\nrows=[]\nfor r in regions:\n    for p in products:\n        for m in range(1,13):\n            base={'华东':35000,'华北':28000,'华南':40000,'西南':22000,'西北':15000,'东北':18000}[r]\n            pf={'A系列':1.0,'B系列':0.85,'C系列':1.25,'D系列':0.70}[p]\n            seasonal=1+0.35*np.sin((m-1)/12*2*np.pi)\n            sales=int(base*pf*seasonal*np.random.uniform(0.9,1.15))\n            rows.append({'区域':r,'产品线':p,'月份':m,'销售额':sales})\ndf=pd.DataFrame(rows)\ntotal_sales=0\ntop_region=''\ntop_product=''\nmonthly_sum=None",
+                  "testCode": "import numpy as np\nassert isinstance(total_sales,int) and total_sales>80000000\nassert top_region=='华南'\nassert top_product=='C系列'\nassert isinstance(monthly_sum,pd.Series)\nassert len(monthly_sum)==12",
+                  "hints": [
+                    "total_sales = df['销售额'].sum()",
+                    "按区域聚合后 idxmax() 得最高区域",
+                    "按产品线聚合后 idxmax() 得最高产品线",
+                    "monthly_sum = df.groupby('月份')['销售额'].sum()"
+                  ],
+                  "referenceAnswer": "total_sales=int(df['销售额'].sum())\ntop_region=df.groupby('区域')['销售额'].sum().idxmax()\ntop_product=df.groupby('产品线')['销售额'].sum().idxmax()\nmonthly_sum=df.groupby('月份')['销售额'].sum().astype(int)"
+                },
+                {
+                  "exerciseId": "cs0601_ex2",
+                  "prompt": "基于同样销售数据，计算各区域客单价 = 总销售额/总订单数。按客单价降序排序。region_avg_price Series(值为整数，降序)，top3_regions 列表(客单价最高的 3 个区域名)。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\nregions=['华东','华北','华南','西南','西北','东北']\nproducts=['A系列','B系列','C系列','D系列']\nnp.random.seed(123)\nrows=[]\nfor r in regions:\n    for p in products:\n        for m in range(1,13):\n            base={'华东':35000,'华北':28000,'华南':40000,'西南':22000,'西北':15000,'东北':18000}[r]\n            pf={'A系列':1.0,'B系列':0.85,'C系列':1.25,'D系列':0.70}[p]\n            seasonal=1+0.35*np.sin((m-1)/12*2*np.pi)\n            sales=int(base*pf*seasonal*np.random.uniform(0.9,1.15))\n            orders=int(sales/np.random.uniform(420,520))\n            rows.append({'区域':r,'产品线':p,'月份':m,'销售额':sales,'订单数':orders})\ndf=pd.DataFrame(rows)\nregion_avg_price=None\ntop3_regions=[]",
+                  "testCode": "assert isinstance(region_avg_price,pd.Series)\nassert len(region_avg_price)==6\nassert region_avg_price.tolist()==sorted(region_avg_price.tolist(),reverse=True)\nassert len(top3_regions)==3",
+                  "hints": [
+                    "agg=df.groupby('区域')[['销售额','订单数']].sum()",
+                    "agg['客单价']=agg['销售额']/agg['订单数']",
+                    "sort_values('客单价',ascending=False) 降序",
+                    "top3 = sorted.index[:3].tolist()"
+                  ],
+                  "referenceAnswer": "agg=df.groupby('区域')[['销售额','订单数']].sum()\nagg['客单价']=agg['销售额']/agg['订单数']\nregion_avg_price=agg['客单价'].astype(int).sort_values(ascending=False)\ntop3_regions=region_avg_price.index[:3].tolist()"
+                }
+              ],
+              "summary": "完整的年度销售分析需要从多个维度交叉观察：整体趋势、区域差异、产品结构等。Pandas 的分组聚合 + Matplotlib 的多图组合，是商业分析报告的标准实现方式。"
+            },
+            {
+              "chapter_id": "ch0602",
+              "title": "案例二：客户行为分析与 RFM 模型",
+              "objectives": [
+                "理解 RFM 模型在客户分群中的应用",
+                "掌握从订单数据计算 R/F/M",
+                "能够基于 RFM 得分进行客户分群",
+                "能够给出营销建议"
+              ],
+              "content": "RFM 模型是客户关系管理(CRM)中最经典的客户价值分析方法，起源于直邮营销行业。R=Recency最近一次购买距今天数(越小越好)，F=Frequency购买频次(越大越好)，M=Monetary消费金额(越大越好)。给每位客户的 R/F/M 分别打分(1-5分)，按总分将客户划分为不同层级（重要价值、重要流失、一般、低价值等），针对不同群制定差异化营销策略。本案例模拟某电商平台 1000 位客户的 RFM 数据，演示分位数打分、分群、可视化的完整流程。",
+              "code_samples": [
+                {
+                  "id": "cs060201",
+                  "title": "生成并汇总客户订单数据",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(42)\nN=1000\ncustomers=['C'+str(i+1).zfill(4) for i in range(N)]\nrecency=np.random.exponential(30,N).astype(int)+1\nfrequency=np.random.poisson(5,N).astype(int)+1\nmonetary=np.random.lognormal(6,0.8,N).astype(int)\ndf=pd.DataFrame({'客户ID':customers,'R_天':recency,'F_次':frequency,'M_元':monetary})\nprint('客户数:',len(df))\nprint('前6行:')\nprint(df.head())\nprint('描述统计:')\nprint(df.describe())\nprint('R平均值:',round(df['R_天'].mean(),1),'天')\nprint('F平均值:',round(df['F_次'].mean(),1),'次')\nprint('M平均值:',round(df['M_元'].mean(),0),'元')",
+                  "explanation": "exponential / poisson / lognormal 生成符合真实消费行为的右偏分布：大多数客户消费额一般，少数大客户极高。describe() 识别是否存在异常值。"
+                },
+                {
+                  "id": "cs060202",
+                  "title": "RFM 分位数打分",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(42)\nn=500\ncust=['C'+str(i+1).zfill(3) for i in range(n)]\ndf=pd.DataFrame({'客户ID':cust,'R':np.random.exponential(30,n).astype(int)+1,'F':np.random.poisson(5,n).astype(int)+1,'M':np.random.lognormal(6,0.8,n).astype(int)})\nr_labels=[5,4,3,2,1]\nf_labels=[1,2,3,4,5]\nm_labels=[1,2,3,4,5]\ndf['R_score']=pd.qcut(df['R'],q=5,labels=r_labels).astype(int)\ndf['F_score']=pd.qcut(df['F'],q=5,labels=f_labels).astype(int)\ndf['M_score']=pd.qcut(df['M'],q=5,labels=m_labels).astype(int)\ndf['RFM总分']=df['R_score']+df['F_score']+df['M_score']\nprint('RFM得分均值:')\nprint(df[['R_score','F_score','M_score','RFM总分']].mean().round(2))\nprint('按RFM总分排序TOP 10客户:')\nprint(df.sort_values('RFM总分',ascending=False).head(10))",
+                  "explanation": "pd.qcut(x, q=5, labels=...) 按分位数切割为 5 段并赋予标签。R 越小越好所以用倒序标签[5,4,3,2,1]；F 和 M 越大越好所以用升序。RFM 总分取值范围[3,15]。"
+                },
+                {
+                  "id": "cs060203",
+                  "title": "客户分群与营销建议",
+                  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nnp.random.seed(42)\nn=500\ncust=['C'+str(i+1).zfill(3) for i in range(n)]\ndf=pd.DataFrame({'客户ID':cust,'R':np.random.exponential(30,n).astype(int)+1,'F':np.random.poisson(5,n).astype(int)+1,'M':np.random.lognormal(6,0.8,n).astype(int)})\ndf['R_score']=pd.qcut(df['R'],q=5,labels=[5,4,3,2,1]).astype(int)\ndf['F_score']=pd.qcut(df['F'],q=5,labels=[1,2,3,4,5]).astype(int)\ndf['M_score']=pd.qcut(df['M'],q=5,labels=[1,2,3,4,5]).astype(int)\ndef segment(row):\n    r,f,m=row['R_score'],row['F_score'],row['M_score']\n    if r>=4 and f>=4 and m>=4:return '重要价值客户'\n    if r>=4 and f<=2 and m<=2:return '新近客户'\n    if r<=2 and f>=4 and m>=4:return '重要流失客户'\n    if r<=2 and f<=2 and m<=2:return '低价值流失客户'\n    return '一般客户'\ndf['客户群']=df.apply(segment,axis=1)\nseg=df.groupby('客户群')['客户ID'].count().sort_values(ascending=False)\nprint('客户分群人数:')\nprint(seg)\nprint('各客户群平均消费金额:')\nprint(df.groupby('客户群')['M'].mean().round(0).astype(int).sort_values(ascending=False))\nfig,ax=plt.subplots(figsize=(8,5))\nseg_sorted=seg.sort_values(ascending=False)\nax.bar(seg_sorted.index,seg_sorted.values,color=['#dc2626','#2563eb','#f59e0b','#16a34a','#9ca3af'][:len(seg_sorted)])\nax.set_title('客户分群人数分布',fontproperties='SimHei',fontsize=13)\nax.set_ylabel('客户数',fontproperties='SimHei')\nfor i,v in enumerate(seg_sorted.values):\n    ax.text(i,v+5,str(v),ha='center')\nplt.xticks(rotation=15,fontproperties='SimHei')\nplt.tight_layout()\nprint('客户分群图生成完成')",
+                  "explanation": "基于 RFM 分数编写业务规则函数 segment() 将客户分入 5 个类别。df.apply(func,axis=1) 对每行应用函数。分组统计各群人数和平均消费，帮助制定营销策略（如重要价值客户提供专属权益，重要流失客户开展召回）。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "cs0602_ex1",
+                  "prompt": "生成 1000 位客户 RFM 数据(seed=42)。R 从 exponential(30)+1，F 从 poisson(5)+1，M 从 lognormal(6,0.8)。分位数打分后计算 RFM 总分。存储：top_customer_id 总分最高的客户ID字符串；avg_r/avg_f/avg_m 三类得分均值(保留 2 位小数)；avg_total 总得分均值(保留 2 位小数)。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\nnp.random.seed(42)\nn=1000\ncust=['C'+str(i+1).zfill(4) for i in range(n)]\ndf=pd.DataFrame({'客户ID':cust,'R':np.random.exponential(30,n).astype(int)+1,'F':np.random.poisson(5,n).astype(int)+1,'M':np.random.lognormal(6,0.8,n).astype(int)})\ntop_customer_id=''\navg_r=0\navg_f=0\navg_m=0\navg_total=0",
+                  "testCode": "assert top_customer_id.startswith('C')\nassert 2.8<avg_r<3.2\nassert 2.8<avg_f<3.2\nassert 2.8<avg_m<3.2\nassert 8.5<avg_total<9.5",
+                  "hints": [
+                    "df['R_score']=pd.qcut(df.R,q=5,labels=[5,4,3,2,1]).astype(int)",
+                    "F 与 M 用升序标签[1,2,3,4,5]",
+                    "RFM总分=R_score+F_score+M_score",
+                    "top_customer_id=df.loc[df.RFM总分.idxmax(),'客户ID']"
+                  ],
+                  "referenceAnswer": "df['R_score']=pd.qcut(df.R,q=5,labels=[5,4,3,2,1]).astype(int)\ndf['F_score']=pd.qcut(df.F,q=5,labels=[1,2,3,4,5]).astype(int)\ndf['M_score']=pd.qcut(df.M,q=5,labels=[1,2,3,4,5]).astype(int)\ndf['RFM总分']=df['R_score']+df['F_score']+df['M_score']\ntop_customer_id=df.loc[df['RFM总分'].idxmax(),'客户ID']\navg_r=round(df['R_score'].mean(),2)\navg_f=round(df['F_score'].mean(),2)\navg_m=round(df['M_score'].mean(),2)\navg_total=round(df['RFM总分'].mean(),2)"
+                },
+                {
+                  "exerciseId": "cs0602_ex2",
+                  "prompt": "对上述客户数据，RFM >= 12 定义高价值客户，<= 6 定义低价值客户。存储：high_value_count 高价值客户数量(整数)，low_value_count 低价值客户数量(整数)，high_value_avg_m 高价值客户平均消费(整数)，low_value_avg_m 低价值客户平均消费(整数)。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\nnp.random.seed(42)\nn=1000\ncust=['C'+str(i+1).zfill(4) for i in range(n)]\ndf=pd.DataFrame({'客户ID':cust,'R':np.random.exponential(30,n).astype(int)+1,'F':np.random.poisson(5,n).astype(int)+1,'M':np.random.lognormal(6,0.8,n).astype(int)})\ndf['R_score']=pd.qcut(df.R,q=5,labels=[5,4,3,2,1]).astype(int)\ndf['F_score']=pd.qcut(df.F,q=5,labels=[1,2,3,4,5]).astype(int)\ndf['M_score']=pd.qcut(df.M,q=5,labels=[1,2,3,4,5]).astype(int)\ndf['RFM总分']=df['R_score']+df['F_score']+df['M_score']\nhigh_value_count=0\nlow_value_count=0\nhigh_value_avg_m=0\nlow_value_avg_m=0",
+                  "testCode": "assert high_value_count>50 and low_value_count>50\nassert high_value_avg_m>low_value_avg_m\nassert high_value_avg_m>800",
+                  "hints": [
+                    "hv=df[df['RFM总分']>=12]",
+                    "lv=df[df['RFM总分']<=6]",
+                    ".count()得数量，.mean()得均值"
+                  ],
+                  "referenceAnswer": "hv=df[df['RFM总分']>=12]\nlv=df[df['RFM总分']<=6]\nhigh_value_count=int(hv['M'].count())\nlow_value_count=int(lv['M'].count())\nhigh_value_avg_m=int(hv['M'].mean())\nlow_value_avg_m=int(lv['M'].mean())"
+                }
+              ],
+              "summary": "RFM 模型是经典客户分群方法，用最近消费日(R)、频次(F)、金额(M)三个简单指标刻画客户价值，通过分位数打分 + 业务规则分群即可得到可操作的营销策略，广泛应用于电商与零售。"
+            },
+            {
+              "chapter_id": "ch0603",
+              "title": "案例三：库存优化与 ABC 分析",
+              "objectives": [
+                "理解 ABC 分类在库存管理中的应用",
+                "掌握按销售额对 SKU 排序并划分 A/B/C 类",
+                "学会计算库存周转天数",
+                "能够基于分析提出库存优化建议"
+              ],
+              "content": "库存管理是零售与制造业运营的核心问题。过多库存会增加仓储成本和资金占用，过少库存会导致缺货损失。ABC 分析（帕累托分析）是最基础的库存分类方法：将 SKU 按销售额从高到低排序，累计占 70% 销售额的归为 A 类（重点管理），接下来 20% 归为 B 类（常规管理），最后 10% 归为 C 类（简化管理）。配合库存周转天数可以识别哪些 SKU 周转过慢（滞销品），哪些需要增加备货。本案例模拟快消品 200 个 SKU 的年度销售与库存数据，演示 ABC 分类、周转天数计算、滞销品识别、以及如何提出库存优化建议。",
+              "code_samples": [
+                {
+                  "id": "cs060301",
+                  "title": "SKU 销售与库存数据",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(7)\nN=200\ncategories=['食品','饮料','日化','家居','零食','生鲜']\nsku_names=['SKU'+str(i+1).zfill(4) for i in range(N)]\ncats=np.random.choice(categories,N)\nsales_units=np.random.lognormal(5,1.2,N).astype(int)\nunit_price=np.random.uniform(20,500,N).round(2)\nstock_qty=np.random.poisson(lam=sales_units/12*2,N).astype(int)\nfor i in range(20):\n    idx=np.random.randint(N)\n    stock_qty[idx]=stock_qty[idx]*np.random.randint(5,15)\ndf=pd.DataFrame({'SKU':sku_names,'品类':cats,'销售单价':unit_price,'年销量':sales_units,'期末库存':stock_qty})\ndf['年销售额']=df['销售单价']*df['年销量']\nprint('SKU数量:',len(df))\nprint('总销售额:',int(df['年销售额'].sum()))\nprint('总库存量:',df['期末库存'].sum())\nprint('按品类统计:')\nprint(df.groupby('品类').agg(SKU数=('SKU','count'),总销售额=('年销售额','sum')).round(0))",
+                  "explanation": "lognormal 生成符合真实销售规律的数据：少数 SKU 贡献大量销售额。部分滞销品故意加高库存以便后续分析识别。按品类聚合快速看出哪些品类最重要。"
+                },
+                {
+                  "id": "cs060302",
+                  "title": "ABC 分类",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(7)\nN=200\ncats=np.random.choice(['食品','饮料','日化','家居','零食','生鲜'],N)\nsales_units=np.random.lognormal(5,1.2,N).astype(int)\nunit_price=np.random.uniform(20,500,N).round(2)\nstock=np.random.poisson(lam=sales_units/12*2,N).astype(int)\nfor i in range(20):\n    stock[np.random.randint(N)]*=np.random.randint(5,15)\ndf=pd.DataFrame({'SKU':['SKU'+str(i+1).zfill(4) for i in range(N)],'品类':cats,'销售单价':unit_price,'年销量':sales_units,'期末库存':stock})\ndf['年销售额']=df['销售单价']*df['年销量']\ndf=df.sort_values('年销售额',ascending=False).reset_index(drop=True)\ndf['累计销售额']=df['年销售额'].cumsum()\ntotal=df['年销售额'].sum()\ndf['累计占比']=df['累计销售额']/total\ndef abc_cut(pct):\n    if pct<=0.70:return 'A'\n    if pct<=0.90:return 'B'\n    return 'C'\ndf['ABC分类']=df['累计占比'].apply(abc_cut)\nprint('ABC分类统计:')\nstat=df.groupby('ABC分类').agg(SKU数=('SKU','count'),销售额合计=('年销售额','sum')).reset_index()\nstat['销售额占比']=(stat['销售额合计']/total*100).round(1)\nprint(stat)\nprint('A类前5个SKU:')\nprint(df[df['ABC分类']=='A'].head())",
+                  "explanation": "步骤：(1) 按销售额降序排序；(2) cumsum() 计算累计销售额；(3) 计算累计占比；(4) 按 <=70%→A、<=90%→B、其他→C 划分。A 类 SKU 通常只占总数的 15-25% 但贡献 70% 销售额，是管理重点。"
+                },
+                {
+                  "id": "cs060303",
+                  "title": "库存周转天数与滞销识别",
+                  "code": "import pandas as pd\nimport numpy as np\nnp.random.seed(7)\nN=200\ncats=np.random.choice(['食品','饮料','日化','家居','零食','生鲜'],N)\nsales_units=np.random.lognormal(5,1.2,N).astype(int)\nunit_price=np.random.uniform(20,500,N).round(2)\nstock=np.random.poisson(lam=sales_units/12*2,N).astype(int)\nfor i in range(20):\n    stock[np.random.randint(N)]*=np.random.randint(5,15)\ndf=pd.DataFrame({'SKU':['SKU'+str(i+1).zfill(4) for i in range(N)],'品类':cats,'销售单价':unit_price,'年销量':sales_units,'期末库存':stock})\ndf['年销售额']=df['销售单价']*df['年销量']\ndf=df.sort_values('年销售额',ascending=False).reset_index(drop=True)\ntotal=df['年销售额'].sum()\ndf['累计占比']=df['年销售额'].cumsum()/total\ndef abc_cut(pct):\n    if pct<=0.70:return 'A'\n    if pct<=0.90:return 'B'\n    return 'C'\ndf['ABC分类']=df['累计占比'].apply(abc_cut)\ndf['月均销量']=df['年销量']/12\ndef turnover(row):\n    if row['月均销量']>0:\n        return int(round(row['期末库存']/row['月均销量']*30))\n    return 999\ndf['库存周转天数']=df.apply(turnover,axis=1)\nprint('ABC分类的平均库存周转天数:')\nprint(df.groupby('ABC分类')['库存周转天数'].mean().round(0))\nprint('全SKU平均周转天数:',int(df['库存周转天数'].mean()))\noverstock=df[df['库存周转天数']>180]\nprint('周转天数>180天的滞销品:',len(overstock),'个，占比',round(len(overstock)/len(df)*100,1),'%')\nprint('滞销品中ABC分布:')\nprint(overstock['ABC分类'].value_counts())",
+                  "explanation": "库存周转天数 = 期末库存 / 月均销量 × 30。年销量为 0 的 SKU 设为 999 天。周转天数越长说明库存积压越严重。>180 天定义为滞销品，需考虑清仓处理。结合 ABC 分类可以快速识别哪些 SKU 需要优先关注。"
+                }
+              ],
+              "exercises": [
+                {
+                  "exerciseId": "cs0603_ex1",
+                  "prompt": "基于 N=200、seed=7 的 SKU 数据完成 ABC 分类。存储：total_sales 所有 SKU 年销售额总和(整数)；classA_count、classB_count、classC_count 三类 SKU 数量；classA_sales_share A 类销售额百分比(保留 1 位小数)。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\nnp.random.seed(7)\nN=200\ncats=np.random.choice(['食品','饮料','日化','家居','零食','生鲜'],N)\nsales_units=np.random.lognormal(5,1.2,N).astype(int)\nunit_price=np.random.uniform(20,500,N).round(2)\nstock=np.random.poisson(lam=sales_units/12*2,N).astype(int)\nfor i in range(20):\n    stock[np.random.randint(N)]*=np.random.randint(5,15)\ndf=pd.DataFrame({'SKU':['SKU'+str(i+1).zfill(4) for i in range(N)],'品类':cats,'销售单价':unit_price,'年销量':sales_units,'期末库存':stock})\ndf['年销售额']=df['销售单价']*df['年销量']\ntotal_sales=0\nclassA_count=0\nclassB_count=0\nclassC_count=0\nclassA_sales_share=0.0",
+                  "testCode": "assert total_sales>1000000\nassert classA_count+classB_count+classC_count==200\nassert 68<classA_sales_share<=70",
+                  "hints": [
+                    "df.sort_values('年销售额',ascending=False) 排序",
+                    "df['累计占比']=df['年销售额'].cumsum()/total",
+                    "apply(规则函数) 生成 ABC 分类列",
+                    "(df['ABC分类']=='A').sum() 统计A类数量"
+                  ],
+                  "referenceAnswer": "df=df.sort_values('年销售额',ascending=False).reset_index(drop=True)\ntotal=df['年销售额'].sum()\ntotal_sales=int(total)\ndf['累计占比']=df['年销售额'].cumsum()/total\ndef abc_cut(pct):\n    if pct<=0.70:return 'A'\n    if pct<=0.90:return 'B'\n    return 'C'\ndf['ABC分类']=df['累计占比'].apply(abc_cut)\nclassA_count=int((df['ABC分类']=='A').sum())\nclassB_count=int((df['ABC分类']=='B').sum())\nclassC_count=int((df['ABC分类']=='C').sum())\nclassA_sales_share=round(df.loc[df['ABC分类']=='A','年销售额'].sum()/total*100,1)"
+                },
+                {
+                  "exerciseId": "cs0603_ex2",
+                  "prompt": "计算每个 SKU 的月均销量=年销量/12、库存周转天数=round(期末库存/月均销量*30)(年销量0填999)。存储：avg_turnover_days 所有 SKU 平均周转天数(整数)；overstock_count 周转天数>180的 SKU 数量；overstock_value 滞销品库存金额(期末库存×单价)总和(整数)。",
+                  "starterCode": "import pandas as pd\nimport numpy as np\nnp.random.seed(7)\nN=200\ncats=np.random.choice(['食品','饮料','日化','家居','零食','生鲜'],N)\nsales_units=np.random.lognormal(5,1.2,N).astype(int)\nunit_price=np.random.uniform(20,500,N).round(2)\nstock=np.random.poisson(lam=sales_units/12*2,N).astype(int)\nfor i in range(20):\n    stock[np.random.randint(N)]*=np.random.randint(5,15)\ndf=pd.DataFrame({'SKU':['SKU'+str(i+1).zfill(4) for i in range(N)],'品类':cats,'销售单价':unit_price,'年销量':sales_units,'期末库存':stock})\navg_turnover_days=0\noverstock_count=0\noverstock_value=0",
+                  "testCode": "assert avg_turnover_days>20\nassert overstock_count>=15\nassert overstock_value>100000",
+                  "hints": [
+                    "df['月均销量']=df['年销量']/12",
+                    "df.apply(自定义函数, axis=1) 计算周转天数",
+                    "avg=df['周转天数'].mean()",
+                    "overstock=df[df['周转天数']>180]",
+                    "overstock_value=(overstock['期末库存']*overstock['销售单价']).sum()"
+                  ],
+                  "referenceAnswer": "df['月均销量']=df['年销量']/12\ndef turnover(row):\n    if row['月均销量']>0:\n        return int(round(row['期末库存']/row['月均销量']*30))\n    return 999\ndf['周转天数']=df.apply(turnover,axis=1)\navg_turnover_days=int(df['周转天数'].mean())\noverstock=df[df['周转天数']>180]\noverstock_count=int(len(overstock))\noverstock_value=int((overstock['期末库存']*overstock['销售单价']).sum())"
+                }
+              ],
+              "summary": "ABC 分析 + 库存周转天数是零售与制造业库存优化的基础工具。识别高贡献 A 类 SKU 重点关注，对低贡献高库存的 C 类滞销品进行清仓，可在不降低服务水平的同时显著减少资金占用。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

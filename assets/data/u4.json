@@ -1,0 +1,177 @@
+{
+  "unitId": "u04",
+  "title": "Matplotlib 数据可视化",
+  "chapters": [
+    {
+      "chapter_id": "ch0401",
+      "title": "基础绘图：折线图、柱状图、饼图",
+      "objectives": [
+        "掌握 plt.figure/plot/bar/pie 等基础绘图函数",
+        "掌握 plt.title/xlabel/ylabel/legend 添加标题与标签",
+        "学会 savefig 保存图表",
+        "理解中文显示与风格设置"
+      ],
+      "content": "数据可视化是商务数据分析的重要一环，它将枯燥的数字转化为直观的图形，帮助管理者快速洞察数据背后的规律。Matplotlib 是 Python 生态中最经典的绘图库，提供类似 MATLAB 的命令式绘图接口。你可以通过 plt.plot() 绘制折线图展示时间趋势，plt.bar() 绘制柱状图对比分类数值，plt.pie() 绘制饼图展示占比。加上标题、坐标轴标签、图例等辅助元素，就可以生成一份专业的分析图表。在浏览器环境下执行的代码通常把生成的图像编码为 PNG base64 再嵌入 HTML 显示。",
+      "code_samples": [
+        {
+          "id": "cs040101",
+          "title": "绘制月度销售折线图",
+          "code": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\nfig=plt.figure(figsize=(8,4))\nplt.plot(months,sales,marker='o',color='#2563eb',linewidth=2)\nplt.title('2025年上半年月度销售额趋势',fontproperties='SimHei',fontsize=14)\nplt.xlabel('月份',fontproperties='SimHei')\nplt.ylabel('销售额(元)',fontproperties='SimHei')\nplt.grid(True,alpha=0.3)\nplt.tight_layout()\nprint('绘图完成')",
+          "explanation": "plt.figure(figsize=(宽,高)) 创建画布。plt.plot(x,y) 绘制折线图，marker='o' 在数据点加圆圈。title/xlabel/ylabel 添加标题与轴标签，中文需要指定 fontproperties。grid(True) 加网格线。tight_layout() 自动调整布局。"
+        },
+        {
+          "id": "cs040102",
+          "title": "绘制区域销售对比柱状图",
+          "code": "import matplotlib.pyplot as plt\nregions=['华东','华北','华南','西南','西北']\namounts=[589200,412300,726800,285400,138600]\nfig=plt.figure(figsize=(8,4))\ncolors=['#2563eb','#16a34a','#f59e0b','#db2777','#7c3aed']\nplt.bar(regions,amounts,color=colors,edgecolor='white')\nplt.title('各区域年销售额对比',fontproperties='SimHei',fontsize=14)\nplt.xlabel('区域',fontproperties='SimHei')\nplt.ylabel('销售额(元)',fontproperties='SimHei')\nfor i,v in enumerate(amounts):\n    plt.text(i,v+15000,str(v),ha='center',fontsize=9)\nplt.tight_layout()\nprint('柱状图完成')",
+          "explanation": "plt.bar(x, heights) 绘制柱状图。可以传入 color 列表为每个柱子指定不同颜色。plt.text(x, y, text) 在指定位置添加文本，可以用来在柱子顶部标注具体数值。"
+        },
+        {
+          "id": "cs040103",
+          "title": "绘制品类销售占比饼图",
+          "code": "import matplotlib.pyplot as plt\nlabels=['电子产品','服装鞋帽','食品饮料','家居用品','图书文具']\nsizes=[0.42,0.25,0.18,0.10,0.05]\ncolors=['#2563eb','#16a34a','#f59e0b','#db2777','#7c3aed']\nfig=plt.figure(figsize=(6,6))\nplt.pie(sizes,labels=labels,colors=colors,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei','fontsize':10})\nplt.title('各品类销售额占比',fontproperties='SimHei',fontsize=14)\nplt.axis('equal')\nprint('饼图完成')",
+          "explanation": "plt.pie(数值列表) 绘制饼图。labels 参数指定每个扇区的名称，colors 指定每个扇区颜色，autopct='%.1f%%' 自动标注百分比。startangle=90 使第一个扇区从 12 点方向开始。plt.axis('equal') 保证饼图为圆形。"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex040101",
+          "prompt": "请使用 Matplotlib 绘制季度销售折线图：季度=['Q1','Q2','Q3','Q4']，销售额=[128500,165200,189300,215800]。要求：创建 figure(figsize=(8,4))；使用 plt.plot 绘制折线，marker='s'；设置标题 '2025年季度销售额'；xlabel='季度'，ylabel='销售额(元)'；开启 grid。将代码写完整。",
+          "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写绘图代码\n",
+          "testCode": "",
+          "hints": [
+            "quarters = ['Q1','Q2','Q3','Q4']；sales = [128500,165200,189300,215800]",
+            "plt.figure(figsize=(8,4)) 创建画布",
+            "plt.plot(quarters, sales, marker='s') 绘制折线",
+            "plt.title/xlabel/ylabel 添加中文标题需要 fontproperties='SimHei'",
+            "plt.grid(True) 开启网格"
+          ],
+          "referenceAnswer": "import matplotlib.pyplot as plt\nquarters=['Q1','Q2','Q3','Q4']\nsales=[128500,165200,189300,215800]\nfig=plt.figure(figsize=(8,4))\nplt.plot(quarters,sales,marker='s',color='#2563eb',linewidth=2)\nplt.title('2025年季度销售额',fontproperties='SimHei',fontsize=14)\nplt.xlabel('季度',fontproperties='SimHei')\nplt.ylabel('销售额(元)',fontproperties='SimHei')\nplt.grid(True,alpha=0.3)\nplt.tight_layout()\nprint('绘图完成')"
+        },
+        {
+          "exerciseId": "ex040102",
+          "prompt": "绘制 TOP5 产品销售对比柱状图：产品=['产品A','产品B','产品C','产品D','产品E']，销量=[48500,72800,35600,95200,62400]。要求：figure(figsize=(8,4))；bar 绘制，任意颜色；标题 'TOP5 产品销量对比'；xlabel 产品，ylabel 销量；在每个柱子顶部标注数值。",
+          "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写绘图代码\n",
+          "testCode": "",
+          "hints": [
+            "products=['产品A','产品B','产品C','产品D','产品E']；sales=[48500,72800,35600,95200,62400]",
+            "plt.bar(products, sales) 绘制柱状图",
+            "标题、轴标签需要 fontproperties='SimHei'",
+            "用 for i,v in enumerate(sales): plt.text(i, v+偏移, str(v), ha='center') 标注数值"
+          ],
+          "referenceAnswer": "import matplotlib.pyplot as plt\nproducts=['产品A','产品B','产品C','产品D','产品E']\nsales=[48500,72800,35600,95200,62400]\nfig=plt.figure(figsize=(8,4))\nplt.bar(products,sales,color='#2563eb',edgecolor='white')\nplt.title('TOP5产品销量对比',fontproperties='SimHei',fontsize=14)\nplt.xlabel('产品',fontproperties='SimHei')\nplt.ylabel('销量',fontproperties='SimHei')\nfor i,v in enumerate(sales):\n    plt.text(i,v+1500,str(v),ha='center',fontsize=9)\nplt.tight_layout()\nprint('柱状图完成')"
+        }
+      ],
+      "summary": "折线图展示趋势，柱状图对比数值，饼图显示占比。配合标题、标签、图例和标注，可以生成清晰专业的商务图表。"
+    },
+    {
+      "chapter_id": "ch0402",
+      "title": "自定义样式、子图布局与常见图表",
+      "objectives": [
+        "掌握 fig, axes = plt.subplots 创建子图网格",
+        "学会设置颜色、线宽、标记、字体等样式",
+        "掌握 scatter 散点图和 hist 直方图",
+        "能够调整坐标轴范围与刻度"
+      ],
+      "content": "Matplotlib 提供面向对象的绘图接口，通过 fig, axes = plt.subplots(m, n) 可以创建 m 行 n 列的子图网格，在同一画布中并列展示多张图表，非常适合在销售报表中同时展示趋势图、结构图和分布图。子图的 axes 对象可以调用 .plot()/.bar()/.scatter()/.hist() 等方法绘图，并通过 .set_title()/.set_xlabel()/.set_ylabel() 设置标题和轴标签。散点图用于展示两个数值变量之间的相关性（如广告投入与销售额关系），直方图用于展示单个数值变量的分布（如客户的年消费额分布）。灵活运用子图布局与样式调整，能让你的分析报告更具可读性。",
+      "code_samples": [
+        {
+          "id": "cs040201",
+          "title": "子图网格：并排展示多种图表",
+          "code": "import matplotlib.pyplot as plt\nimport numpy as np\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=np.array([32000,28500,41200,35800,49100,52000])\nregions=['华东','华北','华南','西南']\nregion_sales=[589200,412300,726800,285400]\nfig,axes=plt.subplots(1,2,figsize=(12,4))\naxes[0].plot(months,sales,marker='o',color='#2563eb',linewidth=2)\naxes[0].set_title('月度销售趋势',fontproperties='SimHei')\naxes[0].set_xlabel('月份',fontproperties='SimHei')\naxes[0].grid(True,alpha=0.3)\naxes[1].bar(regions,region_sales,color='#16a34a')\naxes[1].set_title('区域销售对比',fontproperties='SimHei')\naxes[1].set_ylabel('销售额',fontproperties='SimHei')\nplt.tight_layout()\nprint('子图完成')",
+          "explanation": "plt.subplots(1, 2) 创建 1 行 2 列的子图网格。返回 fig（整个画布）和 axes（子图数组）。通过索引 axes[0]、axes[1] 指定绘图子图。每个子图独立设置标题和样式。"
+        },
+        {
+          "id": "cs040202",
+          "title": "散点图与相关性可视化",
+          "code": "import matplotlib.pyplot as plt\nimport numpy as np\nad_spend=np.array([5000,8000,12000,15000,18000,22000,25000,30000])\nsales_rev=np.array([45000,62000,85000,98000,125000,150000,175000,210000])\nfig,ax=plt.subplots(figsize=(7,5))\nax.scatter(ad_spend,sales_rev,s=80,c='#f59e0b',alpha=0.8,edgecolors='white',linewidth=1.5)\nz=np.polyfit(ad_spend,sales_rev,1)\np=np.poly1d(z)\nax.plot(ad_spend,p(ad_spend),'--',color='#2563eb',linewidth=2)\nax.set_title('广告投入 vs 销售额',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('广告投入(元)',fontproperties='SimHei')\nax.set_ylabel('销售额(元)',fontproperties='SimHei')\nax.grid(True,alpha=0.3)\nprint('散点图完成, 斜率=',z[0].round(2))",
+          "explanation": "ax.scatter(x, y, s=大小, c=颜色, alpha=透明度) 绘制散点图。np.polyfit(x, y, 1) 拟合一次线性回归，np.poly1d(z) 生成预测函数。在散点图上叠加拟合线可以直观展示线性关系。"
+        },
+        {
+          "id": "cs040203",
+          "title": "直方图展示数据分布",
+          "code": "import matplotlib.pyplot as plt\nimport numpy as np\nnp.random.seed(42)\n# 模拟 500 位客户的年消费额（均值 8000，标准差 2000）\nconsumer_spending=np.random.normal(8000,2000,500)\nfig,ax=plt.subplots(figsize=(8,4))\nax.hist(consumer_spending,bins=20,color='#2563eb',alpha=0.7,edgecolor='white')\nax.set_title('客户年消费额分布',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('年消费额(元)',fontproperties='SimHei')\nax.set_ylabel('客户数量',fontproperties='SimHei')\nax.axvline(consumer_spending.mean(),color='#dc2626',linestyle='--',linewidth=2,label='均值:'+str(int(consumer_spending.mean())))\nax.legend(prop={'family':'SimHei'})\nax.grid(axis='y',alpha=0.3)\nprint('直方图完成')",
+          "explanation": "ax.hist(数据, bins=分箱数) 绘制直方图。bins 参数控制柱子数量，越多越精细但越不平滑。axvline 绘制垂直参考线，常用于标注均值或分位数。legend() 显示图例。"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex040201",
+          "prompt": "请创建一个 2 行 1 列的子图布局（2 rows, 1 col），总 figsize=(8,7)。上子图绘制折线图：月份=['1月','2月','3月','4月','5月','6月']，销售额=[32000,28500,41200,35800,49100,52000]，marker='o'，蓝色。下子图绘制柱状图：产品=['产品A','产品B','产品C','产品D']，销量=[1520,2180,1890,2650]，绿色。为每个子图添加标题（'月度销售'和 '产品销量'）。使用 tight_layout()。",
+          "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写\n",
+          "testCode": "",
+          "hints": [
+            "fig,axes=plt.subplots(2,1,figsize=(8,7)) 创建 2行1列",
+            "axes[0].plot(months, sales, marker='o')",
+            "axes[1].bar(products, volumes, color='green')",
+            "ax.set_title() 每个子图独立标题",
+            "plt.tight_layout() 自动调整间距"
+          ],
+          "referenceAnswer": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\nproducts=['产品A','产品B','产品C','产品D']\nvolumes=[1520,2180,1890,2650]\nfig,axes=plt.subplots(2,1,figsize=(8,7))\naxes[0].plot(months,sales,marker='o',color='#2563eb',linewidth=2)\naxes[0].set_title('月度销售',fontproperties='SimHei')\naxes[0].grid(True,alpha=0.3)\naxes[1].bar(products,volumes,color='#16a34a')\naxes[1].set_title('产品销量',fontproperties='SimHei')\nplt.tight_layout()\nprint('子图完成')"
+        },
+        {
+          "exerciseId": "ex040202",
+          "prompt": "绘制散点图展示 广告投入(x) 与 销售额(y) 的关系：广告=[5000,8000,12000,15000,18000,22000,25000,30000]，销售额=[45000,62000,85000,98000,125000,150000,175000,210000]。要求：scatter 绘制（marker='o'，颜色橙色，size=80，alpha=0.8）；添加标题 '广告vs销售额'；xlabel '广告投入'；ylabel '销售额'；显示网格。",
+          "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写\n",
+          "testCode": "",
+          "hints": [
+            "plt.scatter(ad, sales, s=80, c='orange', alpha=0.8)",
+            "plt.title/xlabel/ylabel 需要 fontproperties='SimHei'",
+            "plt.grid(True, alpha=0.3)"
+          ],
+          "referenceAnswer": "import matplotlib.pyplot as plt\nad=[5000,8000,12000,15000,18000,22000,25000,30000]\nsales=[45000,62000,85000,98000,125000,150000,175000,210000]\nfig,ax=plt.subplots(figsize=(7,5))\nax.scatter(ad,sales,s=80,c='#f59e0b',alpha=0.8,edgecolors='white',linewidth=1.5)\nax.set_title('广告vs销售额',fontproperties='SimHei',fontsize=14)\nax.set_xlabel('广告投入',fontproperties='SimHei')\nax.set_ylabel('销售额',fontproperties='SimHei')\nax.grid(True,alpha=0.3)\nprint('散点图完成')"
+        }
+      ],
+      "summary": "子图网格让我们在一张画布中同时展示多个视角。散点图揭示变量间关系，直方图展示分布。面向对象的绘图接口让图表组织更加清晰。"
+    },
+    {
+      "chapter_id": "ch0403",
+      "title": "商务案例：综合图表与销售仪表板",
+      "objectives": [
+        "能够结合真实销售场景设计综合图表",
+        "掌握双 y 轴绘图 (twinx)",
+        "学会 annotate 文本标注",
+        "能够组合多种图表形成仪表板风格的输出"
+      ],
+      "content": "在实际商务分析中，一张图表往往只能展示一个视角。管理者通常希望在一张页面中看到销售额趋势、各区域占比、TOP 产品、增长率等多个关键指标，形成销售仪表板。Matplotlib 的子图网格配合不同图表类型，可以组合出仪表板风格的综合输出。有时候同一张图中需要同时展示数值大小和增长率（量级不同），这时可以使用 ax.twinx() 创建双 y 轴，共享 x 轴但拥有两个独立 y 轴，左侧显示绝对值，右侧显示百分比。还可以使用 annotate() 在特定数据点添加箭头和文本，突出异常值或关键节点。掌握这些高级技巧，你就能制作真正可用于汇报的商务图表。",
+      "code_samples": [
+        {
+          "id": "cs040301",
+          "title": "双 y 轴：销售额 + 增长率",
+          "code": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\ngrowth=[None, -10.9, 44.6, -13.1, 37.1, 5.9]\nfig,ax1=plt.subplots(figsize=(10,5))\nax1.bar(months,sales,color='#2563eb',alpha=0.7,label='销售额')\nax1.set_xlabel('月份',fontproperties='SimHei')\nax1.set_ylabel('销售额(元)',fontproperties='SimHei',color='#2563eb')\nax1.tick_params(axis='y',labelcolor='#2563eb')\nax2=ax1.twinx()\nax2.plot(months[1:],growth[1:],color='#dc2626',marker='o',linewidth=2,label='环比增长率')\nax2.set_ylabel('环比增长率(%)',fontproperties='SimHei',color='#dc2626')\nax2.tick_params(axis='y',labelcolor='#dc2626')\nax2.axhline(0,color='gray',linestyle='--',linewidth=0.8)\nax1.set_title('月度销售额及环比增长率',fontproperties='SimHei',fontsize=14)\nfig.tight_layout()\nprint('双轴图完成')",
+          "explanation": "ax1 是左侧 y 轴（柱状图，销售额）。ax2 = ax1.twinx() 创建共享 x 轴的右侧 y 轴，在上面绘制折线图（增长率）。两个 y 轴分别使用不同颜色的标签和刻度线。axhline 画水平参考线。"
+        },
+        {
+          "id": "cs040302",
+          "title": "综合仪表板：四图组合",
+          "code": "import matplotlib.pyplot as plt\nimport numpy as np\nmonths=['1月','2月','3月','4月','5月','6月']\nsales_a=[32000,28500,41200,35800,49100,52000]\nsales_b=[18000,22300,19500,25600,31200,34800]\ncats=['电子','服装','食品','家居','图书']\ncat_share=[0.42,0.25,0.18,0.10,0.05]\ntop_products=['产品D','产品B','产品E','产品C','产品A']\ntop_sales=[95200,72800,62400,48500,35600]\nnp.random.seed(0)\nprices=np.random.randn(200)*50+200\nfig,axes=plt.subplots(2,2,figsize=(13,8))\n# 左上：月度折线（两产品对比）\naxes[0,0].plot(months,sales_a,marker='o',label='产品A')\naxes[0,0].plot(months,sales_b,marker='s',label='产品B')\naxes[0,0].set_title('月度销售趋势',fontproperties='SimHei')\naxes[0,0].legend(prop={'family':'SimHei'})\naxes[0,0].grid(True,alpha=0.3)\n# 右上：品类占比饼图\naxes[0,1].pie(cat_share,labels=cats,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei'})\naxes[0,1].set_title('品类销售占比',fontproperties='SimHei')\n# 左下：TOP5 产品柱状图\naxes[1,0].barh(top_products,top_sales,color='#2563eb')\naxes[1,0].set_title('TOP5产品销售额',fontproperties='SimHei')\naxes[1,0].invert_yaxis()\n# 右下：价格分布直方图\naxes[1,1].hist(prices,bins=15,color='#16a34a',alpha=0.7)\naxes[1,1].set_title('单价分布',fontproperties='SimHei')\nplt.tight_layout()\nprint('仪表板完成')",
+          "explanation": "plt.subplots(2, 2) 创建 2x2 网格，通过 axes[row, col] 定位每个子图。左上折线图对比多产品线，右上饼图展示品类结构，左下 barh 绘制水平柱状图方便阅读 TOP 排名，右下直方图展示价格分布。invert_yaxis() 让 TOP1 显示在顶部。"
+        },
+        {
+          "id": "cs040303",
+          "title": "关键数据点标注",
+          "code": "import matplotlib.pyplot as plt\nmonths=['1月','2月','3月','4月','5月','6月']\nsales=[32000,28500,41200,35800,49100,52000]\nfig,ax=plt.subplots(figsize=(9,5))\nax.plot(months,sales,marker='o',color='#2563eb',linewidth=2)\n# 标注最高点\nmax_idx=sales.index(max(sales))\nax.annotate('最高点 '+str(sales[max_idx]),xy=(months[max_idx],sales[max_idx]),xytext=(months[max_idx],sales[max_idx]+2500),fontproperties='SimHei',ha='center',arrowprops=dict(arrowstyle='->',color='red'))\n# 标注最低点\nmin_idx=sales.index(min(sales))\nax.annotate('最低点 '+str(sales[min_idx]),xy=(months[min_idx],sales[min_idx]),xytext=(months[min_idx],sales[min_idx]-4500),fontproperties='SimHei',ha='center',arrowprops=dict(arrowstyle='->',color='green'))\nax.set_title('月度销售（关键节点标注）',fontproperties='SimHei',fontsize=14)\nax.set_ylabel('销售额',fontproperties='SimHei')\nax.grid(True,alpha=0.3)\nprint('标注完成')",
+          "explanation": "ax.annotate(文本, xy=目标点坐标, xytext=文本位置, arrowprops=箭头样式) 在指定数据点添加带箭头的文本标注。常用于突出最大值、最小值、异常值或里程碑事件，使图表更有故事性。"
+        }
+      ],
+      "exercises": [
+        {
+          "exerciseId": "ex040301",
+          "prompt": "创建 2x2 子图仪表板（figsize=(13,8)）。左上：bar 绘制 4区域销售（区域=['华东','华北','华南','西南']，金额=[589200,412300,726800,285400]），标题 '区域销售'。右上：pie 绘制品类占比（[0.42,0.25,0.18,0.10,0.05]，标签=['电子','服装','食品','家居','图书']）。左下：plot 绘制 6个月折线（[32000,28500,41200,35800,49100,52000]），marker='o'，标题 '月度销售'。右下：scatter 绘制（x=[5000,8000,12000,15000,18000,22000,25000,30000], y=[45000,62000,85000,98000,125000,150000,175000,210000]），标题 '广告vs销售'。最后 tight_layout()。",
+          "starterCode": "import matplotlib.pyplot as plt\n# 在这里编写\n",
+          "testCode": "",
+          "hints": [
+            "fig,axes=plt.subplots(2,2,figsize=(13,8))",
+            "axes[0,0].bar(区域, 金额)",
+            "axes[0,1].pie(占比, labels=标签, autopct='%.1f%%')",
+            "axes[1,0].plot(months, sales, marker='o')",
+            "axes[1,1].scatter(ad, sales)",
+            "中文标题需要 fontproperties='SimHei'",
+            "plt.tight_layout() 收尾"
+          ],
+          "referenceAnswer": "import matplotlib.pyplot as plt\nregions=['华东','华北','华南','西南']\nregion_sales=[589200,412300,726800,285400]\ncats=['电子','服装','食品','家居','图书']\ncat_share=[0.42,0.25,0.18,0.10,0.05]\nmonths=['1月','2月','3月','4月','5月','6月']\nmonthly_sales=[32000,28500,41200,35800,49100,52000]\nad=[5000,8000,12000,15000,18000,22000,25000,30000]\nsales=[45000,62000,85000,98000,125000,150000,175000,210000]\nfig,axes=plt.subplots(2,2,figsize=(13,8))\naxes[0,0].bar(regions,region_sales,color='#2563eb')\naxes[0,0].set_title('区域销售',fontproperties='SimHei')\naxes[0,1].pie(cat_share,labels=cats,autopct='%.1f%%',startangle=90,textprops={'fontproperties':'SimHei'})\naxes[0,1].set_title('品类占比',fontproperties='SimHei')\naxes[1,0].plot(months,monthly_sales,marker='o',color='#2563eb',linewidth=2)\naxes[1,0].set_title('月度销售',fontproperties='SimHei')\naxes[1,0].grid(True,alpha=0.3)\naxes[1,1].scatter(ad,sales,s=60,c='#f59e0b',alpha=0.8)\naxes[1,1].set_title('广告vs销售',fontproperties='SimHei')\nplt.tight_layout()\nprint('仪表板完成')"
+        }
+      ],
+      "summary": "子图网格结合多种图表类型 + 双 y 轴 + 关键标注，是制作商务销售仪表板的标准流程。掌握这些技巧后，你就能生成可直接用于汇报的专业分析图表。"
+    }
+  ]
+}
